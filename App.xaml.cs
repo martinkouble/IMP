@@ -5,37 +5,41 @@ namespace IMP_reseni;
 
 public partial class App : Application
 {
-    private bool Passwd;
-    public App()
+    //private string Passwd;
+    public  App()
     {
-        //SecureStorage.Default.SetAsync("token", "SUS");
+
+        SecureStorage.Default.RemoveAll();
+
+        Task get = new Task(GetPassword);
+        get.Start();
+        get.Wait();
+
         InitializeComponent();
-        //SecureStorage.Default.RemoveAll();
+
         //Task<string> oauthToken = SecureStorage.Default.GetAsync("oauth_token").Wait();
-        //GetPassword();
-      
-            MainPage = new NavigationPage(new MainPage());
+
         //MainPage = new ContentPage(new MainPage());
 
         //MainPage = new AppShell();
     }
- 
+    private async void SetPassword() 
+    {
+        await SecureStorage.SetAsync("token", "SUS");
+    }
+
     private async void GetPassword()
     {
-        var token = await SecureStorage.Default.GetAsync("token");
-        if(token != null)
+        string Passwd = await SecureStorage.Default.GetAsync("token");
+        if (Passwd != null)
         {
-            Passwd = true;
             MainPage = new NavigationPage(new MainPage());
-
         }
+
         else
         {
-            Passwd=false;
             MainPage = new NavigationPage(new SetPassword());
-
         }
-        //return token;
     }
 
     

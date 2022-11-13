@@ -18,14 +18,15 @@
         <Entry Placeholder="Zadejte heslo" 
                HorizontalOptions="Center"
                FontSize="Large"
-               IsPassword="True"/>
+               IsPassword="True"
+                Text="{Binding Passwd}"/>
         </Border>
         <Button CornerRadius="0" 
                 HorizontalOptions="FillAndExpand"
                 BackgroundColor="Black"
                 Text="Přihlásit"
                 FontSize="Title"
-                Clicked="GoToAdminPanel"/>
+                Command="{Binding VerifyPasswordCommand}"/>
       
     </VerticalStackLayout>
 </ContentPage>
