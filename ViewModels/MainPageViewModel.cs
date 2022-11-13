@@ -26,14 +26,19 @@ namespace IMP_reseni.ViewModels
 
         public MainPageViewModel()
         {
-            NavigateCommand = new Command<ContentPage>(
-            async (ContentPage Page) =>
+
+        }
+        public MainPageViewModel(ContentPage _page)
+        {
+            NavigateCommand = new Command(
+            async () =>
             {
                 //Page page = (Page)Activator.CreateInstance(pageType);
-                await Page.Navigation.PushAsync(new Login());
+                await _page.Navigation.PushAsync(new Login());
             });
         }
-      
+
+
 
     }
 }

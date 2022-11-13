@@ -1,4 +1,6 @@
 ﻿
+using IMP_reseni.ViewModels;
+
 namespace IMP_reseni;
 
 public partial class MainPage : ContentPage
@@ -8,16 +10,17 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
-		
-	}
-    
-   /*
-    private async void GoToLogin(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new Views.Login());
+        BindingContext =new MainPageViewModel(this);
 
     }
-   */
+
+    /*
+     private async void GoToLogin(object sender, EventArgs e)
+     {
+         await Navigation.PushAsync(new Views.Login());
+
+     }
+    */
     //private void OnCounterClicked(object sender, EventArgs e)
     //{
     //	count++;

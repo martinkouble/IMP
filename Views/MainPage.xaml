@@ -5,11 +5,13 @@
              x:Class="IMP_reseni.MainPage"  
              Title=""
              BackgroundColor="{StaticResource Key=Primary}"
-             x:Name="MainPageView"
+            
              >
-    <ContentPage.BindingContext >
+    <!--x:Name="MainPageView"-->
+    <!--<ContentPage.BindingContext >
         <ViewModels:MainPageViewModel/>
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
+    
     <NavigationPage.TitleView >
       
         <FlexLayout 
@@ -33,7 +35,8 @@
             <ImageButton Source="loginicon.svg"
                          MaximumHeightRequest="50" MaximumWidthRequest="50"
                         Command="{Binding NavigateCommand}"
-                        CommandParameter="{x:Reference MainPageView}"/>
+                       />
+            <!--CommandParameter="{x:Reference MainPageView}"-->
             <!--Clicked="GoToLogin"-->
         </FlexLayout>
   
