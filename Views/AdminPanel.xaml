@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.AdminPanel"
+             xmlns:Views="clr-namespace:IMP_reseni.Views"
              Title="AdminPanel"
              BackgroundColor="{StaticResource Primary}">
     <ContentPage.Resources>
@@ -21,12 +22,25 @@
              Direction="Column"
                 AlignItems="Stretch"
                 JustifyContent="SpaceEvenly">
-            <Button Text="Vytvořit"></Button>
-            <Button Text="Upravit"></Button>
-            <Button Text="Učetnictví"></Button>
-            <Button Text="CLoud"></Button>
+            <Button Text="Vytvořit"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Create}"/>
+            
+            <Button Text="Upravit"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Modify}"
+                    />
+            
+            <Button Text="Učetnictví"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Accounting}"/>
+            
+            <Button Text="CLoud"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Cloud}"
 
-
+                    />
+            
         </FlexLayout>
     </Border>
 

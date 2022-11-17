@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.Accounting"
-             Title="Accounting">
+             x:Class="IMP_reseni.Views.Modify"
+             Title="Změnit">
     <ContentPage.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
@@ -20,8 +20,11 @@
              Direction="Column"
              AlignItems="Stretch"
              JustifyContent="SpaceEvenly">
-            <Button Text="Vložení dat"/>
-            <Button Text="Učetní soubor"/>
+            <Button Text="Kategorie"/>
+            <Button Text="PodKatogorie"/>
+            <Button Text="Dodavatel"/>
+            <Button Text="Položka"/>
+
         </FlexLayout>
     </Border>
 </ContentPage>

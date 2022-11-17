@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMP_reseni.Controls.OptionView">
+    <Border            
+        Margin="25,75,25,75"
+        Padding="50"
+        StrokeShape="RoundRectangle 20"
+        BackgroundColor="#7B2CBF" StrokeThickness="0">
+        <FlexLayout 
+             Direction="Column"
+                AlignItems="Stretch"
+                JustifyContent="SpaceEvenly">
+        </FlexLayout>
+    </Border>
+</ContentView>

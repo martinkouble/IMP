@@ -4,6 +4,7 @@
              x:Class="IMP_reseni.Views.Login"
              Title="Login"
              BackgroundColor="{StaticResource Primary}">
+    
     <VerticalStackLayout Padding="50,75,50,0"
                          Spacing="100">
         <Label 

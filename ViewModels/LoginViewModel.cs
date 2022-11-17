@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Maui.Alerts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref passwd, value); }
             get { return passwd; }
         }
+
+
         public LoginViewModel(Page _page)
         {
             VerifyPasswordCommand = new Command(
@@ -27,6 +30,11 @@ namespace IMP_reseni.ViewModels
                 if(token == passwd)
                 {
                     await _page.Navigation.PushAsync(new Views.AdminPanel());
+                    _page.Navigation.RemovePage(_page);
+                }
+                else
+                {
+                    await Toast.Make("Špatné heslo").Show();
                 }
             });
         }
@@ -36,6 +44,9 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))
