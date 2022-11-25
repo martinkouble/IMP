@@ -28,6 +28,7 @@ namespace IMP_reseni.ViewModels
 
         public SetPasswordViewModel(ContentPage _page)
         {
+            Name = "";
             SetPasswordCommand = new Command(
             async () =>
             {
