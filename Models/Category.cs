@@ -11,6 +11,8 @@ namespace IMP_reseni.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Disabled { get; set; }
+        public string ImageUrl { get; set; }
+
         public List<SubCategory> SubCategories { get; set; }
 
     }

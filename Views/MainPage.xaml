@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="IMP_reseni.MainPage"  
              Title=""
              BackgroundColor="{StaticResource Key=Primary}"
@@ -54,7 +55,15 @@
                 StrokeShape="RoundRectangle 40"
                 Grid.Row="1">
             <SearchBar Placeholder="Search items" 
-                       FontSize="Title"/>
+                       x:Name="searchBar"
+                       FontSize="Title">
+                <SearchBar.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                EventName="TextChanged"
+               Command="{Binding PerformSearch}"
+               CommandParameter="{Binding Text,Source={x:Reference searchBar}}" />
+                </SearchBar.Behaviors>
+            </SearchBar>
         </Border>
 
        
@@ -86,10 +95,14 @@
                     FontAttributes="Bold"
                     Text="Kategorie"
                     />
-                    <CollectionView  ItemsSource="{Binding Items}" 
-                                 SelectionMode="Single"
-                                  ItemsLayout="VerticalGrid, 3"
-                                     Grid.Row="1">
+                    <CollectionView  
+                        x:Name="MyCollectionView"
+                        ItemsSource="{Binding ItemsList}" 
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding ItemSelect}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference MyCollectionView}}"
+                        ItemsLayout="VerticalGrid, 3"
+                        Grid.Row="1">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -101,7 +114,7 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Row="0"
-                                   Source="{Binding ImageUrl}" 
+                                   Source="{Binding ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}" 
                                    Aspect="AspectFill" />
 
                                     <Label Grid.Row="1"
@@ -112,6 +125,11 @@
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
+                    <!--<CollectionView.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                             EventName="TextChanged"
+                             Command="{Binding ItemSelect}"/>
+                    </CollectionView.Behaviors>-->
                     </CollectionView>
             </Grid>
         </Border>
