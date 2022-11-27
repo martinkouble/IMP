@@ -42,7 +42,16 @@ namespace IMP_reseni.ViewModels
         public ICommand NavigateCommand { get; private set; }
         public ICommand PerformSearch { get; private set; }
         public ICommand ItemSelect { get; private set; }
+        public ICommand NavigateCollectionCommand { get; private set; }
+        public ICommand ItemSelectedCommand { get; private set; }
 
+
+        private string _typeOfItems;
+        public string TypeOfItems
+        {
+            set { SetProperty(ref _typeOfItems, value); }
+            get { return _typeOfItems; }
+        }
 
         public ObservableCollection<object> ItemsList { get;  set; }
 
@@ -53,12 +62,24 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Object.Equals(storage, value))
+                return false;
+
+            storage = value;
+
+            OnPropertyChanged(propertyName);
+            return true;
+        }
         public MainPageViewModel()
         {
 
         }
         public MainPageViewModel(ContentPage _page)
         {
+            TypeOfItems="Kategorie";
+
             ItemsList = new ObservableCollection<object>(source);
 
             NavigateCommand = new Command(
@@ -75,19 +96,39 @@ namespace IMP_reseni.ViewModels
                 filter(Text);      
             });
 
-            ItemSelect=new Command<object>(
+            NavigateCollectionCommand = new Command<string>(
+            (string Direction) =>
+            {
+                if(Direction == "Back")
+                {
+
+                }
+                else if(Direction == "Forward")
+                {
+
+                }
+            });
+
+            ItemSelectedCommand = new Command<object>(
+           (object Direction) =>
+           {
+
+           });
+            ItemSelect =new Command<object>(
              (object SelectedItem) =>
             {
                 Type _type = SelectedItem.GetType();
                 if (_type == typeof(Category))
                 {
-                    var category = (Category)SelectedItem;
-                    addToList(category.SubCategories);
+                    var _category = (Category)SelectedItem;
+                    addToList(_category.SubCategories);
+                    TypeOfItems = "Podkategorie";
                 }
                 else if(_type == typeof(SubCategory))
                 {
-                    var SubCategory = (SubCategory)SelectedItem;
-                    addToList(SubCategory.Items);
+                    var _subCategory = (SubCategory)SelectedItem;
+                    addToList(_subCategory.Items);
+                    TypeOfItems = "Položky";
 
                 }
                 else if(_type == typeof(Items))

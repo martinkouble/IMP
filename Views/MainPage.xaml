@@ -5,14 +5,17 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="IMP_reseni.MainPage"  
              Title=""
-             BackgroundColor="{StaticResource Key=Primary}"
-            
+             BackgroundColor="{StaticResource Key=Primary}"     
              >
     <!--x:Name="MainPageView"-->
     <!--<ContentPage.BindingContext >
         <ViewModels:MainPageViewModel/>
     </ContentPage.BindingContext>-->
-    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <NavigationPage.TitleView >
       
         <FlexLayout 
@@ -85,24 +88,51 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+
                 </Grid.ColumnDefinitions>
-                    <Label
+
+                <ImageButton
                     Grid.Row="0"
+                    Grid.Column="0"
+                    Source="arrow_back.svg"
+                    HeightRequest="50" WidthRequest="50"
+                    Margin="25,0,0,0"
+                    Command="{Binding NavigateCollectionCommand}"
+                    CommandParameter="Forward"/>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
                     HorizontalOptions="Center"
+                    VerticalOptions="Center"
                     TextColor="{StaticResource Key=Primary}"
                     FontSize="Title"
                     FontAttributes="Bold"
-                    Text="Kategorie"
+                    Text="{Binding TypeOfItems}"                  
                     />
-                    <CollectionView  
+                <ImageButton
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Source="arrow_forward.svg"
+                    HeightRequest="50" WidthRequest="50"
+                    Margin="0,0,25,0"
+                    Command="{Binding NavigateCollectionCommand}"
+                    CommandParameter="Back"/>
+
+
+                <CollectionView 
                         x:Name="MyCollectionView"
                         ItemsSource="{Binding ItemsList}" 
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding ItemSelect}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference MyCollectionView}}"
                         ItemsLayout="VerticalGrid, 3"
-                        Grid.Row="1">
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -127,10 +157,11 @@
                         </CollectionView.ItemTemplate>
                     <!--<CollectionView.Behaviors>
                         <toolkit:EventToCommandBehavior
-                             EventName="TextChanged"
-                             Command="{Binding ItemSelect}"/>
+                             x:TypeArguments="SelectedItemEventArgs"
+                             EventName="SelectionChanged"
+                             Command="{Binding ItemSelectedCommand}"/>
                     </CollectionView.Behaviors>-->
-                    </CollectionView>
+                </CollectionView>
             </Grid>
         </Border>
     </Grid>

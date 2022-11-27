@@ -54,6 +54,8 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\loginicon.svg" />
+	  <None Remove="Resources\Images\arrow_back.svg" />
+	  <None Remove="Resources\Images\arrow_forward.svg" />
 	  <None Remove="Resources\Images\loginicon.svg" />
 	</ItemGroup>
 
