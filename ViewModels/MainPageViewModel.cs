@@ -45,7 +45,6 @@ namespace IMP_reseni.ViewModels
         public ICommand NavigateCollectionCommand { get; private set; }
         public ICommand ItemSelectedCommand { get; private set; }
 
-
         private string _typeOfItems;
         public string TypeOfItems
         {
@@ -109,10 +108,11 @@ namespace IMP_reseni.ViewModels
                 }
             });
 
-            ItemSelectedCommand = new Command<object>(
-           (object Direction) =>
+            ItemSelectedCommand = new Command<SelectionChangedEventArgs>(
+           (SelectionChangedEventArgs e) =>
            {
-
+              var CurrentSelection= e.CurrentSelection;
+              var PreviousSelection = e.PreviousSelection;
            });
             ItemSelect =new Command<object>(
              (object SelectedItem) =>

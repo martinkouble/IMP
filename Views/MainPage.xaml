@@ -155,12 +155,12 @@
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
-                    <!--<CollectionView.Behaviors>
+                    <CollectionView.Behaviors>
                         <toolkit:EventToCommandBehavior
-                             x:TypeArguments="SelectedItemEventArgs"
+                             x:TypeArguments="SelectionChangedEventArgs"
                              EventName="SelectionChanged"
                              Command="{Binding ItemSelectedCommand}"/>
-                    </CollectionView.Behaviors>-->
+                    </CollectionView.Behaviors>
                 </CollectionView>
             </Grid>
         </Border>

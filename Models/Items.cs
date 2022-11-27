@@ -10,5 +10,13 @@ namespace IMP_reseni.Models
     {
         public string Name { get; set; }
         public string ImageUrl { get; set; }
+        public bool Disabled { get; set; }
+
+        public double BuyCost { get; set; }
+        public double SellCost { get; set; }
+        public bool SoR { get; set; }
+
+        public int Stock { get; set; }
+        public int SupplierId { get; set; }
     }
 }
