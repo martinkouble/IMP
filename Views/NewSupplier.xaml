@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMP_reseni.Views.NewSupplier"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
+             Title="NewSupplier">
+    <ContentPage.Resources>
+        <Converters:IntToBoolConverter x:Key="intToBool" />
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="CornerRadius"  Value="0"/>
+        </Style>
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

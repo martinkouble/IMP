@@ -9,7 +9,7 @@ public partial class App : Application
     public  App()
     {
 
-        SecureStorage.Default.RemoveAll();
+        //SecureStorage.Default.RemoveAll();
 
         Task get = new Task(GetPassword);
         get.Start();

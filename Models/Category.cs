@@ -14,6 +14,9 @@ namespace IMP_reseni.Models
         public string ImageUrl { get; set; }
 
         public List<SubCategory> SubCategories { get; set; }
-
+        public Category()
+        {
+            this.SubCategories = new List<SubCategory>();
+        }
     }
 }

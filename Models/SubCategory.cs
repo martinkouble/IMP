@@ -13,5 +13,28 @@ namespace IMP_reseni.Models
         public bool Disabled { get; set; }
         public List<Items> Items { get; set; }
 
+        public SubCategory()
+        {
+            this.Items = new List<Items>();
+        }
+
+        public void AddItem(Items item)
+        {
+            if (Items == null)
+                Items = new List<Items>();
+            //TryToSetItemId(item);
+            Items.Add(item);
+        }
+
+        private void SetItemId(Items item)
+        {
+            if (Items.Count > 0)
+            {
+                int _maxId = Items.Max(o => o.Id);
+                item.Id = _maxId + 1;
+            }
+            else
+                item.Id = 1;
+        }
     }
 }
