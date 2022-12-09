@@ -18,5 +18,7 @@ namespace IMP_reseni.Models
         {
             this.SubCategories = new List<SubCategory>();
         }
+
+
     }
 }

@@ -45,6 +45,11 @@ namespace IMP_reseni.ViewModels
         public ICommand NavigateCollectionCommand { get; private set; }
         public ICommand ItemSelectedCommand { get; private set; }
 
+        private List<object> CurrentSelection=null;
+        //private List<object> PreviousSelection=null;
+        private object SelectedCategory=null;
+
+
         private string _typeOfItems;
         public string TypeOfItems
         {
@@ -100,19 +105,55 @@ namespace IMP_reseni.ViewModels
             {
                 if(Direction == "Back")
                 {
+                    if(!(CurrentSelection==null))
+                    {
+                        var _category = (Category)SelectedCategory;
+                        Type _type = CurrentSelection[0].GetType();
+                        if (_type == typeof(Category))
+                        {
+                            addToList<Category>(source.ToList());
+                            CurrentSelection = null;
+                            TypeOfItems = "Kategorie";
+                        }
+                        else if ((_type == typeof(SubCategory)) || (_type == typeof(Items)))
+                        {
+                            addToList<SubCategory>(_category.SubCategories);
+                            CurrentSelection[0] = SelectedCategory;
+                            TypeOfItems = "Podkategorie";
+                        }
+                        /*
+                        switch (_type)
+                        {
+                            case typeof(Category):
+                                addToList<Category>(source.ToList());
+                                CurrentSelection = null;
+                                break;
+
+                            case "SubCategory":
+                                //addToList<SubCategory>(source.ToList());
+                                CurrentSelection = null;
+                                //
+                                break;
+                            case "Items":
+                                //
+                                break;
+                        }*/
+                    }
 
                 }
-                else if(Direction == "Forward")
-                {
+                //else if(Direction == "Forward")
+                //{
 
-                }
+                //}
+
+                
             });
 
             ItemSelectedCommand = new Command<SelectionChangedEventArgs>(
            (SelectionChangedEventArgs e) =>
            {
-              var CurrentSelection= e.CurrentSelection;
-              var PreviousSelection = e.PreviousSelection;
+               CurrentSelection= (List<object>)e.CurrentSelection;
+               //PreviousSelection = (List<object>)e.PreviousSelection;
            });
             ItemSelect =new Command<object>(
              (object SelectedItem) =>
@@ -123,6 +164,7 @@ namespace IMP_reseni.ViewModels
                     var _category = (Category)SelectedItem;
                     addToList(_category.SubCategories);
                     TypeOfItems = "Podkategorie";
+                    SelectedCategory = SelectedItem;
                 }
                 else if(_type == typeof(SubCategory))
                 {
