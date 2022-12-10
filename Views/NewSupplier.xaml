@@ -14,10 +14,19 @@
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <StackLayout Margin="75">
+        <Label Text="Název Podkategorie" 
+               HorizontalOptions="Center"
+               FontSize="Large"
+               LineBreakMode="WordWrap"/>
+        <Entry Placeholder="Vlož název"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Margin="0,60,0,50"
+        />
+
+        <Button Text="Vytvořit Kategorii"
+                HorizontalOptions="Center"/>
+    </StackLayout>
+
 </ContentPage>

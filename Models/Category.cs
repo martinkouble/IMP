@@ -18,7 +18,19 @@ namespace IMP_reseni.Models
         {
             this.SubCategories = new List<SubCategory>();
         }
+        public List<string> GetSubCategoriesNames(bool getDisabled = false)
+        {
+            List<string> output = new List<string>();
+            foreach (SubCategory s in SubCategories)
+                if (s.Disabled == false || (s.Disabled == true && getDisabled == true))
+                    output.Add(s.Name);
+            return output;
+        }
 
+        public SubCategory FindSubCategory(int subCategoryId)
+        {
+            return this.SubCategories.Find(f => f.Id == subCategoryId);
+        }
 
     }
 }

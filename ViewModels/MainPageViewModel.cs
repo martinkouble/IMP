@@ -1,4 +1,5 @@
 ﻿using IMP_reseni.Models;
+using IMP_reseni.Services;
 using IMP_reseni.Views;
 using Microsoft.Maui.Controls.Xaml;
 using System;
@@ -44,10 +45,19 @@ namespace IMP_reseni.ViewModels
         public ICommand ItemSelect { get; private set; }
         public ICommand NavigateCollectionCommand { get; private set; }
         public ICommand ItemSelectedCommand { get; private set; }
+        public ICommand CheckedBoxChangeCommand { get; private set; }
 
         private List<object> CurrentSelection=null;
         //private List<object> PreviousSelection=null;
         private object SelectedCategory=null;
+
+
+        private object _selectedItem;
+        public object SelectedItem
+        {
+            set { SetProperty(ref _selectedItem, value); }
+            get { return _selectedItem; }
+        }
 
 
         private string _typeOfItems;
@@ -56,6 +66,36 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _typeOfItems, value); }
             get { return _typeOfItems; }
         }
+
+        private string _searchText;
+        public string SearchText
+        {
+            set { SetProperty(ref _searchText, value); }
+            get { return _searchText; }
+        }
+
+        private bool _SubCategoryCheckBoxIsChecked;
+        public bool SubCategoryCheckBoxIsChecked
+        {
+            set { SetProperty(ref _SubCategoryCheckBoxIsChecked, value); }
+            get { return _SubCategoryCheckBoxIsChecked; }
+        }
+
+
+        private bool _CategoryCheckBoxIsChecked;
+        public bool CategoryCheckBoxIsChecked
+        {
+            set { SetProperty(ref _CategoryCheckBoxIsChecked, value); }
+            get { return _CategoryCheckBoxIsChecked; }
+        }
+
+        private bool _ItemCheckBoxIsChecked;
+        public bool ItemCheckBoxIsChecked
+        {
+            set { SetProperty(ref _ItemCheckBoxIsChecked, value); }
+            get { return _ItemCheckBoxIsChecked; }
+        }
+
 
         public ObservableCollection<object> ItemsList { get;  set; }
 
@@ -76,7 +116,8 @@ namespace IMP_reseni.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-        public MainPageViewModel()
+
+        public MainPageViewModel(SaveHolder saveHolder)
         {
 
         }
@@ -90,14 +131,14 @@ namespace IMP_reseni.ViewModels
             async () =>
             {
                 //Page page = (Page)Activator.CreateInstance(pageType);
-                await _page.Navigation.PushAsync(new Login());
+                await _page.Navigation.PushAsync(Login);
 
             });
 
             PerformSearch = new Command<string>(
             (string Text) =>
             {
-                filter(Text);      
+                filter(Text);
             });
 
             NavigateCollectionCommand = new Command<string>(
@@ -105,14 +146,14 @@ namespace IMP_reseni.ViewModels
             {
                 if(Direction == "Back")
                 {
-                    if(!(CurrentSelection==null))
+                    if ( CurrentSelection[0] !=null)
                     {
                         var _category = (Category)SelectedCategory;
                         Type _type = CurrentSelection[0].GetType();
                         if (_type == typeof(Category))
                         {
                             addToList<Category>(source.ToList());
-                            CurrentSelection = null;
+                            CurrentSelection[0] = null;
                             TypeOfItems = "Kategorie";
                         }
                         else if ((_type == typeof(SubCategory)) || (_type == typeof(Items)))
@@ -121,6 +162,7 @@ namespace IMP_reseni.ViewModels
                             CurrentSelection[0] = SelectedCategory;
                             TypeOfItems = "Podkategorie";
                         }
+                        SelectedItem = null;
                         /*
                         switch (_type)
                         {
@@ -152,12 +194,36 @@ namespace IMP_reseni.ViewModels
             ItemSelectedCommand = new Command<SelectionChangedEventArgs>(
            (SelectionChangedEventArgs e) =>
            {
-               CurrentSelection= (List<object>)e.CurrentSelection;
+               if (e.CurrentSelection.Count!=0)
+               {
+                   CurrentSelection = (List<object>)e.CurrentSelection;
+               }
                //PreviousSelection = (List<object>)e.PreviousSelection;
            });
+
+            CheckedBoxChangeCommand = new Command<CheckedChangedEventArgs>(
+                (CheckedChangedEventArgs e) =>
+                {
+                    if (CategoryCheckBoxIsChecked)
+                    {
+
+                    }
+                    if (SubCategoryCheckBoxIsChecked)
+                    {
+
+                    }   
+                    if (ItemCheckBoxIsChecked)
+                    {
+
+                    }
+                });
+
             ItemSelect =new Command<object>(
              (object SelectedItem) =>
             {
+                if (SelectedItem != null) 
+                { 
+
                 Type _type = SelectedItem.GetType();
                 if (_type == typeof(Category))
                 {
@@ -176,7 +242,7 @@ namespace IMP_reseni.ViewModels
                 else if(_type == typeof(Items))
                 {
                     var Item = SelectedItem;
-
+                }
                 }
             });
 
@@ -202,6 +268,9 @@ namespace IMP_reseni.ViewModels
                 }
             }
         }
+
+
+
         void addToList<T>(List<T> list)
         {
             if(list!=null)

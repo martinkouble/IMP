@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              x:Class="IMP_reseni.MainPage"  
              Title=""
              BackgroundColor="{StaticResource Key=Primary}"     
@@ -14,6 +15,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+            <Converters:CheckBoxConverter x:Key="CheckBoxConverter" />
+            <Style TargetType="Label" Class="Check_labels">
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <NavigationPage.TitleView >
@@ -59,6 +68,7 @@
                 Grid.Row="1">
             <SearchBar Placeholder="Search items" 
                        x:Name="searchBar"
+                       Text="{Binding SearchText}"
                        FontSize="Title">
                 <SearchBar.Behaviors>
                     <toolkit:EventToCommandBehavior
@@ -68,7 +78,57 @@
                 </SearchBar.Behaviors>
             </SearchBar>
         </Border>
+        <HorizontalStackLayout 
+            Grid.Row="2"
+            HorizontalOptions="Center">
+            <Label StyleClass="Check_labels"
+                   Text="Kategorie"/>
+            <CheckBox Color="White"
+                      IsChecked="{Binding CategoryCheckBoxIsChecked}">
+                <CheckBox.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        x:TypeArguments="CheckedChangedEventArgs "
+                         EventName="CheckedChanged"
+                         Command="{Binding CheckedBoxChangeCommand}">
+                    </toolkit:EventToCommandBehavior>
+                </CheckBox.Behaviors>
+            </CheckBox>
 
+            <Label StyleClass="Check_labels"
+                   Text="PodKategorie"/>
+            <CheckBox Color="White"
+                      IsChecked="{Binding SubCategoryCheckBoxIsChecked}">
+                <CheckBox.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        x:TypeArguments="CheckedChangedEventArgs "
+                         EventName="CheckedChanged"
+                         Command="{Binding CheckedBoxChangeCommand}">
+                        <!--<toolkit:EventToCommandBehavior.CommandParameter>
+                            <MultiBinding Converter="{StaticResource CheckBoxConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Color" Source="{x:Reference SubCategoryCheckBox}"/>
+                                    <Binding Path="IsChecked" Source="{x:Reference SubCategoryCheckBox}"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </toolkit:EventToCommandBehavior.CommandParameter>-->
+                    </toolkit:EventToCommandBehavior>
+                </CheckBox.Behaviors>
+            </CheckBox>
+
+            <Label StyleClass="Check_labels"
+                   Text="Položky"/>
+                <CheckBox Color="White"
+                       IsChecked="{Binding ItemCheckBoxIsChecked}"  >
+                    <CheckBox.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        x:TypeArguments="CheckedChangedEventArgs "
+                         EventName="CheckedChanged"
+                         Command="{Binding CheckedBoxChangeCommand}">
+                    </toolkit:EventToCommandBehavior>
+                    </CheckBox.Behaviors>
+
+                </CheckBox>
+        </HorizontalStackLayout>
        
         <!--<Border
              StrokeShape="RoundRectangle 40,40,0,0"
@@ -81,7 +141,7 @@
         StrokeShape="RoundRectangle 40,40,0,0"
         Background="#D9D9D9"
         Margin="0,50,0,0"
-              Grid.Row="3">
+        Grid.Row="3">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="AUTO" />
@@ -89,7 +149,6 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
 
@@ -128,6 +187,7 @@
                         x:Name="MyCollectionView"
                         ItemsSource="{Binding ItemsList}" 
                         SelectionMode="Single"
+                        SelectedItem="{Binding SelectedItem}"
                         SelectionChangedCommand="{Binding ItemSelect}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference MyCollectionView}}"
                         ItemsLayout="VerticalGrid, 3"

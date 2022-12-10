@@ -24,8 +24,8 @@
                HorizontalOptions="Center"
                FontSize="Large"
                Margin="0,60,0,50"
-               />
-        
+        />
+    
         
         <Button Text="Vytvořit Kategorii"
                 HorizontalOptions="Center"/>

@@ -36,5 +36,17 @@ namespace IMP_reseni.Models
             else
                 item.Id = 1;
         }
+        public List<string> GetItemNames(bool getDisabled = false)
+        {
+            List<string> output = new List<string>();
+            foreach (Items i in Items)
+                if (i.Disabled == false || (i.Disabled == true && getDisabled == true))
+                    output.Add(i.Name);
+            return output;
+        }
+        public Items FindItem(int itemId)
+        {
+            return this.Items.Find(f => f.Id == itemId);
+        }
     }
 }

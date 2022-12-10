@@ -1,5 +1,6 @@
 ﻿
 using IMP_reseni.ViewModels;
+using IMP_reseni.Services;
 
 namespace IMP_reseni;
 
@@ -7,11 +8,11 @@ public partial class MainPage : ContentPage
 {
 	//int count = 0;
 
-	public MainPage()
+	public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
-        BindingContext =new MainPageViewModel(this);
-
+        BindingContext =vm;
+        
     }
 
     /*

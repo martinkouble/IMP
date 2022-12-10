@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui;
+using IMP_reseni.Services;
+using IMP_reseni.ViewModels;
 
 namespace IMP_reseni;
 
@@ -15,8 +17,10 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
-
-		return builder.Build();
+		builder.Services.AddSingleton<SaveHolder>();
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<MainPageViewModel>();
+        return builder.Build();
 	}
     
 }
