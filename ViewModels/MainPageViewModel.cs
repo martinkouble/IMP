@@ -117,13 +117,16 @@ namespace IMP_reseni.ViewModels
             return true;
         }
 
-        public MainPageViewModel(SaveHolder saveHolder)
+        public MainPageViewModel()
         {
-
         }
         public MainPageViewModel(ContentPage _page)
         {
-            TypeOfItems="Kategorie";
+            SaveHolder h = App.saveholder;
+
+            h.Save();
+            h.Load();
+            TypeOfItems = "Kategorie";
 
             ItemsList = new ObservableCollection<object>(source);
 
@@ -131,7 +134,7 @@ namespace IMP_reseni.ViewModels
             async () =>
             {
                 //Page page = (Page)Activator.CreateInstance(pageType);
-                await _page.Navigation.PushAsync(Login);
+                await _page.Navigation.PushAsync(new Login());
 
             });
 

@@ -8,10 +8,10 @@ public partial class MainPage : ContentPage
 {
 	//int count = 0;
 
-	public MainPage(MainPageViewModel vm)
+	public MainPage()
 	{
 		InitializeComponent();
-        BindingContext =vm;
+        BindingContext =new MainPageViewModel(this);
         
     }
 

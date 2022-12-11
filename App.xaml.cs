@@ -1,21 +1,24 @@
 ﻿
 using IMP_reseni.Views;
-
+using Microsoft.Extensions.DependencyInjection;
+using IMP_reseni.Services;
 namespace IMP_reseni;
 
 public partial class App : Application
 {
+    public static SaveHolder saveholder { get; set; }
     //private string Passwd;
-    public  App()
+    public App(SaveHolder sp)
     {
+        saveholder = sp;
 
         //SecureStorage.Default.RemoveAll();
 
         Task get = new Task(GetPassword);
         get.Start();
         get.Wait();
-
         InitializeComponent();
+
 
         //Task<string> oauthToken = SecureStorage.Default.GetAsync("oauth_token").Wait();
 
