@@ -112,6 +112,20 @@ namespace IMP_reseni.Services
             return output;
         }
 
+        //Subcategory
+
+        public void AddSubCategory(int categoryId, SubCategory subCategory)
+        {
+            FindCategory(categoryId).AddSubCategory(subCategory);
+        }
+
+
+        //Item
+        public void AddItem(int categoryId, int subCategoryId, Items item)
+        {
+            FindCategory(categoryId).FindSubCategory(subCategoryId).AddItem(item);
+        }
+
         //Supplier
         public void AddSupplier(Supplier supplier)
         {

@@ -2,10 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.NewSubCategory"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              Title="NewSubCategory">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
+        <toolkit:VariableMultiValueConverter 
+                x:Key="VariableMultiValueConverter"
+                ConditionType="Exact"
+                Count="2" />
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
@@ -16,18 +21,41 @@
     </ContentPage.Resources>
 
     <StackLayout Margin="75">
+        <Picker Title="Zvol Kategorii"
+                x:Name="Picker"
+                ItemsSource="{Binding ListOfCategory}"
+                SelectedItem="{Binding SelectedItem}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                Margin="0,0,0,80"
+                />
+
+
         <Label Text="Název Podkategorie" 
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         <Entry Placeholder="Vlož název"
+               x:Name="Entry"
                HorizontalOptions="Center"
                FontSize="Large"
-               Margin="0,60,0,50"
+               Margin="0,20,0,50"
+               Text="{Binding Text}"
         />
-    
-        
+
+
         <Button Text="Vytvořit Kategorii"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Command="{Binding CreateCommand}"
+                CommandParameter="{Binding Source={x:Reference Entry},
+                                            Path=Text}">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Picker}" Path="SelectedItem.Length" />
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
     </StackLayout>
 </ContentPage>

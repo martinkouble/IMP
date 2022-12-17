@@ -18,28 +18,29 @@ namespace IMP_reseni.ViewModels
     {
         //        await Navigation.PushAsync(new Views.Login());
         //public IList<Items> Items { get; private set; }
-        private Category[] source = new[] {
-            new Category
-                {
-                    Name = "A",
-                    ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
-                    SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS1"} }
-                },
-            new Category
-                {
-                    Name = "B",
-                    ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
-                    SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS2"} }
+        private List<Category> source=App.saveholder.Inventory;
+        //private Category[] source = new[] {
+        //    new Category
+        //        {
+        //            Name = "A",
+        //            ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
+        //            SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS1"} }
+        //        },
+        //    new Category
+        //        {
+        //            Name = "B",
+        //            ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
+        //            SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS2"} }
 
-                },
-             new Category
-                {
-                    Name = "C",
-                    ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
-                    SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS3"} }
-                },
+        //        },
+        //     new Category
+        //        {
+        //            Name = "C",
+        //            ImageUrl = "https://img.darkoviny.cz/images/6657.jpg",
+        //            SubCategories=new List<SubCategory>(){ new SubCategory { Name="SS3"} }
+        //        },
 
-        };
+        //};
         public ICommand NavigateCommand { get; private set; }
         public ICommand PerformSearch { get; private set; }
         public ICommand ItemSelect { get; private set; }
@@ -116,19 +117,21 @@ namespace IMP_reseni.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-
+      
         public MainPageViewModel()
         {
         }
         public MainPageViewModel(ContentPage _page)
         {
-            SaveHolder h = App.saveholder;
+            //SaveHolder h = App.saveholder;
+            //source = h.Inventory;
+            //h.Save();
+            //h.Load();
 
-            h.Save();
-            h.Load();
+
             TypeOfItems = "Kategorie";
 
-            ItemsList = new ObservableCollection<object>(source);
+            ItemsList = new ObservableCollection<object>(App.saveholder.Inventory);
 
             NavigateCommand = new Command(
             async () =>
@@ -248,8 +251,14 @@ namespace IMP_reseni.ViewModels
                 }
                 }
             });
-
+            _page.Appearing += Page_Resumed;
         }
+
+        private void Page_Resumed(object sender, EventArgs e)
+        {
+            filter("");
+        }
+
         void filter(string Text)
         {
             Text = Text.ToLowerInvariant();
@@ -296,7 +305,7 @@ namespace IMP_reseni.ViewModels
                 });
             }
             */
-
+        
 
 
     }

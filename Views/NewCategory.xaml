@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.NewCategory"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="Kategorie">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Nová kategorie">
     <ContentPage.Resources>
-        <Converters:IntToBoolConverter x:Key="intToBool" />
+        <Converters:IntToBoolConverter x:Key="intToBool"/>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
@@ -20,13 +21,18 @@
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
+        
         <Entry Placeholder="Vlož název"
-               HorizontalOptions="Center"
                FontSize="Large"
                Margin="0,60,0,50"
-               />
-        
-        <Button Text="Vytvořit Kategorii"
-                HorizontalOptions="Center"/>
+               x:Name="Entry"
+               HorizontalTextAlignment="Center"
+               Text="{Binding Text}"/>
+
+        <Button Text="Vytvořit Kategorii"       
+                HorizontalOptions="Center"
+                Command="{Binding CreateCommand}"
+                CommandParameter="{Binding Text}">
+        </Button>
     </StackLayout>
 </ContentPage>

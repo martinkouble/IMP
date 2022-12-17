@@ -12,7 +12,7 @@ public partial class App : Application
     {
         saveholder = sp;
 
-        //SecureStorage.Default.RemoveAll();
+        SecureStorage.Default.RemoveAll();
 
         Task get = new Task(GetPassword);
         get.Start();

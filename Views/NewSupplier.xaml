@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.NewSupplier"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              Title="NewSupplier">
     <ContentPage.Resources>
@@ -15,18 +16,22 @@
         </Style>
     </ContentPage.Resources>
     <StackLayout Margin="75">
-        <Label Text="Název Podkategorie" 
+        <Label Text="Název Dodavatele" 
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         <Entry Placeholder="Vlož název"
+               x:Name="Name"
                HorizontalOptions="Center"
                FontSize="Large"
                Margin="0,60,0,50"
+               Text="{Binding Text}"
         />
 
         <Button Text="Vytvořit Kategorii"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center"
+                Command="{Binding CreateCommand}"
+                CommandParameter="{Binding Text}"/>
     </StackLayout>
 
 </ContentPage>
