@@ -17,7 +17,18 @@ namespace IMP_reseni.Models
         {
             this.Items = new List<Items>();
         }
-
+        public SubCategory MakeCopy()
+        {
+            SubCategory output = new SubCategory();
+            output.Id = this.Id;
+            output.Name = this.Name;
+            output.Disabled = this.Disabled;
+            //output.imagePath = this.imagePath;
+            //output.bitmap = this.bitmap;
+            foreach (Items i in this.Items)
+                output.AddItem(i.MakeCopy());
+            return output;
+        }
         public void AddItem(Items item)
         {
             if (Items == null)
@@ -25,7 +36,11 @@ namespace IMP_reseni.Models
             //TryToSetItemId(item);
             Items.Add(item);
         }
-
+        private void TryToSetItemId(Items item)
+        {
+            if (item.Id == default(int))
+                SetItemId(item);
+        }
         private void SetItemId(Items item)
         {
             if (Items.Count > 0)

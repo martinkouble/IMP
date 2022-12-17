@@ -9,20 +9,37 @@ using Newtonsoft.Json;
 
 namespace IMP_reseni.Services
 {
+    [JsonObject(MemberSerialization = MemberSerialization.Fields)]
     public class SaveHolder
     {
-        public List<Category> Inventory { get; private set; }
-        public List<Supplier> Suppliers { get; private set; }
+        public List<Category> Inventory { get;  set; }
+        public List<Supplier> Suppliers { get;  set; }
+        public List<StockUpItem> StockUpHistory { get; set; }
+        public List<Order> OrderHistory { get; set; }
+
+        public List<Category> CreateInventoryCopy(List<Category> inventory = null)
+        {
+            if (inventory == null)
+                inventory = this.Inventory;
+            List<Category> output = new List<Category>();
+            foreach (Category c in inventory)
+                output.Add(c.MakeCopy());
+            return output;
+        }
 
         public SaveHolder()
         {
             Inventory = new List<Category>();
             Suppliers = new List<Supplier>();
-        }
+            StockUpHistory= new List<StockUpItem>();
+            OrderHistory=new List<Order>();
+    }
 
-        private void SetSaveHolderProperties(SaveHolder save)
+    private void SetSaveHolderProperties(SaveHolder save)
         {
             this.Inventory = save.Inventory;
+            this.OrderHistory = save.OrderHistory;
+            this.StockUpHistory = save.StockUpHistory;
             this.Suppliers = save.Suppliers;
         }
 
@@ -129,9 +146,22 @@ namespace IMP_reseni.Services
         }
 
         //StockUpItem
-        public void AddToStockUpHistory(StockUpItem item)
+        public void AddToStockUpHistory(StockUpItem stockUp)
         {
+            StockUpHistory.Add(stockUp);
+            this.Save();
+        }
+        public void RemoveToStockUpHistory(StockUpItem stockUp)
+        {
+            StockUpHistory.Remove(stockUp);
+            this.Save();
+        }
 
+        //OrderHistory
+        public void AddToOrderHistory(Order order)
+        {
+            OrderHistory.Add(order);
+            this.Save();
         }
     }
 }
