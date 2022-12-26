@@ -17,13 +17,15 @@ namespace IMP_reseni.ViewModels
     public class NewItemViewModel:INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
+        public List<string> ListOfSupplier { get; set; }
+
         public ObservableCollection<string> ListOfSubCategory { get; set; }
 
         public ICommand CreateCommand { get; set; }
         //public event EventHandler SelectedIndexChanged;
-
+        
+        //Picker
         private string _selecteCategory;
-
         public string SelectedCategory
         {
             set 
@@ -42,19 +44,64 @@ namespace IMP_reseni.ViewModels
         }
 
         private string _selecteSubCategory;
-
         public string SelectedSubCategory
         {
             set { SetProperty(ref _selecteSubCategory, value); }
             get { return _selecteSubCategory; }
         }
 
-        string _text;
+        private string _selectedSupplier;
+        public string SelectedSupplier
+        {
+            get { return _selectedSupplier; }
+            set { SetProperty(ref _selectedSupplier, value);}
+        }
+
+
+        //Entry
+        private string _text;
         public string Text
         {
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
+
+        private string _count;
+        public string Count
+        {
+            get { return _count; }
+            set { SetProperty(ref _count, value);}
+        }
+
+        private string _buyPrice;
+        public string BuyPrice
+        {
+            get { return _buyPrice; }
+            set { SetProperty(ref _buyPrice, value); }
+        }
+
+        private string _sellPrice;
+        public string SellPrice
+        {
+            get { return _sellPrice; }
+            set { SetProperty(ref _sellPrice, value); }
+        }
+
+        //CheckBox
+        private bool _disableCheck;
+        public bool DisableCheck
+        {
+            get { return _disableCheck; }
+            set { SetProperty(ref _disableCheck, value); }
+        }
+
+        private bool _sorCheck;
+        public bool SorCheck
+        {
+            get { return _sorCheck; }
+            set { SetProperty(ref _sorCheck, value); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -64,14 +111,17 @@ namespace IMP_reseni.ViewModels
         {
             ListOfCategory = new List<string>(App.saveholder.GetCategoriesNames());
             ListOfSubCategory = new ObservableCollection<string>();
+            ListOfSupplier=new List<string>(App.saveholder.GetSupplierNames());
             Text = "";
             CreateCommand = new Command<string>(
             (string name) =>
             {
                 Items newItem = new Items();
-                newItem.Name = name;
+                //newItem.Name = name;
+                newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, App.saveholder.FindSupplierByName(SelectedSupplier).Id);
                 int categoryId = App.saveholder.FindCategoryByName(SelectedCategory).Id;
                 int subCategoryId = App.saveholder.FindCategory(categoryId).FindSubCategoryByName(SelectedSubCategory).Id;
+
                 App.saveholder.AddItem(categoryId, subCategoryId, newItem);
                 App.saveholder.Save();
                 Toast.Make("Nová položka vytvořena").Show();

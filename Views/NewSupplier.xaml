@@ -20,7 +20,7 @@
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
-        <Entry Placeholder="Vlož název"
+        <Entry Placeholder="Zadejte název"
                x:Name="Name"
                HorizontalOptions="Center"
                FontSize="Large"

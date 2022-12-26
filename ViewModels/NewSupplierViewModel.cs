@@ -46,12 +46,12 @@ namespace IMP_reseni.ViewModels
                  },
             execute:(string name) =>
             {
-                Category newCategory = new Category();
-                newCategory.Name = name;
+                Supplier newSupplier = new Supplier();
+                newSupplier.Name = name;
 
-                App.saveholder.AddCategory(newCategory);
+                App.saveholder.AddSupplier(newSupplier);
                 App.saveholder.Save();
-                Toast.Make("Nová kategorie vytvořena").Show();
+                Toast.Make("Nový dodavatel vytvořen").Show();
                 Text = "";
             });
         }

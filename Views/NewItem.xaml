@@ -10,7 +10,9 @@
         <toolkit:VariableMultiValueConverter 
                 x:Key="VariableMultiValueConverter"
                 ConditionType="Exact"
-                Count="3" />
+                Count="6" />
+        
+        
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
@@ -18,49 +20,116 @@
             <Setter Property="Margin" Value="0,0,0,0"/>
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
+        
+        
+        <Style TargetType="Border" Class="PickerBorder">
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+        
+        
+        <Style TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+        </Style>
+        
+        
+        <Style TargetType="Border" Class="EntryBorder">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 40,40,40,40"/>
+        </Style>
     </ContentPage.Resources>
 
-    <StackLayout Margin="75">
-        <Picker Title="Zvol Kategorii"
+    <StackLayout Margin="25">
+        <Border StyleClass="PickerBorder">
+            <Picker Title="Zadejte Kategorii"
                 x:Name="CategoryPicker"
                 ItemsSource="{Binding ListOfCategory}"
                 SelectedItem="{Binding SelectedCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
                 TitleColor="Black"
-                Margin="0,0,0,80"
                 />
-
-        <Picker Title="Zvol Pokategorii"
+        </Border>
+        <Border StyleClass="PickerBorder">
+            <Picker Title="Zvol Pokategorii"
                 x:Name="SubCategoryPicker"
                 ItemsSource="{Binding ListOfSubCategory}"
                 SelectedItem="{Binding SelectedSubCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
                 TitleColor="Black"
-                Margin="0,0,0,80"
                 />
+        </Border>
 
-        <Label Text="Název Podkategorie" 
-               HorizontalOptions="Center"
+        <Border StyleClass="PickerBorder">
+            <Picker Title="Zvol Dodavatele"
+                x:Name="SupplierPicker"
+                ItemsSource="{Binding ListOfSupplier}"
+                SelectedItem="{Binding SelectedSupplier}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                />
+        </Border>
+
+
+
+        <Border StyleClass="EntryBorder"
+                StrokeShape="RoundRectangle 40,40,40,40"
+                >
+            <Entry Placeholder="Zadejte název"
+               Keyboard="Default"
+               x:Name="Entry"
+               Text="{Binding Text}"/>
+        </Border>
+
+        <Border StyleClass="EntryBorder">
+            <Entry Placeholder="Zadejte počet"
+               x:Name="EntryCount"
+               Keyboard="Numeric"
+               Text="{Binding Count}"/>
+        </Border>
+
+
+        <Border StyleClass="EntryBorder">
+            <Entry Placeholder="Zadejte nákupní cenu (nepovinné)"
+               x:Name="EntryBuyPrice"
+               Keyboard="Numeric"
+               Text="{Binding BuyPrice}"/>
+        </Border>
+
+        <Border StyleClass="EntryBorder">
+            <Entry Placeholder="Zadejte Prodejní cenu"
+               x:Name="EntrySellPrice"
+               Keyboard="Numeric"
+               Text="{Binding SellPrice}"/>
+        </Border>
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <CheckBox IsChecked="{Binding SorChecked}"/>
+            <Label Text="Komisní prodej" 
+               FontSize="Large"
+               LineBreakMode="WordWrap"
+               />
+        </HorizontalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="Center">
+        <CheckBox IsChecked="{Binding DisableCheck}"/>
+        <Label Text="Skryté" 
                FontSize="Large"
                LineBreakMode="WordWrap"/>
-        
-        <Entry Placeholder="Vlož název"
-               x:Name="Entry"
-               HorizontalOptions="Center"
-               FontSize="Large"
-               Margin="0,20,0,50"
-               Text="{Binding Text}"/>
-
-
-        <Button Text="Vytvořit Kategorii"
+            </HorizontalStackLayout>
+        <Button Text="Vytvořit"
                 HorizontalOptions="Center"
+                Margin="0,20,0,0"
                 Command="{Binding CreateCommand}"
                 CommandParameter="{Binding Source={x:Reference Entry},
                                             Path=Text}">
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
+
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CategoryPicker}" Path="SelectedItem.Length" />

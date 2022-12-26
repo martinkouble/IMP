@@ -37,6 +37,18 @@ namespace IMP_reseni.Models
             //output.bitmap = this.bitmap;
             return output;
         }
+
+        public void Create(string name, bool disabled, double buyCost, double sellCost, bool sor, int supplierId)
+        {
+            this.Name = name;
+            this.Disabled = disabled;
+            this.BuyCost = buyCost;
+            this.SellCost = sellCost;
+            this.SoR = sor;
+            this.Stock = 0;
+            this.SupplierId = supplierId;
+           
+        }
     }
 
 

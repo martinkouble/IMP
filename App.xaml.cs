@@ -12,8 +12,8 @@ public partial class App : Application
     {
         saveholder = sp;
 
-        SecureStorage.Default.RemoveAll();
-
+        //SecureStorage.Default.RemoveAll();
+        sp.Load();
         Task get = new Task(GetPassword);
         get.Start();
         get.Wait();
@@ -26,10 +26,10 @@ public partial class App : Application
 
         //MainPage = new AppShell();
     }
-    private async void SetPassword() 
-    {
-        await SecureStorage.SetAsync("token", "SUS");
-    }
+    //private async void SetPassword() 
+    //{
+    //    await SecureStorage.SetAsync("token", "SUS");
+    //}
 
     private async void GetPassword()
     {
