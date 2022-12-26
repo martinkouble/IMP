@@ -21,23 +21,13 @@
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
         
-        
-        <Style TargetType="Border" Class="PickerBorder">
-            <Setter Property="Margin" Value="0,0,0,20"/>
-        </Style>
-        
-        
+   
         <Style TargetType="Entry">
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="FontSize" Value="Medium"/>
         </Style>
-        
-        
-        <Style TargetType="Border" Class="EntryBorder">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="StrokeShape" Value="RoundRectangle 40,40,40,40"/>
-        </Style>
+
     </ContentPage.Resources>
 
     <StackLayout Margin="25">

@@ -7,6 +7,6 @@ public partial class Modify : ContentPage
 	public Modify()
 	{
 		InitializeComponent();
-        //BindingContext = new ModifyViewModel(this);
+        BindingContext = new ModifyViewModel(this);
     }
 }

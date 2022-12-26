@@ -111,6 +111,12 @@ namespace IMP_reseni.Services
                     output.Add(c.Id.ToString());
             return output;
         }
+        public void ModifyCategory(Category category)
+        {
+           int index= Inventory.FindIndex(f => f.Id == category.Id);
+           if(index != -1)
+              Inventory[index] = category;
+        }
 
         //Subcategory
 
@@ -118,8 +124,13 @@ namespace IMP_reseni.Services
         {
             FindCategory(categoryId).AddSubCategory(subCategory);
         }
-
-
+        /*
+        public void ModifySubCategory(SubCategory subCategory)
+        {
+            int index = Inventory.FindIndex(f => f.Id == subCategory.Id);
+            if (index != -1)
+                Inventory[index] = subCategory;
+        }*/
         //Item
         public void AddItem(int categoryId, int subCategoryId, Items item)
         {

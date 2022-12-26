@@ -21,6 +21,9 @@
     </ContentPage.Resources>
 
     <StackLayout Margin="75">
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
         <Picker Title="Zvol Kategorii"
                 x:Name="Picker"
                 ItemsSource="{Binding ListOfCategory}"
@@ -28,21 +31,24 @@
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
                 TitleColor="Black"
-                Margin="0,0,0,80"
                 />
-
+        </Border>
 
         <Label Text="Název Podkategorie" 
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
-        <Entry Placeholder="Zadejte název"
+
+
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,80">
+            <Entry Placeholder="Zadejte název"
                x:Name="Entry"
                HorizontalOptions="Center"
                FontSize="Large"
-               Margin="0,20,0,50"
                Text="{Binding Text}"
         />
+        </Border>
 
 
         <Button Text="Vytvořit Kategorii"

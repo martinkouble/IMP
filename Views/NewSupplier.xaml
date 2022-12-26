@@ -20,6 +20,8 @@
                HorizontalOptions="Center"
                FontSize="Large"
                LineBreakMode="WordWrap"/>
+        
+        <Border StyleClass="EntryBorder">
         <Entry Placeholder="Zadejte název"
                x:Name="Name"
                HorizontalOptions="Center"
@@ -27,7 +29,7 @@
                Margin="0,60,0,50"
                Text="{Binding Text}"
         />
-
+        </Border>
         <Button Text="Vytvořit Kategorii"
                 HorizontalOptions="Center"
                 Command="{Binding CreateCommand}"

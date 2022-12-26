@@ -383,4 +383,12 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 <!--Custom Styles-->
+    <Style TargetType="Border" Class="EntryBorder">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 40,40,40,40"/>
+    </Style>
+    
+    <Style TargetType="Border" Class="PickerBorder">
+        <Setter Property="Margin" Value="0,0,0,20"/>
+    </Style>
 </ResourceDictionary>

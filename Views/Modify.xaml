@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.Modify"
+             xmlns:Views="clr-namespace:IMP_reseni.Views"
              Title="Změnit">
     <ContentPage.Resources>
         <Style TargetType="Button">
@@ -20,11 +21,21 @@
              Direction="Column"
              AlignItems="Stretch"
              JustifyContent="SpaceEvenly">
-            <Button Text="Kategorie"/>
-            <Button Text="PodKatogorie"/>
-            <Button Text="Dodavatel"/>
-            <Button Text="Položka"/>
+            <Button Text="Kategorie"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:ModifyCategory}"/>
 
+            <Button Text="PodKatogorie"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:ModifySubCategory}"/>
+
+            <Button Text="Dodavatel"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:ModifySupplier}"/>
+
+            <Button Text="Položka"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:ModifyItem}"/>
         </FlexLayout>
     </Border>
 </ContentPage>

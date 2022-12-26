@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.NewCategory"
-             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
+             x:Class="IMP_reseni.Views.ModifyCategory"
+              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="Nová kategorie">
+             Title="ModifyCategory">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool"/>
         <Style TargetType="Button">
@@ -15,8 +15,23 @@
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>
-    
+
     <StackLayout Margin="75">
+        
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
+            <Picker Title="Zvol Kategorii"
+                x:Name="Picker"
+                ItemsSource="{Binding ListOfCategory}"
+                SelectedItem="{Binding SelectedCategory}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                >
+            </Picker>
+        </Border>
+
         <Label Text="Název Kategorie" 
                HorizontalOptions="Center"
                FontSize="Large"
@@ -24,16 +39,16 @@
 
         <Border StyleClass="EntryBorder"
                 Margin="0,60,0,50">
-            <Entry Placeholder="Zadejte název"
+            <Entry 
                FontSize="Large"
                x:Name="Entry"
                HorizontalTextAlignment="Center"
                Text="{Binding Text}"/>
         </Border>
 
-        <Button Text="Vytvořit Kategorii"       
+        <Button Text="Potvrdit změny"       
                 HorizontalOptions="Center"
-                Command="{Binding CreateCommand}"
+                Command="{Binding ModifyCommand}"
                 CommandParameter="{Binding Text}">
         </Button>
     </StackLayout>
