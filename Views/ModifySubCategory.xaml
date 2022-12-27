@@ -2,11 +2,79 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.ModifySubCategory"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              Title="ModifySubCategory">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <Converters:IntToBoolConverter x:Key="intToBool" />
+        <toolkit:VariableMultiValueConverter 
+                x:Key="VariableMultiValueConverter"
+                ConditionType="Exact"
+                Count="3" />
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="CornerRadius"  Value="0"/>
+        </Style>
+    </ContentPage.Resources>
+    <StackLayout Margin="75">
+        
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
+            <Picker Title="Zvol Kategorii"
+                x:Name="Picker"
+                ItemsSource="{Binding ListOfCategory}"
+                SelectedItem="{Binding SelectedCategory}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                />
+        </Border>
+
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
+            <Picker Title="Zvol Kategorii"
+                x:Name="SubCategoryPicker"
+                ItemsSource="{Binding ListOfSubCategory}"
+                SelectedItem="{Binding SelectedSubCategory}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                />
+        </Border>
+        <Label Text="Název Podkategorie" 
+               HorizontalOptions="Center"
+               FontSize="Large"
+               LineBreakMode="WordWrap"/>
+
+
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,80">
+            <Entry Placeholder="Zadejte název"
+               x:Name="Entry"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Text="{Binding Text}"
+        />
+        </Border>
+
+
+        <Button Text="Potvrdit"
+                HorizontalOptions="Center"
+                Command="{Binding ModifyCommand}"
+                CommandParameter="{Binding Source={x:Reference Entry},
+                                            Path=Text}">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Picker}" Path="SelectedItem.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
+    </StackLayout>
 </ContentPage>

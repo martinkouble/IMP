@@ -12,9 +12,11 @@ using System.Collections.ObjectModel;
 
 namespace IMP_reseni.ViewModels
 {
-    class ModifyCategoryViewModel : INotifyPropertyChanged
+    public class ModifySubCategoryViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<string> ListOfCategory { get; set; }
+        public List<string> ListOfCategory { get; set; }
+        public ObservableCollection<string> ListOfSubCategory { get; set; }
+
 
         public ICommand ModifyCommand { get; set; }
 
@@ -22,16 +24,35 @@ namespace IMP_reseni.ViewModels
 
         public string SelectedCategory
         {
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedCategory, value);
                 if (value != "")
                 {
-                    Text = value;
+                    ListOfSubCategory.Clear();
+                    foreach (var item in App.saveholder.FindCategoryByName(value).GetSubCategoriesNames())
+                    {
+                        ListOfSubCategory.Add(item);
+                    }
                 }
             }
 
             get { return _selectedCategory; }
+        }
+
+        private string _selectedSubCategory;
+
+        public string SelectedSubCategory 
+        {
+            get { return _selectedSubCategory; }
+            set 
+            { 
+                SetProperty(ref _selectedSubCategory, value);
+                if(value!= "") 
+                {
+                    Text=value;
+                }
+            }
         }
 
         private string _text;
@@ -40,42 +61,36 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ModifyCategoryViewModel()
+        public ModifySubCategoryViewModel()
         {
-            //Text = "";
+            Text = "";
             List<string> list = new List<string>(App.saveholder.GetCategoriesNames());
             list.Sort();
-            ListOfCategory =new ObservableCollection<string>(list);
-
+            ListOfCategory = new List<string>(list);
+            ListOfSubCategory = new ObservableCollection<string>();
             ModifyCommand = new Command<string>(
-            canExecute: (string name) =>
+           (string name) =>
             {
-                if (name == "")
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            },
-
-            execute: (string name) =>
-            {
+                SubCategory subCategory = new SubCategory();
                 Category category = new Category();
+
                 category = App.saveholder.FindCategoryByName(SelectedCategory);
-                category.Name = name;
-                App.saveholder.ModifyCategory(category);
+                subCategory = category.FindSubCategoryByName(SelectedSubCategory);
+                subCategory.Name = name;
+                App.saveholder.ModifySubCategory(category,subCategory);
                 App.saveholder.Save();
-                Toast.Make("kategorie změněna").Show();
+                Toast.Make("Podkategorie změněna").Show();
                 Text = "";
                 SelectedCategory = null;
-                List<string> list = new List<string>(App.saveholder.GetCategoriesNames());
+                SelectedSubCategory = null;
+                list = new List<string>(App.saveholder.GetCategoriesNames());
                 list.Sort();
                 ListOfCategory.Clear();
                 foreach (var Item in list)
