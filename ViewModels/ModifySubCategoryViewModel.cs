@@ -88,14 +88,14 @@ namespace IMP_reseni.ViewModels
                 App.saveholder.Save();
                 Toast.Make("Podkategorie změněna").Show();
                 Text = "";
-                SelectedCategory = null;
+                //SelectedCategory = null;
                 SelectedSubCategory = null;
-                list = new List<string>(App.saveholder.GetCategoriesNames());
+                list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
                 list.Sort();
-                ListOfCategory.Clear();
+                ListOfSubCategory.Clear();
                 foreach (var Item in list)
                 {
-                    ListOfCategory.Add(Item);
+                    ListOfSubCategory.Add(Item);
                 }
             });
         }

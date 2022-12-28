@@ -140,6 +140,16 @@ namespace IMP_reseni.Services
             FindCategory(categoryId).FindSubCategory(subCategoryId).AddItem(item);
         }
 
+        public void ModifyItem(Category category, SubCategory subCategory,Items item)
+        {
+            int index = Inventory.FindIndex(f => f.Id == category.Id);
+            if (index != -1)
+            {
+                int subCategoryIndex = Inventory[index].SubCategories.FindIndex(f => f.Id == subCategory.Id);
+                int itemIndex = Inventory[index].SubCategories[subCategoryIndex].Items.FindIndex(f => f.Id == item.Id);
+                Inventory[index].SubCategories[subCategoryIndex].Items[itemIndex] = item;
+            }
+        }
         //Supplier
         public void AddSupplier(Supplier supplier)
         {
@@ -164,6 +174,11 @@ namespace IMP_reseni.Services
         public Supplier FindSupplierByName(string supplierName)
         {
             return this.Suppliers.Find(f => f.Name == supplierName);
+        }
+
+        public Supplier FindSupplier(int supplierId)
+        {
+            return this.Suppliers.Find(f => f.Id == supplierId);
         }
         public List<string> GetSupplierNames()
         {

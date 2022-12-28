@@ -121,7 +121,12 @@ namespace IMP_reseni.ViewModels
                 newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, App.saveholder.FindSupplierByName(SelectedSupplier).Id);
                 int categoryId = App.saveholder.FindCategoryByName(SelectedCategory).Id;
                 int subCategoryId = App.saveholder.FindCategory(categoryId).FindSubCategoryByName(SelectedSubCategory).Id;
-
+                newItem.SellCost = Convert.ToInt32(SellPrice);
+                newItem.BuyCost = Convert.ToInt32(BuyPrice);
+                newItem.SoR = SorCheck;
+                newItem.Stock = Convert.ToInt32(Count);
+                newItem.Disabled = DisableCheck;
+                newItem.SupplierId = App.saveholder.FindSupplierByName(SelectedSupplier).Id;
                 App.saveholder.AddItem(categoryId, subCategoryId, newItem);
                 App.saveholder.Save();
                 Toast.Make("Nová položka vytvořena").Show();

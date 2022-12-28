@@ -63,5 +63,9 @@ namespace IMP_reseni.Models
         {
             return this.Items.Find(f => f.Id == itemId);
         }
+        public Items FindItemByName(string itemName)
+        {
+            return this.Items.Find(f => f.Name == itemName);
+        }
     }
 }
