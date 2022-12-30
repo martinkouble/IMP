@@ -152,7 +152,7 @@ namespace IMP_reseni.ViewModels
             {
                 if(Direction == "Back")
                 {
-                    if ( CurrentSelection[0] !=null)
+                    if (CurrentSelection!= null && CurrentSelection[0] !=null)
                     {
                         var _category = (Category)SelectedCategory;
                         Type _type = CurrentSelection[0].GetType();

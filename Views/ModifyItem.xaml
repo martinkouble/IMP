@@ -81,14 +81,38 @@
                Text="{Binding Text}"/>
         </Border>
 
-        <Border StyleClass="EntryBorder">
-            <Entry Placeholder="Zadejte počet"
+
+        <HorizontalStackLayout
+            HorizontalOptions="Center">
+
+            <Button
+                FontAttributes="Bold" 
+                FontSize="20"
+                Text="-"
+                CornerRadius="90" 
+                WidthRequest="45" 
+                HeightRequest="45" 
+                />
+
+            <Border StyleClass="EntryBorder" 
+                WidthRequest="60" Margin="30,0"       
+                >
+                <Entry Placeholder="počet"
                x:Name="EntryCount"
                Keyboard="Numeric"
-               Text="{Binding Count}"/>
-        </Border>
+               Text="{Binding Count}" VerticalTextAlignment="Center"/>
+            </Border>
 
-
+            <Button
+                FontAttributes="Bold" 
+                FontSize="20"
+                Text="+"
+                CornerRadius="90" 
+                WidthRequest="45" 
+                HeightRequest="45" 
+                />
+        </HorizontalStackLayout>
+       
         <Border StyleClass="EntryBorder">
             <Entry Placeholder="Zadejte nákupní cenu (nepovinné)"
                x:Name="EntryBuyPrice"
@@ -115,7 +139,7 @@
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         </HorizontalStackLayout>
-        <Button Text="Vytvořit"
+        <Button Text="Potvrdit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"
                 Command="{Binding ModifyCommand}"

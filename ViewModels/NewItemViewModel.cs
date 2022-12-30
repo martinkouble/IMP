@@ -22,10 +22,13 @@ namespace IMP_reseni.ViewModels
         public ObservableCollection<string> ListOfSubCategory { get; set; }
 
         public ICommand CreateCommand { get; set; }
-        //public event EventHandler SelectedIndexChanged;
-        
-        //Picker
-        private string _selecteCategory;
+        public ICommand AddCommand { get; set; }
+        public ICommand SubtractCommand { get; set; }
+
+    //public event EventHandler SelectedIndexChanged;
+
+    //Picker
+    private string _selecteCategory;
         public string SelectedCategory
         {
             set 
@@ -70,7 +73,10 @@ namespace IMP_reseni.ViewModels
         public string Count
         {
             get { return _count; }
-            set { SetProperty(ref _count, value);}
+            set 
+            {            
+                SetProperty(ref _count, value);        
+            }
         }
 
         private string _buyPrice;
@@ -113,6 +119,38 @@ namespace IMP_reseni.ViewModels
             ListOfSubCategory = new ObservableCollection<string>();
             ListOfSupplier=new List<string>(App.saveholder.GetSupplierNames());
             Text = "";
+            AddCommand = new Command<string>(
+            (string count) =>
+            {
+                if (count!="")
+                {
+                    Count = (Convert.ToInt32(count) + 1).ToString();
+                }
+                else
+                {
+                    Count = "0";
+                }
+            });
+
+            SubtractCommand = new Command<string>(
+            canExecute: (string count) =>
+            {
+                if (count !="" && Convert.ToInt32(count)<=0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            },
+            execute: (string count) =>
+            {
+                if (count != "")
+                {
+                    Count = (Convert.ToInt32(count) - 1).ToString();
+                }
+            });
             CreateCommand = new Command<string>(
             (string name) =>
             {
@@ -130,11 +168,23 @@ namespace IMP_reseni.ViewModels
                 App.saveholder.AddItem(categoryId, subCategoryId, newItem);
                 App.saveholder.Save();
                 Toast.Make("Nová položka vytvořena").Show();
-                Text = "";
+                DefaultedValues();
             });
         }
 
-  
+        private void DefaultedValues()
+        {
+            SelectedSubCategory = "";
+            SelectedCategory = "";
+            SelectedSupplier = "";
+
+            Text = "";
+            Count = "";
+            BuyPrice = "";
+            SellPrice = "";
+            DisableCheck = false;
+            SorCheck = false;
+        }
 
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {

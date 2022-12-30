@@ -2,11 +2,65 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.ModifySupplier"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              Title="ModifySupplier">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <Converters:IntToBoolConverter x:Key="intToBool" />
+        <toolkit:VariableMultiValueConverter 
+                x:Key="VariableMultiValueConverter"
+                ConditionType="Exact"
+                Count="7" />
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="CornerRadius"  Value="0"/>
+        </Style>
+
+
+        <Style TargetType="Entry">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+        </Style>
+
+    </ContentPage.Resources>
+    <StackLayout Margin="75">
+
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
+            <Picker Title="Zvol Kategorii"
+                x:Name="Picker"
+                ItemsSource="{Binding ListOfSupplier}"
+                SelectedItem="{Binding SelectedSupplier}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                TitleColor="Black"
+                >
+            </Picker>
+        </Border>
+
+        <Label Text="Název Kategorie" 
+               HorizontalOptions="Center"
+               FontSize="Large"
+               LineBreakMode="WordWrap"/>
+
+        <Border StyleClass="EntryBorder"
+                Margin="0,60,0,50">
+            <Entry 
+               FontSize="Large"
+               x:Name="Entry"
+               HorizontalTextAlignment="Center"
+               Text="{Binding Text}"/>
+        </Border>
+
+        <Button Text="Potvrdit změny"       
+                HorizontalOptions="Center"
+                Command="{Binding ModifyCommand}"
+                CommandParameter="{Binding Text}">
+        </Button>
+    </StackLayout>
 </ContentPage>

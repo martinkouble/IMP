@@ -74,12 +74,42 @@
                Text="{Binding Text}"/>
         </Border>
 
-        <Border StyleClass="EntryBorder">
-            <Entry Placeholder="Zadejte počet"
+        <HorizontalStackLayout
+            HorizontalOptions="Center">
+
+            <Button
+                FontAttributes="Bold" 
+                FontSize="20"
+                Text="-"
+                CornerRadius="90" 
+                WidthRequest="45" 
+                HeightRequest="45" 
+                Command="{Binding SubtractCommand}"
+                CommandParameter="{Binding Source={x:Reference EntryCount},
+                                            Path=Text}"
+                />
+
+            <Border StyleClass="EntryBorder" 
+                WidthRequest="60" Margin="30,0"       
+                >
+                <Entry Placeholder="počet"
                x:Name="EntryCount"
                Keyboard="Numeric"
-               Text="{Binding Count}"/>
-        </Border>
+               Text="{Binding Count}" VerticalTextAlignment="Center"/>
+            </Border>
+
+            <Button
+                FontAttributes="Bold" 
+                FontSize="20"
+                Text="+"
+                CornerRadius="90" 
+                WidthRequest="45" 
+                HeightRequest="45"
+                Command="{Binding AddCommand}"
+                CommandParameter="{Binding Source={x:Reference EntryCount},
+                                            Path=Text}"
+                />
+        </HorizontalStackLayout>
 
 
         <Border StyleClass="EntryBorder">

@@ -188,6 +188,13 @@ namespace IMP_reseni.Services
             return output;
         }
 
+        public void ModifySupplier(Supplier supplier)
+        {
+            int index = Inventory.FindIndex(f => f.Id == supplier.Id);
+            if (index != -1)
+                Suppliers[index] = supplier;
+        }
+
         //StockUpItem
         public void AddToStockUpHistory(StockUpItem stockUp)
         {
