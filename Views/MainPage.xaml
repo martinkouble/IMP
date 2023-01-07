@@ -6,7 +6,7 @@
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              x:Class="IMP_reseni.MainPage"  
              Title=""
-             BackgroundColor="{StaticResource Key=Primary}"     
+             BackgroundColor="{DynamicResource Key=Primary}"     
              >
     <!--x:Name="MainPageView"-->
     <!--<ContentPage.BindingContext >
@@ -50,8 +50,8 @@
                          MaximumHeightRequest="50" MaximumWidthRequest="50"
                         Command="{Binding NavigateCommand}"
                        />
-            <!--CommandParameter="{x:Reference MainPageView}"-->
-            <!--Clicked="GoToLogin"-->
+            <!--CommandParameter="{x:Reference MainPageView}"
+            Clicked="GoToLogin"-->
         </FlexLayout>
   
     </NavigationPage.TitleView>
@@ -61,7 +61,7 @@
     <Grid Margin="0,10,0,0"
           RowDefinitions="10,Auto,30,*"
           ColumnDefinitions="*">
-
+     
         <Border Margin="10,0,10,0"
                Background="White"
                 StrokeShape="RoundRectangle 40"
@@ -168,7 +168,7 @@
                     Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    TextColor="{StaticResource Key=Primary}"
+                    TextColor="{DynamicResource  Key=Primary}"
                     FontSize="Title"
                     FontAttributes="Bold"
                     Text="{Binding TypeOfItems}"                  

@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
+using IMP_reseni.Services;
+using System.Net.Sockets;
+using InTheHand.Net;
 
 namespace IMP_reseni.ViewModels
 {
@@ -23,8 +26,12 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        byte[] buffer;
+        NetworkStream outStream;
         public BasketViewModel() 
         {
+            
+
             Button_Clicked = new Command(
            async () =>
            {
@@ -37,18 +44,57 @@ namespace IMP_reseni.ViewModels
                    var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
                    BluetoothClient client = new BluetoothClient();
                    var address = picker.DeviceAddress;
-                   bool paired = BluetoothSecurity.PairRequest(address, "0000");
+                   //ulong sevenItems = 0x020000000000;
+                   //BluetoothAddress address = new BluetoothAddress(sevenItems);
+                   //bool paired = BluetoothSecurity.PairRequest(address, "0000");
 
                    //var guid = picker.GetRfcommServicesAsync().Result.;
                    //var guid =await picker.GetRfcommServicesAsync();
-                   var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
+                   //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
+                   var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
                    client.Connect(address, guid);
                    
-                   var outStream = client.GetStream();
+                   outStream = client.GetStream();
+                   Printer.output.Add(0x1B);
+                   Printer.output.Add(0x40);
+                   buffer = Printer.output.ToArray();
+                   ReceiptPrint();
+                   client.Close();
                }
            });
-
         }
+        private void ReceiptPrint()
+        {
+            Printer.output.Clear();
+            Printer.Align("center");
+            Printer.PrintLine("Zivot bez barier Nova Paka");
+            Printer.PrintLine("Lomena 533, 509 01 Nova Paka");
+            Printer.PrintLine("IC: 26652561    DIC: CZ26652561");
+            Printer.PrintLine("--------------------------------");
+            Printer.Align("left");
+            Printer.PrintLine("Datum: " + DateTime.Now);
+            Printer.PrintLine("--------------------------------");
+            
+            Printer.PrintLine("-------------------------------");
+            Printer.Align("right");
+            Printer.PrintLine("-------------------------------");
+            Printer.PrintLine();
+            Printer.PrintLine();
+
+            buffer = Printer.output.ToArray();
+            SendMessage();
+        }
+        private  void SendMessage()
+        {
+            uint messageLength = (uint)buffer.Length;
+            byte[] countBuffer = BitConverter.GetBytes(messageLength);
+
+
+            outStream.Write(countBuffer, 0, countBuffer.Length);
+            outStream.Write(buffer, 0, buffer.Length);
+        }
+
+
         public async Task<PermissionStatus> CheckAndRequestContactsReadPermission()
         {
             PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
