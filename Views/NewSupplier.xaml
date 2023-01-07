@@ -21,12 +21,13 @@
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         
-        <Border StyleClass="EntryBorder">
+        <Border StyleClass="EntryBorder"
+                               Margin="0,60,0,50"
+>
         <Entry Placeholder="Zadejte název"
                x:Name="Name"
                HorizontalOptions="Center"
                FontSize="Large"
-               Margin="0,60,0,50"
                Text="{Binding Text}"
         />
         </Border>

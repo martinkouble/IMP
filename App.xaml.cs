@@ -2,6 +2,8 @@
 using IMP_reseni.Views;
 using Microsoft.Extensions.DependencyInjection;
 using IMP_reseni.Services;
+using IMP_reseni.MyPermissions;
+
 namespace IMP_reseni;
 
 public partial class App : Application

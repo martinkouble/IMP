@@ -37,10 +37,10 @@
             
             <Button Text="CLoud"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Cloud}"
-
-                    />
-            
+                    CommandParameter="{x:Type Views:Cloud}" />
+            <Button Text="Test"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Basket}" />
         </FlexLayout>
     </Border>
 
