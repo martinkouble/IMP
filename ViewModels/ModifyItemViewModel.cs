@@ -22,7 +22,8 @@ namespace IMP_reseni.ViewModels
 
         public ObservableCollection<string> ListOfItem { get; set; }
 
-
+        //public ICommand AddCommand { get; set; }
+        //public ICommand SubtractCommand { get; set; }
         public ICommand ModifyCommand { get; set; }
 
         //Pickers' selected items
@@ -200,6 +201,41 @@ namespace IMP_reseni.ViewModels
                   ListOfItem.Add(Item);
               }
           });
+            /*
+            AddCommand = new Command<string>(
+                 canExecute: (string Count) =>
+                 {
+                     if (Convert.ToInt32(Count) >= MaxCount)
+                     {
+                         return false;
+                     }
+                     else
+                     {
+                         return true;
+                     }
+                 },
+                 execute: (string Count) =>
+                 {
+                     this.Count = (Convert.ToInt32(Count) + 1).ToString();
+                 });
+
+            SubtractCommand = new Command<string>(
+                canExecute: (string Count) =>
+                {
+                    if (Convert.ToInt32(Count) <= 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                },
+                execute: (string Count) =>
+                {
+                    this.Count = (Convert.ToInt32(Count) - 1).ToString();
+                });*/
+
 
         }
 

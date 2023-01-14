@@ -225,7 +225,7 @@ namespace IMP_reseni.ViewModels
                 });
 
             ItemSelect =new Command<object>(
-             (object SelectedItem) =>
+            async (object SelectedItem) =>
             {
                 if (SelectedItem != null) 
                 { 
@@ -248,6 +248,7 @@ namespace IMP_reseni.ViewModels
                 else if(_type == typeof(Items))
                 {
                     var Item = SelectedItem;
+                    await _page.Navigation.PushAsync(new AddItemToBasket((Items)SelectedItem));
                 }
                 }
             });

@@ -31,6 +31,11 @@
                Text="{Binding Text}"/>
         </Border>
 
+        <Button Text="Nahrát obrázek"       
+                HorizontalOptions="Center"
+                Command="{Binding UploadOPictureCommand}"/>
+
+
         <Button Text="Vytvořit Kategorii"       
                 HorizontalOptions="Center"
                 Command="{Binding CreateCommand}"

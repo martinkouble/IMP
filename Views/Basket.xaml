@@ -3,12 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.Basket"
              Title="Basket">
+
+
     <VerticalStackLayout>
+        <CollectionView ItemsSource="{Binding }">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
+                               Grid.Column="0"
+                               Aspect="AspectFill"
+                               HeightRequest="60"
+                               WidthRequest="60"/>
+                        
+                        <Label Grid.Column="1"
+                               Text="{Binding Name}"
+                               FontAttributes="Bold" />
+                        
+                        <Label Grid.Column="2"
+                               Text="{Binding CountAndPrice}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+    <!--<VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Button Text="Test"
                 Command="{Binding Button_Clicked}"/>
-    </VerticalStackLayout>
+    </VerticalStackLayout>-->
 </ContentPage>
