@@ -34,13 +34,17 @@ namespace IMP_reseni.ViewModels
             set 
             {
                 SetProperty(ref _selecteCategory, value);
-                if (value != "")
+                if (value != "" && value !=null)
                 {
                     ListOfSubCategory.Clear();
                     foreach (var item in App.saveholder.FindCategoryByName(value).GetSubCategoriesNames())
                     {
                         ListOfSubCategory.Add(item);
                     }
+                }
+                else
+                {
+                    ListOfSubCategory.Clear();
                 }
             }
             get { return _selecteCategory; }
@@ -174,10 +178,9 @@ namespace IMP_reseni.ViewModels
 
         private void DefaultedValues()
         {
+            SelectedSupplier = "";
             SelectedSubCategory = "";
             SelectedCategory = "";
-            SelectedSupplier = "";
-
             Text = "";
             Count = "";
             BuyPrice = "";

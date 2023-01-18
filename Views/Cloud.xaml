@@ -16,5 +16,7 @@
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Button Text="Klikni"
+                Command="{Binding TestCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

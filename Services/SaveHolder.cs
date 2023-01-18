@@ -52,6 +52,17 @@ namespace IMP_reseni.Services
             File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);
         }
 
+        public void Save(string name)
+        {
+            string cacheDir = FileSystem.Current.CacheDirectory;
+            string _appDirectory = FileSystem.Current.AppDataDirectory;
+            string _fileName = name;
+            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+            string jsonString = JsonConvert.SerializeObject(this, settings);
+            File.WriteAllText(cacheDir + "/" + _fileName, jsonString);
+           
+        }
+
         public void Load()
         {
             string _appDirectory = FileSystem.Current.AppDataDirectory;
