@@ -23,9 +23,9 @@ namespace IMP_reseni.ViewModels
             INode root = nodes.Single(x => x.Type == NodeType.Root);
             INode myFolder = client.CreateFolder("Upload", root);
 
-                string _appDirectory = FileSystem.Current.AppDataDirectory;
+            string _appDirectory = FileSystem.Current.AppDataDirectory;
                 //App.saveholder.Save("IMP.json");
-                string _fileName = "IMP.json";
+            string _fileName = "IMP.json";
 
             client.UploadFile(_appDirectory + "/" + _fileName, myFolder);
             client.Logout();

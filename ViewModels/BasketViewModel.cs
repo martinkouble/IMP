@@ -14,12 +14,15 @@ using Microsoft.Maui.Controls;
 using IMP_reseni.Services;
 using System.Net.Sockets;
 using InTheHand.Net;
+using System.Collections.ObjectModel;
 
 namespace IMP_reseni.ViewModels
 {
     public class BasketViewModel: INotifyPropertyChanged
     {
         public ICommand Button_Clicked { get; private set; }
+        
+        public ObservableCollection<object> BasketItems { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -30,8 +33,6 @@ namespace IMP_reseni.ViewModels
         NetworkStream outStream;
         public BasketViewModel() 
         {
-            
-
             Button_Clicked = new Command(
            async () =>
            {
@@ -89,13 +90,12 @@ namespace IMP_reseni.ViewModels
             uint messageLength = (uint)buffer.Length;
             byte[] countBuffer = BitConverter.GetBytes(messageLength);
 
-
             outStream.Write(countBuffer, 0, countBuffer.Length);
             outStream.Write(buffer, 0, buffer.Length);
         }
 
 
-        public async Task<PermissionStatus> CheckAndRequestContactsReadPermission()
+        public async Task<PermissionStatus> CheckAndRequestContactsReadPermission(Type Permission)
         {
             PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
 

@@ -6,7 +6,7 @@
 
 
     <VerticalStackLayout>
-        <CollectionView ItemsSource="{Binding }">
+        <CollectionView ItemsSource="{Binding BasketItems}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
