@@ -63,6 +63,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="2.0.0" />
+	  <PackageReference Include="Goldie.MauiPlugins.PageResolver" Version="1.0.7" />
 	  <PackageReference Include="InTheHand.Net.Bluetooth" Version="4.0.33.1" />
 	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
