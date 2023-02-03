@@ -20,7 +20,10 @@ namespace IMP_reseni.Models
         public int Stock { get; set; }
         public int SupplierId { get; set; }
 
+        //
 
+        public int CategoryId { get; set; }
+        public int SubCategoryId { get; set; }
 
         public Items MakeCopy()
         {
@@ -35,10 +38,14 @@ namespace IMP_reseni.Models
             output.Stock = this.Stock;
             output.SupplierId = this.SupplierId;
             //output.bitmap = this.bitmap;
+
+            //
+            output.CategoryId = this.CategoryId;
+            output.SubCategoryId = this.SubCategoryId;
             return output;
         }
 
-        public void Create(string name, bool disabled, double buyCost, double sellCost, bool sor, int supplierId)
+        public void Create(string name, bool disabled, double buyCost, double sellCost, bool sor, int supplierId,int categoryId,int subcategoryId)
         {
             this.Name = name;
             this.Disabled = disabled;
@@ -47,7 +54,8 @@ namespace IMP_reseni.Models
             this.SoR = sor;
             this.Stock = 0;
             this.SupplierId = supplierId;
-           
+            this.CategoryId = categoryId;
+            this.SubCategoryId = subcategoryId;
         }
     }
 

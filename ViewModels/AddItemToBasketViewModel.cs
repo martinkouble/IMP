@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IMP_reseni.Models;
+using IMP_reseni.Services;
+
 namespace IMP_reseni.ViewModels
 {
    public class AddItemToBasketViewModel: INotifyPropertyChanged
@@ -19,6 +21,7 @@ namespace IMP_reseni.ViewModels
         public ICommand AddCommand { get; set; }
 
         public ICommand SubtractCommand { get; set; }
+        public ICommand AddToBasketCommand { get; set; }
 
 
         private string _name;
@@ -105,7 +108,30 @@ namespace IMP_reseni.ViewModels
                 {
                     this.Count = (Convert.ToInt32(Count) - 1).ToString();
                 });
+
+            AddToBasketCommand = new Command(
+                () => 
+                {
+                    AddItemToBasket(item);
+                });
+
         }
+        public void AddItemToBasket(Items item)
+        {
+            OrderItem order = new OrderItem();
+            order.ItemId = item.Id;
+            order.Amount = Convert.ToInt32(Count);
+            order.BuyCostPerPiece=item.BuyCost;
+            order.SellCostPerPiece = item.SellCost;
+
+            order.CategoryId=item.CategoryId;
+            order.SubCategoryId = item.SubCategoryId;
+
+            App.basketHolder.AddItemToBasket(order);
+            //App.basketHolder.CompleteOrder();
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

@@ -73,6 +73,6 @@
         <Button Text="Přidat"
                 WidthRequest="250" 
                 HeightRequest="60" 
-                Command="{Binding AddToBasket}"/>
+                Command="{Binding AddToBasketCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

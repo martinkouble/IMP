@@ -92,7 +92,7 @@ namespace IMP_reseni.ViewModels
                     SellPrice=item.SellCost.ToString();
                     DisableCheck = item.Disabled;
                     SorChecked = item.SoR;
-                    SelectedSupplier = App.saveholder.FindSupplier(item.SupplierId).ToString();
+                    SelectedSupplier = App.saveholder.FindSupplier(item.SupplierId).Name;
                 }
             }
         }
@@ -188,18 +188,19 @@ namespace IMP_reseni.ViewModels
               category = App.saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
               item = subCategory.FindItemByName(name);
+
               App.saveholder.ModifyItem(category, subCategory, item);
               App.saveholder.Save();
               Toast.Make("Položka změněna").Show();
               DefaultedValues();
               SelectedItem = null;
-              list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
-              list.Sort();
-              ListOfItem.Clear();
-              foreach (var Item in list)
-              {
-                  ListOfItem.Add(Item);
-              }
+              //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
+              //list.Sort();
+              //ListOfItem.Clear();
+              //foreach (var Item in list)
+              //{
+              //    ListOfItem.Add(Item);
+              //}
           });
             /*
             AddCommand = new Command<string>(

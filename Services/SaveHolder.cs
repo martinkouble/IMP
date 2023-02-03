@@ -75,6 +75,17 @@ namespace IMP_reseni.Services
                 SetSaveHolderProperties(save);
             }
         }
+        public void Load(string name)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+            if (File.Exists(name))
+            {
+                string json = File.ReadAllText(name);
+                SaveHolder save = JsonConvert.DeserializeObject<SaveHolder>(json, settings);
+                SetSaveHolderProperties(save);
+            }
+        }
+
 
         //Category
         public void AddCategory(Category category)

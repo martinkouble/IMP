@@ -257,6 +257,8 @@ namespace IMP_reseni.ViewModels
 
         private void Page_Resumed(object sender, EventArgs e)
         {
+            TypeOfItems = "Kategorie";
+            CurrentSelection = null;
             filter("");
         }
 

@@ -3,6 +3,7 @@ using IMP_reseni.Services;
 using IMP_reseni.ViewModels;
 using Microsoft.Maui.Controls.Hosting;
 
+
 namespace IMP_reseni;
 
 public static class MauiProgram
@@ -19,8 +20,10 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 		builder.Services.AddSingleton<SaveHolder>();
+
         builder.Services.AddSingleton<BasketHolder>();
 
+        builder.Services.UsePageResolver();
         return builder.Build();
 	}
     

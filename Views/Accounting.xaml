@@ -20,8 +20,18 @@
              Direction="Column"
              AlignItems="Stretch"
              JustifyContent="SpaceEvenly">
-            <Button Text="Vložení dat"/>
-            <Button Text="Učetní soubor"/>
+            <Button Text="Vložení dat"
+                    Command="{Binding InsertDataCommand}"/>
+            <Label Text="Počáteční datum"/>
+            <DatePicker Date="{Binding StartDate}"/>
+            <Label Text="Konečné datum datum"/>
+            <DatePicker Date="{Binding EndDate}"/>
+            <Button Text="Učetní soubor"
+                    Command="{Binding GenerateAccountingCommand}"/>
+            <Button Text="Pouze sklad"
+                    Command="{Binding GenerateAccountingOnlyStockCommand}"/>
+            <Button Text="Denní tržba"
+                    Command="{Binding DialySalesCommand}"/>
         </FlexLayout>
     </Border>
 </ContentPage>
