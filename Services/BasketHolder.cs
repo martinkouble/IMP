@@ -11,7 +11,7 @@ namespace IMP_reseni.Services
     public class BasketHolder
     {
         public Order Order { get; set; }
-        private List<OrderItem> Items { get { return Order.Items; } }
+        public List<OrderItem> Items { get { return Order.Items; } }
 
         public bool Empty
         {

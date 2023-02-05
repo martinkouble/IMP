@@ -14,7 +14,7 @@ using System.Collections.ObjectModel;
 
 namespace IMP_reseni.ViewModels
 {
-    public class NewItemViewModel:INotifyPropertyChanged
+    public class NewItemViewModel: BaseViewModel, INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public List<string> ListOfSupplier { get; set; }

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace IMP_reseni.ViewModels
 {
-    public class LoginViewModel:INotifyPropertyChanged
+    public class LoginViewModel: BaseViewModel, INotifyPropertyChanged
     {
         public ICommand VerifyPasswordCommand { get; private set; }
         string passwd;

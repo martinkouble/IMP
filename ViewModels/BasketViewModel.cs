@@ -15,14 +15,18 @@ using IMP_reseni.Services;
 using System.Net.Sockets;
 using InTheHand.Net;
 using System.Collections.ObjectModel;
+using IMP_reseni.Models;
+using CommunityToolkit.Maui.Alerts;
 
 namespace IMP_reseni.ViewModels
 {
-    public class BasketViewModel: INotifyPropertyChanged
+    public class BasketViewModel: BaseViewModel, INotifyPropertyChanged
     {
         public ICommand Button_Clicked { get; private set; }
-        
-        public ObservableCollection<object> BasketItems { get; set; }
+        public ICommand DeleteCommand { get; private set; }
+
+
+        public ObservableCollection<OrderItem> BasketItems { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -33,6 +37,11 @@ namespace IMP_reseni.ViewModels
         NetworkStream outStream;
         public BasketViewModel() 
         {
+            BasketItems=new ObservableCollection<OrderItem>();
+            foreach (var item in App.basketHolder.Items)
+            {
+                BasketItems.Add(item);
+            }
             Button_Clicked = new Command(
            async () =>
            {
@@ -62,6 +71,13 @@ namespace IMP_reseni.ViewModels
                    ReceiptPrint();
                    client.Close();
                }
+           });
+
+            DeleteCommand = new Command<OrderItem>(
+                (OrderItem a) => 
+           {
+               BasketItems.Remove(a);
+               App.basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
            });
         }
         private void ReceiptPrint()

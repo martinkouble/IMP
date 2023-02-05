@@ -13,7 +13,7 @@ using CommunityToolkit.Maui.Alerts;
 
 namespace IMP_reseni.ViewModels
 {
-    public class NewCategoryViewModel:INotifyPropertyChanged
+    public class NewCategoryViewModel: BaseViewModel,INotifyPropertyChanged
     {
 
         public ICommand CreateCommand { get; set; }

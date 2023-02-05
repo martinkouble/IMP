@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace IMP_reseni.ViewModels
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel : BaseViewModel, INotifyPropertyChanged
     {
         //        await Navigation.PushAsync(new Views.Login());
         //public IList<Items> Items { get; private set; }

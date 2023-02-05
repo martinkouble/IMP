@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.AddItemToBasket"
-             Title="AddItemToBasket">
-    <ContentPage.Resources>
-        <Style TargetType="Button">
-            <Setter Property="FontSize" Value="32" />
-            <Setter Property="BorderWidth" Value="1" />
-            <Setter Property="BorderColor" Value="Black" />
-            <Setter Property="Margin" Value="0,0,0,0"/>
-            <Setter Property="CornerRadius"  Value="0"/>
-        </Style>
-
-
-        <Style TargetType="Entry">
-            <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
-            <Setter Property="FontSize" Value="Medium"/>
-        </Style>
-
-    </ContentPage.Resources>
+             x:Class="IMP_reseni.Views.ItemStockUp"
+             Title="ItemStockUp">
     <VerticalStackLayout VerticalOptions="Center"
                          Spacing="10">
-        <Image Source="{Binding ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
+        <Image Source="{Binding Source=Item,Path=Item.ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
                Grid.Column="0"
                Aspect="AspectFill"
                HeightRequest="100"
@@ -30,8 +13,11 @@
         <Label Grid.Column="1"
                HorizontalTextAlignment="Center"
                FontSize="40"
-               Text="{Binding Name}"
+               Text="{Binding Source=Item,Path=Item.Name}"
                FontAttributes="Bold" />
+        <Label Text="Aktuální počet ve skladu:"
+               FontSize="Large"/>
+        <Label Text="{Binding Source=Item,Path=Item.Count}"/>
         <HorizontalStackLayout HorizontalOptions="Center"
                                Spacing="10">
             <Button
@@ -49,8 +35,10 @@
                Margin="30,0"  
                FontSize="35"
                Text="{Binding Count}" 
-               IsReadOnly="True"
-               VerticalTextAlignment="Center"/>
+               IsReadOnly="False"
+               VerticalTextAlignment="Center"
+               ReturnCommand="{Binding UnFocusCommand}"
+               ReturnCommandParameter="{Binding Source={RelativeSource Self}}"/>
             <Button
                 FontAttributes="Bold" 
                 FontSize="20"
@@ -62,19 +50,5 @@
                 CommandParameter="{Binding Count}"
                 />
         </HorizontalStackLayout>
-        
-        <Label Text="{Binding PriceWithDPH}"
-               HorizontalTextAlignment="Center"
-               FontSize="20"/>
-        
-        <Label Text="{Binding PriceWithoutDPH}"
-               HorizontalTextAlignment="Center"
-               FontSize="15"/>
-        
-        <Button Text="Přidat"
-                WidthRequest="250" 
-                HeightRequest="60" 
-                Command="{Binding AddToBasketCommand}"
-                CommandParameter="{Binding Count}"/>
     </VerticalStackLayout>
 </ContentPage>

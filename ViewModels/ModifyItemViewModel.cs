@@ -13,7 +13,7 @@ using System.Collections;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifyItemViewModel : INotifyPropertyChanged
+    public class ModifyItemViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public List<string> ListOfSupplier { get; set; }
@@ -75,6 +75,8 @@ namespace IMP_reseni.ViewModels
 
         }
 
+        private int itemId;
+
         private string _selectedItem;
         public string SelectedItem
         {
@@ -85,8 +87,9 @@ namespace IMP_reseni.ViewModels
                 if (value != null && value != "")
                 {
                     Text = value;
-                    Items item = new Items();
+                    Items item = new Items();              
                     item =App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
+                    itemId = item.Id;
                     Count = item.Stock.ToString();
                     BuyPrice=item.BuyCost.ToString();
                     SellPrice=item.SellCost.ToString();
@@ -187,8 +190,9 @@ namespace IMP_reseni.ViewModels
               Items item=new Items();
               category = App.saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-              item = subCategory.FindItemByName(name);
-
+              //item = subCategory.FindItemByName(name);
+              item.Id =itemId;
+              item.Create(name,DisableCheck,Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),SorChecked, App.saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
               App.saveholder.ModifyItem(category, subCategory, item);
               App.saveholder.Save();
               Toast.Make("Položka změněna").Show();

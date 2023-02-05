@@ -81,7 +81,7 @@
                Text="{Binding Text}"/>
         </Border>
 
-
+        <!--
         <HorizontalStackLayout
             HorizontalOptions="Center">
 
@@ -98,9 +98,11 @@
                 WidthRequest="60" Margin="30,0"       
                 >
                 <Entry Placeholder="počet"
-               x:Name="EntryCount"
-               Keyboard="Numeric"
-               Text="{Binding Count}" VerticalTextAlignment="Center"/>
+                       ReturnType="Done"
+                       x:Name="EntryCount"
+                       Keyboard="Numeric"
+                       Text="{Binding Count}" 
+                       VerticalTextAlignment="Center"/>
             </Border>
 
             <Button
@@ -112,7 +114,7 @@
                 HeightRequest="45" 
                 />
         </HorizontalStackLayout>
-       
+       -->
         <Border StyleClass="EntryBorder">
             <Entry Placeholder="Zadejte nákupní cenu (nepovinné)"
                x:Name="EntryBuyPrice"

@@ -58,6 +58,7 @@
 	  <None Remove="Resources\AppIcon\loginicon.svg" />
 	  <None Remove="Resources\Images\arrow_back.svg" />
 	  <None Remove="Resources\Images\arrow_forward.svg" />
+	  <None Remove="Resources\Images\cross.svg" />
 	  <None Remove="Resources\Images\loginicon.svg" />
 	</ItemGroup>
 
@@ -72,6 +73,9 @@
 	<ItemGroup>
 	  <Compile Update="Views\Create.xaml.cs">
 	    <DependentUpon>Create.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\ItemStockUp.xaml.cs">
+	    <DependentUpon>ItemStockUp.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -128,6 +132,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SetPassword.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\StockUp.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ItemStockUp.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

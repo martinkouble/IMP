@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMP_reseni.Views.StockUp"
+              xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
+             Title="StockUp">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+            <Style TargetType="Label" Class="Check_labels">
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="Medium"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <CollectionView 
+                        x:Name="MyCollectionView"
+                        ItemsSource="{Binding ItemsList}" 
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedItem}"
+                        SelectionChangedCommand="{Binding ItemSelect}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference MyCollectionView}}"
+                        ItemsLayout="VerticalGrid, 3"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Grid Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0"
+                                   Source="{Binding ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}" 
+                                   Aspect="AspectFill" />
+
+                    <Label Grid.Row="1"
+                                   Text="{Binding Name}" 
+                                   HorizontalTextAlignment="Center"
+                                   FontSize="Medium"/>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+        <CollectionView.Behaviors>
+            <toolkit:EventToCommandBehavior
+                             x:TypeArguments="SelectionChangedEventArgs"
+                             EventName="SelectionChanged"
+                             Command="{Binding ItemSelectedCommand}"/>
+        </CollectionView.Behaviors>
+    </CollectionView>
+</ContentPage>

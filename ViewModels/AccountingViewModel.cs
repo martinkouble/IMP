@@ -13,7 +13,7 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class AccountingViewModel : INotifyPropertyChanged
+    public class AccountingViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public ICommand DialySalesCommand { get; private set; }
         public ICommand InsertDataCommand { get; private set; }
@@ -93,9 +93,9 @@ namespace IMP_reseni.ViewModels
                 var customFileType = new FilePickerFileType(
                 new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    { DevicePlatform.iOS, new[] { ".json" } }, 
-                    { DevicePlatform.Android, new[] { ".json" } },
-                    { DevicePlatform.WinUI, new[] { ".json" } },
+                    { DevicePlatform.iOS, new[] { ".csv" } }, 
+                    { DevicePlatform.Android, new[] { ".csv" } },
+                    { DevicePlatform.WinUI, new[] { ".csv" } },
                 });
                 
                 var result = await FilePicker.Default.PickAsync(new PickOptions
@@ -130,11 +130,11 @@ namespace IMP_reseni.ViewModels
                 if (!File.Exists(path)) 
                 {
                     File.WriteAllText(path, accFileText, Encoding.UTF8);
-                    Toast.Make("Soubor vytvořen :)").Show();
+                    Toast.Make("Soubor vytvořen").Show();
                 }
                 else
                 {
-                    Toast.Make("Soubor vytvořen :(").Show();
+                    Toast.Make("Soubor vytvořen").Show();
                 }
             }
         }

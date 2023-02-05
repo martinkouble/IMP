@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 
 namespace IMP_reseni.ViewModels
 {
-    class ModifyCategoryViewModel : INotifyPropertyChanged
+    class ModifyCategoryViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfCategory { get; set; }
 

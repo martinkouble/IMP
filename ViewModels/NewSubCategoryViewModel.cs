@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 
 namespace IMP_reseni.ViewModels
 {
-    public class NewSubCategoryViewModel : INotifyPropertyChanged
+    public class NewSubCategoryViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public ICommand CreateCommand { get; set; }

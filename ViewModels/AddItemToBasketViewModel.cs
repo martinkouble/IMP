@@ -7,12 +7,13 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Alerts;
 using IMP_reseni.Models;
 using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-   public class AddItemToBasketViewModel: INotifyPropertyChanged
+   public class AddItemToBasketViewModel: BaseViewModel, INotifyPropertyChanged
     {
         private double ItemsPriceWithDPH;
         private double ItemsPriceWithoutDPH;
@@ -109,8 +110,19 @@ namespace IMP_reseni.ViewModels
                     this.Count = (Convert.ToInt32(Count) - 1).ToString();
                 });
 
-            AddToBasketCommand = new Command(
-                () => 
+            AddToBasketCommand = new Command<String>(
+                canExecute: (string Count) =>
+                {
+                    if (Convert.ToInt32(Count) == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                },
+                execute: (string Count) =>
                 {
                     AddItemToBasket(item);
                 });
