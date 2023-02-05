@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 using System.Collections;
 namespace IMP_reseni.ViewModels
 {
-    class ModifySupplierViewModel : BaseViewModel, INotifyPropertyChanged
+    class ModifySupplierViewModel :  INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfSupplier { get; set; }
 

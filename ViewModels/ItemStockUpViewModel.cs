@@ -11,7 +11,7 @@ using Microsoft.Maui.Platform;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ItemStockUpViewModel: BaseViewModel, INotifyPropertyChanged
+    public class ItemStockUpViewModel: INotifyPropertyChanged
     {
         public ICommand AddCommand { get; set; }
         public ICommand SubtractCommand { get; set; }

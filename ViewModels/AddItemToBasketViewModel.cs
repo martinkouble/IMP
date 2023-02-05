@@ -13,7 +13,7 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-   public class AddItemToBasketViewModel: BaseViewModel, INotifyPropertyChanged
+   public class AddItemToBasketViewModel: INotifyPropertyChanged
     {
         private double ItemsPriceWithDPH;
         private double ItemsPriceWithoutDPH;

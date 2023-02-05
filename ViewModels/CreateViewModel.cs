@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace IMP_reseni.ViewModels
 {
-    public class CreateViewModel: BaseViewModel, INotifyPropertyChanged
+    public class CreateViewModel: INotifyPropertyChanged
     {
         public ICommand NavigateCommand { get; private set; }
         public CreateViewModel()

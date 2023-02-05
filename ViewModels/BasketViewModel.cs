@@ -20,7 +20,7 @@ using CommunityToolkit.Maui.Alerts;
 
 namespace IMP_reseni.ViewModels
 {
-    public class BasketViewModel: BaseViewModel, INotifyPropertyChanged
+    public class BasketViewModel: INotifyPropertyChanged
     {
         public ICommand Button_Clicked { get; private set; }
         public ICommand DeleteCommand { get; private set; }

@@ -10,7 +10,10 @@ namespace IMP_reseni.ViewModels
 {
     public class BaseViewModel
     {
-        ICommand UnFocusCommand = new Command<Entry>(
+        public ICommand UnFocusCommand { get;private set; }
+        public BaseViewModel() 
+        {
+         UnFocusCommand = new Command<Entry>(
          (Entry entry) =>
          {
 #if ANDROID
@@ -20,5 +23,6 @@ namespace IMP_reseni.ViewModels
                 entry.Unfocus();
 #endif
          });
+    }
     }
 }

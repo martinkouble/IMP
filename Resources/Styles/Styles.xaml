@@ -105,10 +105,6 @@
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansSemibold"/>
         <!--<Setter Property="FontFamily" Value="OpenSansRegular"/>-->
-        <!--NEW-->
-        <Setter Property="ReturnCommand" Value="{Binding UnFocusCommand}"/>
-        <Setter Property="ReturnCommandParameter" Value="{Binding Source={RelativeSource Self}}"/>
-
         <Setter Property="FontSize" Value="14" />
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">

@@ -13,7 +13,7 @@ using System.Collections;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifyItemViewModel : BaseViewModel, INotifyPropertyChanged
+    public class ModifyItemViewModel : INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public List<string> ListOfSupplier { get; set; }

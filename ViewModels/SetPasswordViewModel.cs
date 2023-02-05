@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace IMP_reseni.ViewModels
 {
     
-    public class SetPasswordViewModel : BaseViewModel,INotifyPropertyChanged
+    public class SetPasswordViewModel : INotifyPropertyChanged
     {
         public ICommand SetPasswordCommand { get; private set; }
         string name;

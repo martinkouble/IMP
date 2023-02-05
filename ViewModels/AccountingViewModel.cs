@@ -13,7 +13,7 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class AccountingViewModel : BaseViewModel, INotifyPropertyChanged
+    public class AccountingViewModel : INotifyPropertyChanged
     {
         public ICommand DialySalesCommand { get; private set; }
         public ICommand InsertDataCommand { get; private set; }

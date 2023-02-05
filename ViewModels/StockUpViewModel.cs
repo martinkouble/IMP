@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace IMP_reseni.ViewModels
 {
-    public class StockUpViewModel : BaseViewModel, INotifyPropertyChanged
+    public class StockUpViewModel : INotifyPropertyChanged
     {
         private List<Category> source = App.saveholder.Inventory;
 

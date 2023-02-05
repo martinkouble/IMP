@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace IMP_reseni.ViewModels
 {
-    public class AdminPanelViewModel: BaseViewModel, INotifyPropertyChanged
+    public class AdminPanelViewModel: INotifyPropertyChanged
     {
         public ICommand NavigateCommand { get; private set; }
 
