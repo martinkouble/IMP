@@ -112,12 +112,14 @@ namespace IMP_reseni.ViewModels
                     }
                 }
             });
+            _page.Appearing += Page_Resumed;
         }
         private void Page_Resumed(object sender, EventArgs e)
         {
-            TypeOfItems = "Kategorie";
-            CurrentSelection = null;
-            filter("");
+            SelectedItem= null;
+            //TypeOfItems = "Kategorie";
+            //CurrentSelection = null;
+            //filter("");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

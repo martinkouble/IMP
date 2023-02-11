@@ -15,8 +15,19 @@ namespace IMP_reseni.ViewModels
     {
         public ICommand AddCommand { get; set; }
         public ICommand SubtractCommand { get; set; }
-        public ICommand StockUpCommand { get; set; }
+        public ICommand ConfirmCommand { get; set; }
         public ICommand UnFocusCommand { get; set; }
+
+        private bool _stockUpOrDown;
+        //_stockUpOrDown=false => Naskladnit
+        //_stockUpOrDown=true => Odskladnit
+        public bool StockUpOrDown { 
+            get { return _stockUpOrDown; }
+            set
+            {
+                SetProperty(ref _stockUpOrDown, value);
+            }
+        }
 
         private string _count;
         public string Count
@@ -27,10 +38,19 @@ namespace IMP_reseni.ViewModels
             }
             get { return _count; }
         }
-        public Items Item;
+        private Items _item;
+        public Items Item 
+        {
+            get { return _item; }
+            set
+            { 
+                SetProperty(ref _item, value); 
+            } 
+        }
         public ItemStockUpViewModel(Items item)
         {
-            Item= item;
+            StockUpOrDown = false;
+            Item = item;
             Count = item.Stock.ToString();
             AddCommand = new Command<string>(
                 (string Count) =>
@@ -41,7 +61,7 @@ namespace IMP_reseni.ViewModels
             SubtractCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) >= -Item.Stock)
+                    if (Convert.ToInt32(Count) > Item.Stock)
                     {
                         return true;
                     }
@@ -54,16 +74,16 @@ namespace IMP_reseni.ViewModels
                 {
                     this.Count = (Convert.ToInt32(Count) - 1).ToString();
                 });
-            StockUpCommand = new Command<string>(
+            ConfirmCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) == item.Stock)
+                    if (Convert.ToInt32(Count) !=0)
                     {
-                        return false;
+                        return true;
                     }
                     else
                     {
-                        return true;
+                        return false;
                     }
                 },
                 execute: (string Count) =>
@@ -88,7 +108,14 @@ namespace IMP_reseni.ViewModels
             stockUp.CategoryId = item.CategoryId;
             stockUp.SubCategoryId = item.SubCategoryId;
             stockUp.ItemId = item.Id;
-            stockUp.Amount = Convert.ToInt32(Count);
+            if (_stockUpOrDown)
+            {
+                stockUp.Amount = -Convert.ToInt32(Count);
+            }
+            else
+            {
+                stockUp.Amount = Convert.ToInt32(Count);
+            }
             stockUp.CompleteStockup(item.CategoryId, item.SubCategoryId, item.Id);
         }
 

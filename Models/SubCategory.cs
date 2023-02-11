@@ -33,7 +33,7 @@ namespace IMP_reseni.Models
         {
             if (Items == null)
                 Items = new List<Items>();
-            //TryToSetItemId(item);
+            TryToSetItemId(item);
             Items.Add(item);
         }
         private void TryToSetItemId(Items item)

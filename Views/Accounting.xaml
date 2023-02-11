@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.Accounting"
-             Title="Accounting">
+             Title="Accounting"
+             BackgroundColor="{StaticResource Primary}">
     <ContentPage.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
@@ -23,9 +24,11 @@
             <Button Text="Vložení dat"
                     Command="{Binding InsertDataCommand}"/>
             <Label Text="Počáteční datum"/>
-            <DatePicker Date="{Binding StartDate}"/>
+            <DatePicker Date="{Binding StartDate}"
+                        Format="dd/MM/yyyy"/>
             <Label Text="Konečné datum datum"/>
-            <DatePicker Date="{Binding EndDate}"/>
+            <DatePicker Date="{Binding EndDate}"
+                        Format="dd/MM/yyyy"/>
             <Button Text="Učetní soubor"
                     Command="{Binding GenerateAccountingCommand}"/>
             <Button Text="Pouze sklad"

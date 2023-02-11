@@ -20,7 +20,8 @@
                HorizontalOptions="Center"
                FontSize="Large"
                IsPassword="True"
-                Text="{Binding Passwd}"/>
+               Text="{Binding Passwd}"
+               ReturnCommand="{Binding VerifyPasswordCommand}"/>
         </Border>
         <Button CornerRadius="0" 
                 HorizontalOptions="FillAndExpand"

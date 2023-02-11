@@ -45,6 +45,7 @@ namespace IMP_reseni.ViewModels
         }
         public AccountingViewModel()
         {
+           
             DialySalesCommand = new Command(
             () =>
             {
@@ -112,6 +113,10 @@ namespace IMP_reseni.ViewModels
 
                 }
             });
+
+
+            StartDate = DateTime.Today;
+            EndDate = DateTime.Today;
         }
 
 

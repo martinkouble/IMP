@@ -2,10 +2,36 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.ItemStockUp"
-             Title="ItemStockUp">
+             Title="ItemStockUp"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Switch">
+                <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray200}}" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            
+                            <VisualState x:Name="On">
+                                <VisualState.Setters>
+                                    <Setter Property="ThumbColor" Value="Blue" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Off">
+                                <VisualState.Setters>
+                                    <Setter Property="ThumbColor" Value="Red" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <VerticalStackLayout VerticalOptions="Center"
                          Spacing="10">
-        <Image Source="{Binding Source=Item,Path=Item.ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
+        <Image Source="{Binding Item.ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
                Grid.Column="0"
                Aspect="AspectFill"
                HeightRequest="100"
@@ -13,11 +39,27 @@
         <Label Grid.Column="1"
                HorizontalTextAlignment="Center"
                FontSize="40"
-               Text="{Binding Source=Item,Path=Item.Name}"
+               Text="{Binding Item.Name}"
                FontAttributes="Bold" />
-        <Label Text="Aktuální počet ve skladu:"
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label Text="Aktuální počet ve skladu: "
                FontSize="Large"/>
-        <Label Text="{Binding Source=Item,Path=Item.Count}"/>
+            <Label Text="{Binding Item.Stock}"
+                   FontSize="Large"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="Center"
+                               Spacing="10">
+            <Label Text="Naskladnit"
+                   VerticalOptions="Center"/>
+            <Switch IsToggled="{Binding StockUpOrDown}"
+                    VerticalOptions="Center"/>
+
+            <Label Text="Odskladnit"
+                   VerticalOptions="Center"/>
+
+        </HorizontalStackLayout>
         <HorizontalStackLayout HorizontalOptions="Center"
                                Spacing="10">
             <Button
@@ -50,5 +92,9 @@
                 CommandParameter="{Binding Count}"
                 />
         </HorizontalStackLayout>
+        <Button Text="Potvrdit"
+                Margin="25"
+                Command="{Binding ConfirmCommand}"
+                CommandParameter="{Binding Count}"/>
     </VerticalStackLayout>
 </ContentPage>
