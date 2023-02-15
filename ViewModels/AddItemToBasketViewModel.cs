@@ -68,6 +68,18 @@ namespace IMP_reseni.ViewModels
 
         public AddItemToBasketViewModel(Items item)
         {
+            /*
+            bool CanAdd = false;
+            if (App.basketHolder.Items.Any(x => x.ItemId == item.Id && x.SubCategoryId == item.SubCategoryId && x.CategoryId == item.SubCategoryId))
+            {
+                OrderItem BasketItem = (OrderItem)App.basketHolder.Items.Where(x => x.ItemId == item.Id && x.SubCategoryId == item.SubCategoryId && x.CategoryId == item.SubCategoryId);
+                if ((BasketItem.Amount - item.Stock) == 0)
+                {
+                    CanAdd = true;
+                }
+            }
+            */
+
             Count = "0";
             PriceWithoutDPH = "Cena bez DPH 0 KČ";
             PriceWithDPH = "0 KČ";
@@ -110,10 +122,10 @@ namespace IMP_reseni.ViewModels
                     this.Count = (Convert.ToInt32(Count) - 1).ToString();
                 });
 
-            AddToBasketCommand = new Command<String>(
+            AddToBasketCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) == 0)
+                    if (Convert.ToInt32(Count) == 0 )
                     {
                         return false;
                     }
@@ -126,7 +138,6 @@ namespace IMP_reseni.ViewModels
                 {
                     AddItemToBasket(item);
                 });
-
         }
         public void AddItemToBasket(Items item)
         {

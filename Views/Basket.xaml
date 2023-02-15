@@ -4,8 +4,15 @@
              x:Class="IMP_reseni.Views.Basket"
              xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
              Title="Basket">
-    <VerticalStackLayout>
-        <CollectionView ItemsSource="{Binding BasketItems}">
+    <Grid Margin="0,10,0,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+  
+        <CollectionView ItemsSource="{Binding BasketItems}"
+                        Grid.Row="0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -54,7 +61,19 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+        <StackLayout VerticalOptions="End"
+                     Grid.Row="2">
+            <Label FontSize="Large" 
+                   Text="{Binding SummaryCostWithDPH}"/>
+            
+            <Label FontSize="Default"
+                   Text="{Binding SummaryCostWithoutDPH}"/>
+            <Button Text="Prodáno"
+                    FontSize="Large"
+                    Margin="10,10"
+                    Command="{Binding SellCommand}"/>
+        </StackLayout>
+    </Grid>
 
     <!--<VerticalStackLayout>
         <Label 

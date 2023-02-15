@@ -102,7 +102,6 @@ namespace IMP_reseni.ViewModels
                 var result = await FilePicker.Default.PickAsync(new PickOptions
                 {
                     FileTypes = customFileType
-
                 });
                 if (result != null)
                 {
