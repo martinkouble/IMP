@@ -9,13 +9,15 @@ namespace IMP_reseni;
 public partial class App : Application
 {
     public static SaveHolder saveholder { get; set; }
+    public static CloudService cloudService { get; set; }
     public static BasketHolder basketHolder { get; set; }
 
     //private string Passwd;
-    public App(SaveHolder sp,BasketHolder bs)
+    public App(SaveHolder sp,BasketHolder bs,CloudService cs)
     {
         saveholder = sp;
         basketHolder = bs;
+        cloudService = cs;
         //SecureStorage.Default.RemoveAll();
         sp.Load();
         Task get = new Task(GetPassword);
@@ -42,7 +44,6 @@ public partial class App : Application
         {
             MainPage = new NavigationPage(new MainPage());
         }
-
         else
         {
             MainPage = new NavigationPage(new SetPassword());

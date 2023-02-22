@@ -13,17 +13,20 @@ namespace IMP_reseni.MyPermissions
         public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>
             new List<(string permission, bool isRuntime)>
             {
-            // Android 13
+                // Android 13
+#if ANDROID31_0_OR_GREATER
             ("android.permission.BLUETOOTH_SCAN", true),
             ("android.permission.BLUETOOTH_CONNECT", true)
-            // Android 10
-            //("android.permission.BLUETOOTH", true),
-            //("android.permission.BLUETOOTH_ADMIN", true)
             
-            //("android.permission.BLUETOOTH_ADMIN", true),
-            //("android.permission.BLUETOOTH_SCAN", true),
-            //("android.permission.BLUETOOTH_ADVERTISE", true),
-            //("android.permission.BLUETOOTH_CONNECT", true)
+                // Android 10
+
+#else
+                //("android.permission.BLUETOOTH", true),
+                //("android.permission.BLUETOOTH_ADMIN", true),
+                //("android.permission.BLUETOOTH_SCAN", true),
+                //("android.permission.BLUETOOTH_CONNECT", true)
+                //("android.permission.BLUETOOTH_ADVERTISE", true),
+#endif
             }.ToArray();
 #endif
     }

@@ -59,9 +59,10 @@ namespace IMP_reseni.Services
             string _fileName = name;
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             string jsonString = JsonConvert.SerializeObject(this, settings);
-            File.WriteAllText(cacheDir + "/" + _fileName, jsonString);
-           
+            File.WriteAllText(cacheDir + "/" + _fileName, jsonString);          
         }
+
+
 
         public void Load()
         {

@@ -262,7 +262,7 @@ namespace IMP_reseni.ViewModels
             filter("");
         }
 
-        void filter(string Text)
+        private void filter(string Text)
         {
             Text = Text.ToLowerInvariant();
             var _filteredItems = source.Where(Item => Item.Name.ToLower().Contains(Text));
@@ -286,7 +286,7 @@ namespace IMP_reseni.ViewModels
 
 
 
-        void addToList<T>(List<T> list)
+        private void addToList<T>(List<T> list)
         {
             if(list!=null)
             {

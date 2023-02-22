@@ -3,9 +3,9 @@ namespace IMP_reseni.Views;
 
 public partial class Cloud : ContentPage
 {
-	public Cloud()
+	public Cloud(CloudViewModel cloudViewModel)
 	{
 		InitializeComponent();
-		BindingContext= new CloudViewModel();
+		BindingContext= cloudViewModel;
 	}
 }

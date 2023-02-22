@@ -4,6 +4,7 @@
              xmlns:controls="clr-namespace:IMP_reseni.Controls"
              xmlns:Views="clr-namespace:IMP_reseni.Views"
              x:Class="IMP_reseni.Views.Create"
+             BackgroundColor="{StaticResource Primary}"
              Title="Vytvořit">
     <ContentPage.Resources>
         <Style TargetType="Button">

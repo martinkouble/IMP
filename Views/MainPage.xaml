@@ -6,7 +6,8 @@
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              x:Class="IMP_reseni.MainPage"  
              Title=""
-             BackgroundColor="{DynamicResource Key=Primary}"     
+             BackgroundColor="{DynamicResource Key=Primary}"  
+             NavigationPage.HasNavigationBar="False"
              >
     <!--x:Name="MainPageView"-->
     <!--<ContentPage.BindingContext >
@@ -26,14 +27,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <NavigationPage.TitleView >
-      
+     
         <FlexLayout 
 
             Margin="0,0,15,0"
             Padding="0"
-             Direction="Row"
-                AlignItems="Center"
-                JustifyContent="SpaceBetween"
+            Direction="Row"
+            AlignItems="Center"
+            JustifyContent="SpaceBetween"
             >
             <Label
             Text="LOGO"
@@ -59,9 +60,34 @@
 
 
     <Grid Margin="0,10,0,0"
-          RowDefinitions="10,Auto,30,*"
+          RowDefinitions="50,Auto,30,*"
           ColumnDefinitions="*">
-     
+        <FlexLayout 
+            Grid.Row="0"
+            Margin="10,0,10,10"
+            Padding="0"
+            Direction="Row"
+            AlignItems="Center"
+            JustifyContent="SpaceBetween"
+            >
+            <Label
+            Text="LOGO"
+            FontSize="Title"
+            TextColor="White"
+            />
+            <Label
+            Text="Hlavní Stránka"
+            FontSize="Title"
+            TextColor="White"
+            />
+
+            <ImageButton Source="loginicon.png"
+                         MaximumHeightRequest="50" MaximumWidthRequest="50"
+                        Command="{Binding NavigateCommand}"
+                       />
+            <!--CommandParameter="{x:Reference MainPageView}"
+            Clicked="GoToLogin"-->
+        </FlexLayout>
         <Border Margin="10,0,10,0"
                Background="White"
                 StrokeShape="RoundRectangle 40"

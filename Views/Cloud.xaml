@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="IMP_reseni.Views.Cloud"
              Title="Nastavení Cloud">
     <ContentPage.Resources>
-        <Style TargetType="Button">
+        <Style TargetType="Button" >
             <Setter Property="FontSize" Value="32" />
             <Setter Property="FontSize" Value="Title" />
             <Setter Property="TextColor" Value="Black"/>
@@ -26,11 +27,35 @@
             <Setter Property="JustifyContent" Value="SpaceBetween"/>
         </Style>
 
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="Margin" Value="10,0"/>
+        </Style>
+        <Style x:Key="ValidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Green" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="Margin" Value="10,0"/>
+        </Style>
     </ContentPage.Resources>
     <VerticalStackLayout Padding="10">
         <Label Text="Zadej přihlašovací údaje od účtu MEGA"/>
         <Border class="Entry" VerticalOptions="Start">
-                <Entry Placeholder="Email"/>
+                <Entry Placeholder="Email"
+                       IsTextPredictionEnabled="True"
+                       Keyboard="Email">
+                <Entry.Behaviors>
+                    <toolkit:EmailValidationBehavior
+                        
+                        InvalidStyle="{StaticResource InvalidEntryStyle}"
+                        ValidStyle="{StaticResource ValidEntryStyle}"
+                        Flags="ValidateOnValueChanged"/>
+                </Entry.Behaviors>
+                </Entry>
         </Border>
         <Border class="Entry" VerticalOptions="Start">
             <Entry Placeholder="Heslo" 
@@ -40,15 +65,63 @@
         </Border>
         <Button Text="Potvrdit"/>
 
-        <FlexLayout >
+        <Grid ColumnDefinitions="Auto,*,Auto"
+              RowDefinitions="*">
+
             <Label Text="Zapnout cloud" 
                    VerticalOptions="Center"
-                   HorizontalOptions="Start"/>
+                   HorizontalOptions="Start"
+                   Grid.Column="0"/>
+
             <Switch VerticalOptions="Center"
-                    HorizontalOptions="End"/>
-        </FlexLayout>
-        
-        <!--<Button Text="Klikni"
-                Command="{Binding TestCommand}"/>-->
+                    HorizontalOptions="End"
+                    Grid.Column="1"/>
+        </Grid>
+
+        <!--<Grid ColumnDefinitions="Auto,*,Auto"
+              RowDefinitions="Auto">
+
+            <Label Text="Zapnout cloud" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Grid.Column="0"/>
+
+            <Switch VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Column="1"/>
+
+            <FlexLayout 
+            Grid.Row="0"
+            Margin="10,0,10,10"
+            Padding="0"
+            Direction="Row"
+            AlignItems="Center"
+            JustifyContent="SpaceBetween">
+
+                <Label
+            Text="LOGO"
+            FontSize="Title"
+            TextColor="White"/>
+                
+                <Label
+            Text="Hlavní Stránka"
+            FontSize="Title"
+            TextColor="White"/>
+
+                <ImageButton Source="loginicon.png"
+                         MaximumHeightRequest="50" MaximumWidthRequest="50"
+                        Command="{Binding NavigateCommand}"
+                       />
+            </FlexLayout>
+
+        </Grid>-->
+        <Picker Title="Čas">
+            
+        </Picker>
+
+        <Picker Title="Zálohy">
+
+        </Picker>
+        <Button Command="{Binding GetCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
