@@ -165,7 +165,7 @@
         </Border>-->
         <Border 
         StrokeShape="RoundRectangle 40,40,0,0"
-        Background="#D9D9D9"
+        Background="{AppThemeBinding Light=#D9D9D9, Dark={StaticResource Gray900}}"
         Margin="0,50,0,0"
         Grid.Row="3">
             <Grid>

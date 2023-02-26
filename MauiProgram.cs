@@ -24,11 +24,11 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<CloudService>();
 
-        builder.Services.AddTransient<CloudViewModel>();
+		builder.Services.AddTransient<CloudViewModel>();
 
-        builder.Services.AddTransient<Cloud>();
+		builder.Services.AddTransient<Cloud>();
 
-        builder.Services.UsePageResolver();
+		builder.Services.UsePageResolver();
         return builder.Build();
 	}
     

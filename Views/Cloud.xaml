@@ -5,6 +5,10 @@
              x:Class="IMP_reseni.Views.Cloud"
              Title="Nastavení Cloud">
     <ContentPage.Resources>
+        <toolkit:VariableMultiValueConverter 
+                x:Key="VariableMultiValueConverter"
+                ConditionType="Exact"
+                Count="2" />
         <Style TargetType="Button" >
             <Setter Property="FontSize" Value="32" />
             <Setter Property="FontSize" Value="Title" />
@@ -47,13 +51,14 @@
         <Border class="Entry" VerticalOptions="Start">
                 <Entry Placeholder="Email"
                        IsTextPredictionEnabled="True"
-                       Keyboard="Email">
+                       Keyboard="Email"
+                       Text="{Binding Email}">
                 <Entry.Behaviors>
-                    <toolkit:EmailValidationBehavior
-                        
+                    <toolkit:EmailValidationBehavior                     
                         InvalidStyle="{StaticResource InvalidEntryStyle}"
                         ValidStyle="{StaticResource ValidEntryStyle}"
-                        Flags="ValidateOnValueChanged"/>
+                        Flags="ValidateOnValueChanged"
+                        IsValid="{Binding IsValid}"/>
                 </Entry.Behaviors>
                 </Entry>
         </Border>
@@ -61,9 +66,19 @@
             <Entry Placeholder="Heslo" 
                    IsPassword="True" 
                    FontAttributes="Bold"
-                   FontFamily="OpenSansSemibold"/>
+                   FontFamily="OpenSansSemibold"
+                   Text="{Binding Password}"/>
         </Border>
-        <Button Text="Potvrdit"/>
+        <Button Text="Potvrdit"
+                Command="{Binding GetCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Path="IsValid"/>
+                    <Binding Converter="{toolkit:IntToBoolConverter}" Path="Password.Length"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+
 
         <Grid ColumnDefinitions="Auto,*,Auto"
               RowDefinitions="*">
@@ -75,7 +90,8 @@
 
             <Switch VerticalOptions="Center"
                     HorizontalOptions="End"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    IsToggled="{Binding IsEnable}"/>
         </Grid>
 
         <!--<Grid ColumnDefinitions="Auto,*,Auto"
@@ -115,13 +131,19 @@
             </FlexLayout>
 
         </Grid>-->
-        <Picker Title="Čas">
-            
+        <Picker Title="Čas"
+                IsEnabled="{Binding IsEnable}"
+                x:Name="Timepicker"
+                ItemsSource ="{Binding TimeTable}"
+                SelectedItem="{Binding SetTime}">
         </Picker>
 
-        <Picker Title="Zálohy">
 
-        </Picker>
-        <Button Command="{Binding GetCommand}"/>
+        <!--<Picker Title="Zálohy">
+
+        </Picker>-->
+        <Button Command="{Binding ManualSaveCommand}"
+                Text="Manualní uložení"/>
+
     </VerticalStackLayout>
 </ContentPage>

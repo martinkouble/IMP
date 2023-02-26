@@ -26,6 +26,8 @@ namespace IMP_reseni.ViewModels
                 var method = typeof(NavigationExtensions).GetMethods().Where(x => x.Name == "PushAsync").ElementAt(0);
                 MethodInfo generic = method.MakeGenericMethod(_targetPageType);
                 generic.Invoke(_page, new object[1] { _page.Navigation });
+
+
                 //var method = typeof(NavigationPage).GetMethods();
 
 

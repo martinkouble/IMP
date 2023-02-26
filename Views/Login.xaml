@@ -13,8 +13,8 @@
             FontSize="50"
             TextColor="White"
             />
-        <Border 
-        Background="#D9D9D9"
+        <!--Background="#D9D9D9"-->
+        <Border       
         VerticalOptions="FillAndExpand">
         <Entry Placeholder="Zadejte heslo" 
                HorizontalOptions="Center"
