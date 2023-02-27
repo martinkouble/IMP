@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Collections;
 using System.Globalization;
 using IMP_reseni.Controls;
+using Mopups.Services;
 
 namespace IMP_reseni.ViewModels
 {
@@ -106,20 +107,17 @@ namespace IMP_reseni.ViewModels
             client.UploadFile(_appDirectory + "/" + _fileName, myFolder);
             client.Logout();
             });
-
+            
             GetCommand = new Command<bool>(
              canExecute: (bool IsValid) =>
             {
                 return IsValid;
             },
-             execute:  (bool IsValid) =>
+             execute: async (bool IsValid) =>
             {
-                SpinnerPopup popup = new SpinnerPopup();
-                Cloud.ShowPopupAsync(popup);
+                await MopupService.Instance.PushAsync(new SpinnerPopup());
                 cloudService.SetLogin(Email, Password);
-                Toast.Make("Údaje ověřeny").Show();
-
-                popup.Close();
+                await Toast.Make("Údaje ověřeny").Show();
                 //MegaApiClient client = new MegaApiClient();
                 //client.Login(Email, Password);
                 //IEnumerable<INode> nodes = client.GetNodes();
@@ -131,14 +129,13 @@ namespace IMP_reseni.ViewModels
                 //}
             });
             ManualSaveCommand = new Command(
-            () =>
+            async () =>
             {
-                //var popup = new SpinnerPopup();
-                //Cloud.ShowPopup(popup);
+                await MopupService.Instance.PushAsync(new SpinnerPopup());
+                cloudService.SetLogin(Email, Password);
                 cloudService.UploadFile();
-                Toast.Make("Uspěšně uloženo").Show();
-                //popup.Close();
-
+                await Toast.Make("Uspěšně uloženo").Show();
+                await MopupService.Instance.PopAsync();
             });
         }
         private void SetTimer(string minutes)

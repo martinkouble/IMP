@@ -2,6 +2,7 @@
 using IMP_reseni.Services;
 using IMP_reseni.ViewModels;
 using Microsoft.Maui.Controls.Hosting;
+using Mopups.Hosting;
 
 namespace IMP_reseni;
 
@@ -13,6 +14,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
+			.ConfigureMopups()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -67,6 +67,7 @@
 	  <PackageReference Include="Goldie.MauiPlugins.PageResolver" Version="1.0.7" />
 	  <PackageReference Include="InTheHand.Net.Bluetooth" Version="4.0.33.1" />
 	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
+	  <PackageReference Include="Mopups" Version="1.0.4" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
 

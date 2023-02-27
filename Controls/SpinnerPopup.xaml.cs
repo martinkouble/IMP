@@ -1,8 +1,8 @@
-using CommunityToolkit.Maui.Views;
+using Mopups.Pages;
 
 namespace IMP_reseni.Controls;
 
-public partial class SpinnerPopup : Popup
+public partial class SpinnerPopup
 {
     public SpinnerPopup()
     {
