@@ -50,6 +50,7 @@ namespace IMP_reseni.Services
                 else if (value==false)
                 {
                     timerSet = false;
+                    timer.Stop();
                 }
             }
             get 
@@ -60,6 +61,7 @@ namespace IMP_reseni.Services
         public CloudService(SaveHolder saveHolder) 
         {
             this.saveHolder=saveHolder;
+            timer=Application.Current.Dispatcher.CreateTimer();
             if (TimerInterval!=0 && timerSet == true && IsEnabled == true)
             {       
                 SetInterval(TimerInterval);
@@ -67,7 +69,6 @@ namespace IMP_reseni.Services
         }
         public void SetInterval(int minuteInterval)
         {
-            timer = Application.Current.Dispatcher.CreateTimer();
             timer.Stop();
             if (minuteInterval!=0)
             {           

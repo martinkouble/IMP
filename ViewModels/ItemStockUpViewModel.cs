@@ -18,14 +18,19 @@ namespace IMP_reseni.ViewModels
         public ICommand ConfirmCommand { get; set; }
         public ICommand UnFocusCommand { get; set; }
 
-        private bool _stockUpOrDown;
+
+        private bool _stockUpOrDown=false;
         //_stockUpOrDown=false => Naskladnit
         //_stockUpOrDown=true => Odskladnit
-        public bool StockUpOrDown { 
+        public bool StockUpOrDown
+        {
             get { return _stockUpOrDown; }
             set
             {
                 SetProperty(ref _stockUpOrDown, value);
+                (AddCommand as Command).ChangeCanExecute();
+                (SubtractCommand as Command).ChangeCanExecute();
+                Count = "0";
             }
         }
 
@@ -49,19 +54,31 @@ namespace IMP_reseni.ViewModels
         }
         public ItemStockUpViewModel(Items item)
         {
-            StockUpOrDown = false;
+            //StockUpOrDown = false;
             Item = item;
-            Count = item.Stock.ToString();
+            //Count = item.Stock.ToString();
+            Count = "0";
             AddCommand = new Command<string>(
-                (string Count) =>
+                canExecute: (string Count) =>
                 {
-                  this.Count = (Convert.ToInt32(Count) + 1).ToString();
+                    if ((StockUpOrDown == true && Convert.ToInt32(Count) !=  Item.Stock ) ||  StockUpOrDown == false)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                },
+                execute: (string Count) =>
+                {
+                    this.Count = (Convert.ToInt32(Count) + 1).ToString();
                 });
 
             SubtractCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) > Item.Stock)
+                    if (Convert.ToInt32(Count) != 0)
                     {
                         return true;
                     }
@@ -77,7 +94,7 @@ namespace IMP_reseni.ViewModels
             ConfirmCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) !=0)
+                    if (Convert.ToInt32(Count) != 0)
                     {
                         return true;
                     }
@@ -88,7 +105,9 @@ namespace IMP_reseni.ViewModels
                 },
                 execute: (string Count) =>
                 {
-                    AddItemToStockUp(item);
+                    AddItemToStockUp(item, Count);
+                    OnPropertyChanged("Item");
+                    this.Count = "0";
                 });
             UnFocusCommand = new Command<Entry>(
             (Entry entry) =>
@@ -101,21 +120,22 @@ namespace IMP_reseni.ViewModels
 #endif
             });
         }
-        public void AddItemToStockUp(Items item)
+        public void AddItemToStockUp(Items item, string Count)
         {
             //item.Stock += Convert.ToInt32(Count);
             StockUpItem stockUp = new StockUpItem();
             stockUp.CategoryId = item.CategoryId;
             stockUp.SubCategoryId = item.SubCategoryId;
             stockUp.ItemId = item.Id;
-            if (_stockUpOrDown)
+            if (_stockUpOrDown==true)
             {
-                stockUp.Amount = -Convert.ToInt32(Count);
+                stockUp.Amount = -(Convert.ToInt32(Count));
             }
             else
             {
                 stockUp.Amount = Convert.ToInt32(Count);
             }
+            //stockUp.Amount += Convert.ToInt32(Count);
             stockUp.CompleteStockup(item.CategoryId, item.SubCategoryId, item.Id);
         }
 

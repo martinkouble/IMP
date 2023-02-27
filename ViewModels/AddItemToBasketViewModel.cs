@@ -66,7 +66,7 @@ namespace IMP_reseni.ViewModels
         }
 
 
-        public AddItemToBasketViewModel(Items item)
+        public AddItemToBasketViewModel(Items item,Page _page)
         {
             /*
             bool CanAdd = false;
@@ -137,6 +137,7 @@ namespace IMP_reseni.ViewModels
                 execute: (string Count) =>
                 {
                     AddItemToBasket(item);
+                    _page.Navigation.PopAsync();
                 });
         }
         public void AddItemToBasket(Items item)

@@ -1,16 +1,23 @@
+using CommunityToolkit.Maui.Views;
+using IMP_reseni.Services;
 using IMP_reseni.ViewModels;
+using System.Windows.Input;
+
 namespace IMP_reseni.Views;
 
 public partial class Cloud : ContentPage
 {
-	//public Cloud()
-	//{
-	//	InitializeComponent();
-	//	BindingContext= new CloudViewModel();
-	//}
-	public Cloud(CloudViewModel cloudViewModel)
+    //public Cloud()
+    //{
+    //	InitializeComponent();
+    //	BindingContext= new CloudViewModel();
+    //}
+
+    public Cloud(CloudService cloudService)
 	{
 		InitializeComponent();
-		BindingContext = cloudViewModel;
-	}
+		BindingContext =new CloudViewModel(cloudService,this);
+ 
+    }
+    
 }

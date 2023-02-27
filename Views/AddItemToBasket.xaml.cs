@@ -7,6 +7,6 @@ public partial class AddItemToBasket : ContentPage
 	public AddItemToBasket(Items item)
 	{
 		InitializeComponent();
-        BindingContext = new AddItemToBasketViewModel(item);
+        BindingContext = new AddItemToBasketViewModel(item,this);
     }
 }

@@ -15,15 +15,21 @@ public partial class App : Application
     //private string Passwd;
     public App(SaveHolder sp,BasketHolder bs)
     {
+        //SecureStorage.Default.RemoveAll();
+
         saveholder = sp;
         basketHolder = bs;
+
         //cloudService = cs;
         //SecureStorage.Default.RemoveAll();
         sp.Load();
         Task get = new Task(GetPassword);
         get.Start();
-        get.Wait();
         InitializeComponent();
+
+        get.Wait();
+
+        //InitializeComponent(); //TEST
 
 
         //Task<string> oauthToken = SecureStorage.Default.GetAsync("oauth_token").Wait();

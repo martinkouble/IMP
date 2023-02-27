@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using CG.Web.MegaApiClient;
 using IMP_reseni.Services;
 using System.Collections.ObjectModel;
 using System.Collections;
 using System.Globalization;
+using IMP_reseni.Controls;
 
 namespace IMP_reseni.ViewModels
 {
@@ -69,7 +71,7 @@ namespace IMP_reseni.ViewModels
         public ICommand TestCommand { get; set; }
         public List<string> TimeTable { get;private set; }
         private IDictionary<string, int> Times;
-        public CloudViewModel(CloudService cloudService)
+        public CloudViewModel(CloudService cloudService, Cloud Cloud)
         {
             Times = new Dictionary<string,int>
             {
@@ -86,8 +88,7 @@ namespace IMP_reseni.ViewModels
             this.cloudService = cloudService;
             //cloudService = App.cloudService;
             //IsEnable = cloudService.IsEnabled;
-            Email = "latysa123@gmail.com";
-            Password = "Kouble29+";
+
             TestCommand = new Command(
             () => 
             { 
@@ -107,13 +108,18 @@ namespace IMP_reseni.ViewModels
             });
 
             GetCommand = new Command<bool>(
-            canExecute: (bool IsValid) =>
+             canExecute: (bool IsValid) =>
             {
                 return IsValid;
             },
-            execute: (bool IsValid) =>
+             execute:  (bool IsValid) =>
             {
+                SpinnerPopup popup = new SpinnerPopup();
+                Cloud.ShowPopupAsync(popup);
                 cloudService.SetLogin(Email, Password);
+                Toast.Make("Údaje ověřeny").Show();
+
+                popup.Close();
                 //MegaApiClient client = new MegaApiClient();
                 //client.Login(Email, Password);
                 //IEnumerable<INode> nodes = client.GetNodes();
@@ -124,12 +130,15 @@ namespace IMP_reseni.ViewModels
                 //    source.Add(item.Name);
                 //}
             });
-
             ManualSaveCommand = new Command(
             () =>
             {
+                //var popup = new SpinnerPopup();
+                //Cloud.ShowPopup(popup);
                 cloudService.UploadFile();
                 Toast.Make("Uspěšně uloženo").Show();
+                //popup.Close();
+
             });
         }
         private void SetTimer(string minutes)
