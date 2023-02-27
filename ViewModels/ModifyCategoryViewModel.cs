@@ -9,10 +9,11 @@ using System.Windows.Input;
 using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
+using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    class ModifyCategoryViewModel : INotifyPropertyChanged
+    public class ModifyCategoryViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfCategory { get; set; }
 
@@ -45,10 +46,10 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ModifyCategoryViewModel()
+        public ModifyCategoryViewModel(SaveHolder saveholder)
         {
             //Text = "";
-            List<string> list = new List<string>(App.saveholder.GetCategoriesNames());
+            List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
             ListOfCategory =new ObservableCollection<string>(list);
 
@@ -68,14 +69,14 @@ namespace IMP_reseni.ViewModels
             execute: (string name) =>
             {
                 Category category = new Category();
-                category = App.saveholder.FindCategoryByName(SelectedCategory);
+                category = saveholder.FindCategoryByName(SelectedCategory);
                 category.Name = name;
-                App.saveholder.ModifyCategory(category);
-                App.saveholder.Save();
+                saveholder.ModifyCategory(category);
+                saveholder.Save();
                 Toast.Make("kategorie změněna").Show();
                 Text = "";
                 SelectedCategory = null;
-                List<string> list = new List<string>(App.saveholder.GetCategoriesNames());
+                List<string> list = new List<string>(saveholder.GetCategoriesNames());
                 list.Sort();
                 ListOfCategory.Clear();
                 foreach (var Item in list)

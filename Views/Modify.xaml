@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.Modify"
              xmlns:Views="clr-namespace:IMP_reseni.Views"
+             BackgroundColor="{StaticResource Primary}"
              Title="Změnit">
     <ContentPage.Resources>
         <Style TargetType="Button">

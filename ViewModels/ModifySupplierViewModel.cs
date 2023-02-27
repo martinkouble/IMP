@@ -10,9 +10,11 @@ using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using System.Collections;
+using IMP_reseni.Services;
+
 namespace IMP_reseni.ViewModels
 {
-    class ModifySupplierViewModel :  INotifyPropertyChanged
+    public class ModifySupplierViewModel :  INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfSupplier { get; set; }
 
@@ -45,10 +47,10 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ModifySupplierViewModel()
+        public ModifySupplierViewModel(SaveHolder saveholder)
         {
             //Text = "";
-            List<string> list = new List<string>(App.saveholder.GetSupplierNames());
+            List<string> list = new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new ObservableCollection<string>(list);
 
@@ -68,14 +70,14 @@ namespace IMP_reseni.ViewModels
             execute: (string name) =>
             {
                 Supplier supplier = new Supplier();
-                supplier = App.saveholder.FindSupplierByName(SelectedSupplier);
+                supplier = saveholder.FindSupplierByName(SelectedSupplier);
                 supplier.Name = name;
-                App.saveholder.ModifySupplier(supplier);
-                App.saveholder.Save();
+                saveholder.ModifySupplier(supplier);
+                saveholder.Save();
                 Toast.Make("Dodavatel změněn").Show();
                 Text = "";
                 SelectedSupplier = null;
-                List<string> list = new List<string>(App.saveholder.GetSupplierNames());
+                List<string> list = new List<string>(saveholder.GetSupplierNames());
                 list.Sort();
                 ListOfSupplier.Clear();
                 foreach (var Item in list)

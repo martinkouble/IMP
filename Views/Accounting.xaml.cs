@@ -3,9 +3,9 @@ namespace IMP_reseni.Views;
 
 public partial class Accounting : ContentPage
 {
-	public Accounting()
+	public Accounting(AccountingViewModel accountingViewModel)
 	{
         InitializeComponent();
-        BindingContext = new AccountingViewModel();
+        BindingContext = accountingViewModel;
     }
 }

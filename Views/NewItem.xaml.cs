@@ -3,9 +3,9 @@ using IMP_reseni.ViewModels;
 
 public partial class NewItem : ContentPage
 {
-	public NewItem()
+	public NewItem(NewItemViewModel newItemViewModel)
 	{
 		InitializeComponent();
-		BindingContext = new NewItemViewModel();
+		BindingContext = newItemViewModel;
 	}
 }

@@ -3,9 +3,9 @@ using IMP_reseni.ViewModels;
 
 public partial class NewCategory : ContentPage
 {
-	public NewCategory()
+	public NewCategory(NewCategoryViewModel newCategoryViewModel)
 	{
 		InitializeComponent();
-        BindingContext = new NewCategoryViewModel();
+        BindingContext = newCategoryViewModel;
     }
 }

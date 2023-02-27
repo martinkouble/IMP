@@ -43,9 +43,10 @@ namespace IMP_reseni.ViewModels
                 (GenerateAccountingOnlyStockCommand as Command).ChangeCanExecute();
             }
         }
-        public AccountingViewModel()
+        private SaveHolder saveholder;
+        public AccountingViewModel(SaveHolder saveholder)
         {
-           
+            this.saveholder= saveholder;
             DialySalesCommand = new Command(
             () =>
             {
@@ -105,7 +106,7 @@ namespace IMP_reseni.ViewModels
                 });
                 if (result != null)
                 {
-                    App.saveholder.Load(result.FullPath);
+                    saveholder.Load(result.FullPath);
                 }
                 else
                 {
@@ -130,7 +131,7 @@ namespace IMP_reseni.ViewModels
 #else
                 path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
 #endif
-                string accFileText = accounting.CreateAccountingFileContent(from, to, App.saveholder.Inventory, App.saveholder.OrderHistory, App.saveholder.StockUpHistory, App.saveholder.Suppliers);
+                string accFileText = accounting.CreateAccountingFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
                 if (!File.Exists(path)) 
                 {
                     File.WriteAllText(path, accFileText, Encoding.UTF8);
@@ -154,7 +155,7 @@ namespace IMP_reseni.ViewModels
                 path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
 #endif
                 //string path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToShortDateString() + "-" + to.ToShortDateString() + ".csv";
-                string accFileText = accounting.CreateAccountingStockFileContent(from, to, App.saveholder.Inventory, App.saveholder.OrderHistory, App.saveholder.StockUpHistory, App.saveholder.Suppliers);
+                string accFileText = accounting.CreateAccountingStockFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
 
                 if (!File.Exists(path))
                 {

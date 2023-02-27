@@ -1,10 +1,10 @@
 namespace IMP_reseni.Views;
-using ViewModels;
+using IMP_reseni.ViewModels;
 public partial class ModifySupplier : ContentPage
 {
-	public ModifySupplier()
+	public ModifySupplier(ModifySupplierViewModel modifySupplierViewModel)
 	{
 		InitializeComponent();
-		BindingContext =new ModifySupplierViewModel();
+		BindingContext = modifySupplierViewModel;
 	}
 }

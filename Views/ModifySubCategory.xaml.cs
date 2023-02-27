@@ -4,10 +4,10 @@ namespace IMP_reseni.Views;
 
 public partial class ModifySubCategory : ContentPage
 {
-	public ModifySubCategory()
+	public ModifySubCategory(ModifySubCategoryViewModel modifySubCategoryViewModel)
 	{
 		InitializeComponent();
-        BindingContext = new ModifySubCategoryViewModel();
+        BindingContext = modifySubCategoryViewModel;
 
     }
 }

@@ -10,6 +10,7 @@ using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using System.Collections;
+using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
@@ -41,7 +42,7 @@ namespace IMP_reseni.ViewModels
                     }
                     if (ListOfSubCategory.Count == 0)
                     {
-                        foreach (var item in App.saveholder.FindCategoryByName(value).GetSubCategoriesNames())
+                        foreach (var item in saveholder.FindCategoryByName(value).GetSubCategoriesNames())
                         {
                             ListOfSubCategory.Add(item);
                         }
@@ -65,7 +66,7 @@ namespace IMP_reseni.ViewModels
                     {
                         ListOfItem.Clear();
                     }
-                    foreach (var item in App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames())
+                    foreach (var item in saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames())
                     {
                         ListOfItem.Add(item);
                     }
@@ -88,14 +89,14 @@ namespace IMP_reseni.ViewModels
                 {
                     Text = value;
                     Items item = new Items();              
-                    item =App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
+                    item =saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
                     itemId = item.Id;
                     Count = item.Stock.ToString();
                     BuyPrice=item.BuyCost.ToString();
                     SellPrice=item.SellCost.ToString();
                     DisableCheck = item.Disabled;
                     SorChecked = item.SoR;
-                    SelectedSupplier = App.saveholder.FindSupplier(item.SupplierId).Name;
+                    SelectedSupplier = saveholder.FindSupplier(item.SupplierId).Name;
                 }
             }
         }
@@ -158,16 +159,18 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ModifyItemViewModel()
+        private SaveHolder saveholder;
+        public ModifyItemViewModel(SaveHolder Saveholder)
         {
+            saveholder = Saveholder;
             ListOfSubCategory = new ObservableCollection<string>();
             ListOfItem = new ObservableCollection<string>();
             //BindingBase.EnableCollectionSynchronization(ListOfSubCategory,null, ObservableCollectionCallback);
             //BindingBase.EnableCollectionSynchronization(ListOfItem, null, ObservableCollectionCallback);
 
-            ListOfSupplier = new List<string>(App.saveholder.GetSupplierNames());
+            ListOfSupplier = new List<string>(saveholder.GetSupplierNames());
             DefaultedValues();
-            List<string> list = new List<string>(App.saveholder.GetCategoriesNames());
+            List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
             ListOfCategory = new List<string>(list);
 
@@ -179,7 +182,7 @@ namespace IMP_reseni.ViewModels
             //        accessMethod?.Invoke();
             //    }
             //}
-            list =new List<string>(App.saveholder.GetSupplierNames());
+            list =new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new List<string>(list);
             ModifyCommand = new Command<string>(
@@ -188,13 +191,13 @@ namespace IMP_reseni.ViewModels
               SubCategory subCategory = new SubCategory();
               Category category = new Category();
               Items item=new Items();
-              category = App.saveholder.FindCategoryByName(SelectedCategory);
+              category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
               //item = subCategory.FindItemByName(name);
               item.Id =itemId;
-              item.Create(name,DisableCheck,Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),SorChecked, App.saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
-              App.saveholder.ModifyItem(category, subCategory, item);
-              App.saveholder.Save();
+              item.Create(name,DisableCheck,Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
+              saveholder.ModifyItem(category, subCategory, item);
+              saveholder.Save();
               Toast.Make("Položka změněna").Show();
               DefaultedValues();
               SelectedItem = null;

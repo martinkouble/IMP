@@ -10,6 +10,7 @@ using System.Windows.Input;
 using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
+using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
@@ -47,10 +48,10 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public NewSubCategoryViewModel()
+        public NewSubCategoryViewModel(SaveHolder saveholder)
 
         {
-            ListOfCategory = new List<string>(App.saveholder.GetCategoriesNames());
+            ListOfCategory = new List<string>(saveholder.GetCategoriesNames());
 
             //SelectedIndexChanged += (object sender, EventArgs e) => 
             //{
@@ -63,9 +64,9 @@ namespace IMP_reseni.ViewModels
             {
                 SubCategory newSubCategory = new SubCategory();
                 newSubCategory.Name = name;
-                int categoryId= App.saveholder.FindCategoryByName(SelectedItem).Id;
-                App.saveholder.AddSubCategory(categoryId, newSubCategory);
-                App.saveholder.Save();
+                int categoryId= saveholder.FindCategoryByName(SelectedItem).Id;
+                saveholder.AddSubCategory(categoryId, newSubCategory);
+                saveholder.Save();
                 Toast.Make("Nová PodKategorie vytvořena").Show();
                 Text = "";
             });

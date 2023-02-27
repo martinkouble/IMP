@@ -4,10 +4,10 @@ namespace IMP_reseni.Views;
 public partial class Basket : ContentPage
 {
 
-    public Basket()
+    public Basket(BasketViewModel basketViewModel)
 	{
 		InitializeComponent();
-        BindingContext = new BasketViewModel();
+        BindingContext = basketViewModel;
     }
 
 }

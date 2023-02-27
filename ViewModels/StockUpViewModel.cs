@@ -16,7 +16,8 @@ namespace IMP_reseni.ViewModels
 {
     public class StockUpViewModel : INotifyPropertyChanged
     {
-        private List<Category> source = App.saveholder.Inventory;
+        //private List<Category> source = saveholder.Inventory;
+        private List<Category> source;
 
         public ICommand NavigateCommand { get; private set; }
         public ICommand ItemSelect { get; private set; }
@@ -34,20 +35,18 @@ namespace IMP_reseni.ViewModels
             get { return _selectedItem; }
         }
 
-
         private string _typeOfItems;
         public string TypeOfItems
         {
             set { SetProperty(ref _typeOfItems, value); }
             get { return _typeOfItems; }
         }
-
-        public StockUpViewModel(ContentPage _page) 
+        public StockUpViewModel(ContentPage _page,SaveHolder saveholder) 
         {
-
+            source = saveholder.Inventory;
             TypeOfItems = "Kategorie";
 
-            ItemsList = new ObservableCollection<object>(App.saveholder.Inventory);
+            ItemsList = new ObservableCollection<object>(saveholder.Inventory);
 
             NavigateCollectionCommand = new Command<string>(
             (string Direction) =>

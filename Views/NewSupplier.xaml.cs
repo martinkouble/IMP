@@ -2,9 +2,9 @@ namespace IMP_reseni.Views;
 using IMP_reseni.ViewModels;
 public partial class NewSupplier : ContentPage
 {
-	public NewSupplier()
+	public NewSupplier(NewSupplierViewModel newSupplierViewModel)
 	{
 		InitializeComponent();
-		BindingContext=new NewSupplierViewModel();
+		BindingContext= newSupplierViewModel;
 	}
 }

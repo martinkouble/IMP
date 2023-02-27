@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,12 @@ namespace IMP_reseni.ViewModels
            NavigateCommand = new Command<Type>(
            async (Type _targetPageType) =>
            {
-               Page _targetPage = (Page)Activator.CreateInstance(_targetPageType);
-               await _page.Navigation.PushAsync(_targetPage);
+               //Page _targetPage = (Page)Activator.CreateInstance(_targetPageType);
+               //await _page.Navigation.PushAsync(_targetPage);
+
+               var method = typeof(NavigationExtensions).GetMethods().Where(x => x.Name == "PushAsync").ElementAt(0);
+               MethodInfo generic = method.MakeGenericMethod(_targetPageType);
+               generic.Invoke(_page, new object[1] { _page.Navigation });
            }
            );
         }

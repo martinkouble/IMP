@@ -21,16 +21,9 @@ namespace IMP_reseni.ViewModels
             {
                 //Page _targetPage = (Page)Activator.CreateInstance(_targetPageType);
                 //await _page.Navigation.PushAsync(_targetPage);
-
-
                 var method = typeof(NavigationExtensions).GetMethods().Where(x => x.Name == "PushAsync").ElementAt(0);
                 MethodInfo generic = method.MakeGenericMethod(_targetPageType);
                 generic.Invoke(_page, new object[1] { _page.Navigation });
-
-
-                //var method = typeof(NavigationPage).GetMethods();
-
-
             }
             );
         }

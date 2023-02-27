@@ -18,7 +18,8 @@ namespace IMP_reseni.ViewModels
     {
         //        await Navigation.PushAsync(new Views.Login());
         //public IList<Items> Items { get; private set; }
-        private List<Category> source=App.saveholder.Inventory;
+        //private List<Category> source=App.saveholder.Inventory;
+        private List<Category> source;
         //private Category[] source = new[] {
         //    new Category
         //        {
@@ -117,21 +118,21 @@ namespace IMP_reseni.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-      
+        private SaveHolder saveholder;
         public MainPageViewModel()
         {
         }
-        public MainPageViewModel(ContentPage _page)
+        public MainPageViewModel(ContentPage _page,SaveHolder saveholder)
         {
             //SaveHolder h = App.saveholder;
             //source = h.Inventory;
             //h.Save();
             //h.Load();
-
-
+            source = saveholder.Inventory;
+            this.saveholder = saveholder;
             TypeOfItems = "Kategorie";
 
-            ItemsList = new ObservableCollection<object>(App.saveholder.Inventory);
+            ItemsList = new ObservableCollection<object>(saveholder.Inventory);
 
             NavigateCommand = new Command(
             async () =>
