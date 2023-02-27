@@ -7,10 +7,24 @@
              Title="MyPopup"
              BackgroundColor="Transparent"
              CloseWhenBackgroundIsClicked="False">
-    <VerticalStackLayout WidthRequest="250" HeightRequest="250" VerticalOptions="CenterAndExpand" BackgroundColor="Blue">
-        <VerticalStackLayout>
-            <ActivityIndicator IsRunning="True" />
-            <Label Text="Loading..." />
+    <Grid WidthRequest="100" HeightRequest="100" BackgroundColor="DarkGrey">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Column="0"
+                             Grid.Row="1">
+            <ActivityIndicator IsRunning="True" 
+                               HeightRequest="80" 
+                               WidthRequest="80"
+                               Color="{StaticResource Primary}"/>
+            <Label Text="Načítání..."  
+                   HorizontalTextAlignment="Center"/>
         </VerticalStackLayout>
-    </VerticalStackLayout>
+    </Grid>
 </mopups:PopupPage>

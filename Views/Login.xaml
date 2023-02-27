@@ -15,9 +15,10 @@
             />
         <!--Background="#D9D9D9"-->
         <Border       
-        VerticalOptions="FillAndExpand">
+        VerticalOptions="FillAndExpand"
+        BackgroundColor="{AppThemeBinding Light=#D9D9D9, Dark={x:StaticResource Gray900}}">
         <Entry Placeholder="Zadejte heslo" 
-               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
                FontSize="Large"
                IsPassword="True"
                Text="{Binding Passwd}"

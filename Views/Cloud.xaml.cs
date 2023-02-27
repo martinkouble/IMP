@@ -13,10 +13,10 @@ public partial class Cloud : ContentPage
     //	BindingContext= new CloudViewModel();
     //}
 
-    public Cloud(CloudService cloudService)
+    public Cloud(CloudService cloudService, CloudViewModel cloudViewModel)
 	{
 		InitializeComponent();
-		BindingContext =new CloudViewModel(cloudService,this);
+		BindingContext = cloudViewModel;
  
     }
     

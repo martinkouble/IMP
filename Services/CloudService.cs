@@ -36,8 +36,30 @@ namespace IMP_reseni.Services
                 return Preferences.Default.Get("CloudTimerInterval", 0);
             }
         }
-        public string Email { get;private set; }
-        public string Password { get;private set; }
+        public string Email 
+        {
+            private set
+            {
+                Preferences.Default.Set("Email", value);
+            }
+            get
+            {
+                return Preferences.Default.Get("Email", "");
+            }
+        }
+
+        private string _password;
+        public string Password
+        {
+            private set
+            {
+                SecureStorage.Default.SetAsync("CloudPassword", value);
+            }
+            get
+            {
+                return SecureStorage.Default.GetAsync("CloudPassword").Result;
+            }
+        }
         private SaveHolder saveHolder;
         public bool IsEnabled {
             set
@@ -110,6 +132,7 @@ namespace IMP_reseni.Services
             {
                 client.Login(Email, Password);
                 client.Logout();
+                Toast.Make("Údaje ověřeny").Show();
             }
             catch
             {

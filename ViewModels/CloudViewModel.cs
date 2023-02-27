@@ -72,8 +72,10 @@ namespace IMP_reseni.ViewModels
         public ICommand TestCommand { get; set; }
         public List<string> TimeTable { get;private set; }
         private IDictionary<string, int> Times;
-        public CloudViewModel(CloudService cloudService, Cloud Cloud)
+        public CloudViewModel(CloudService cloudService)
         {
+            Email = cloudService.Email;
+            Password = cloudService.Password;
             Times = new Dictionary<string,int>
             {
                 {  "Nikdy" ,0},
@@ -117,7 +119,8 @@ namespace IMP_reseni.ViewModels
             {
                 await MopupService.Instance.PushAsync(new SpinnerPopup());
                 cloudService.SetLogin(Email, Password);
-                await Toast.Make("Údaje ověřeny").Show();
+                await MopupService.Instance.PopAsync();
+
                 //MegaApiClient client = new MegaApiClient();
                 //client.Login(Email, Password);
                 //IEnumerable<INode> nodes = client.GetNodes();

@@ -26,7 +26,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<CloudService>();
 
-        builder.Services.AddTransient<Cloud>();
+        builder.Services.AddTransient<Cloud,CloudViewModel>();
         builder.Services.UsePageResolver();
         return builder.Build();
 	}
