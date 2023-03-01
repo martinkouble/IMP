@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
-
+using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
@@ -30,7 +30,7 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public NewCategoryViewModel() 
+        public NewCategoryViewModel(SaveHolder saveholder) 
         {
             Text = "";
             CreateCommand = new Command<string>(
@@ -50,11 +50,18 @@ namespace IMP_reseni.ViewModels
             {
                 Category newCategory = new Category();
                 newCategory.Name = name;
+                if(!saveholder.ExistCategoryByName(name))
+                {
+                    saveholder.AddCategory(newCategory);
+                    saveholder.Save();
+                    Toast.Make("Nová kategorie vytvořena").Show();
+                    Text = "";
+                }
+                else
+                {
+                    Toast.Make("Kategorie s tímto jménem již existuje").Show();
+                }
 
-                App.saveholder.AddCategory(newCategory);
-                App.saveholder.Save();
-                Toast.Make("Nová kategorie vytvořena").Show();
-                Text = "";
             });
 
             UploadOPictureCommand = new Command(

@@ -162,25 +162,34 @@ namespace IMP_reseni.ViewModels
             {
                 Items newItem = new Items();
                 //newItem.Name = name;
-                int categoryId = saveholder.FindCategoryByName(SelectedCategory).Id;
-                int subCategoryId = saveholder.FindCategory(categoryId).FindSubCategoryByName(SelectedSubCategory).Id;
+                Category category = saveholder.FindCategoryByName(SelectedCategory);
+                int categoryId = category.Id;
+                SubCategory subCategory = saveholder.FindCategory(categoryId).FindSubCategoryByName(SelectedSubCategory);
+                int subCategoryId = subCategory.Id;
+                if (!subCategory.ExistItemByName(name))
+                {
+                    newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
 
-                newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id,categoryId,subCategoryId);
-                
-                newItem.SellCost = Convert.ToInt32(SellPrice);
-                newItem.BuyCost = Convert.ToInt32(BuyPrice);
-                newItem.SoR = SorCheck;
-                newItem.Stock = Convert.ToInt32(Count);
-                newItem.Disabled = DisableCheck;
-                newItem.SupplierId = saveholder.FindSupplierByName(SelectedSupplier).Id;
+                    newItem.SellCost = Convert.ToInt32(SellPrice);
+                    newItem.BuyCost = Convert.ToInt32(BuyPrice);
+                    newItem.SoR = SorCheck;
+                    newItem.Stock = Convert.ToInt32(Count);
+                    newItem.Disabled = DisableCheck;
+                    newItem.SupplierId = saveholder.FindSupplierByName(SelectedSupplier).Id;
 
-                //newItem.CategoryId = categoryId;
-                //newItem.SubCategoryId = subCategoryId;
+                    //newItem.CategoryId = categoryId;
+                    //newItem.SubCategoryId = subCategoryId;
 
-                saveholder.AddItem(categoryId, subCategoryId, newItem);
-                saveholder.Save();
-                Toast.Make("Nová položka vytvořena").Show();
-                DefaultedValues();
+                    saveholder.AddItem(categoryId, subCategoryId, newItem);
+                    saveholder.Save();
+                    Toast.Make("Nová položka vytvořena").Show();
+                    DefaultedValues();
+                }
+                else
+                {
+                    Toast.Make("Položka s tímto jménem již existuje").Show();
+                }
+
             });
         }
 

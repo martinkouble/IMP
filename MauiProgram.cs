@@ -46,7 +46,11 @@ public static class MauiProgram
         builder.Services.AddTransient<ModifyItem, ModifyItemViewModel>();
         builder.Services.AddTransient<ModifySupplier, ModifySupplierViewModel>();
 
-
+        builder.Services.AddTransient<Delete>();
+        builder.Services.AddTransient<DeleteCategory, DeleteCategoryViewModel>();
+        builder.Services.AddTransient<DeleteSubCategory, DeleteSubCategoryViewModel>();
+        builder.Services.AddTransient<DeleteItem, DeleteItemViewModel>();
+        builder.Services.AddTransient<DeleteSupplier, DeleteSupplierViewModel>();
         builder.Services.UsePageResolver();
         return builder.Build();
 	}

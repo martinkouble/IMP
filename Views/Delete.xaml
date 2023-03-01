@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMP_reseni.Views.Delete"
+             xmlns:controls="clr-namespace:IMP_reseni.Controls"
+             xmlns:Views="clr-namespace:IMP_reseni.Views"
+             Title="Smazat">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="FontSize" Value="Title" />
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="BackgroundColor" Value="#FFA500"/>
+        </Style>
+    </ContentPage.Resources>
+    <Border            
+        Margin="25,75,25,75"
+        Padding="50"
+        StrokeShape="RoundRectangle 20"
+        BackgroundColor="#7B2CBF" StrokeThickness="0">
+        <FlexLayout 
+             Direction="Column"
+             AlignItems="Stretch"
+             JustifyContent="SpaceEvenly">
+            <Button Text="Kategorie"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:DeleteCategory}"/>
+
+            <Button Text="PodKatogorie"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:DeleteSubCategory}"/>
+
+            <Button Text="Dodavatel"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:DeleteSupplier}"/>
+
+            <Button Text="Položka"
+                     Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:DeleteItem}"/>
+        </FlexLayout>
+    </Border>
+</ContentPage>

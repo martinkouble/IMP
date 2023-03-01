@@ -14,14 +14,13 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifySupplierViewModel :  INotifyPropertyChanged
+    public class DeleteSupplierViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfSupplier { get; set; }
 
         public ICommand ModifyCommand { get; set; }
 
         private string _selectedSupplier;
-
         public string SelectedSupplier
         {
             set
@@ -35,21 +34,14 @@ namespace IMP_reseni.ViewModels
 
             get { return _selectedSupplier; }
         }
-
         private string _text;
         public string Text
         {
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public DeleteSupplierViewModel(SaveHolder saveholder)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public ModifySupplierViewModel(SaveHolder saveholder)
-        {
-            //Text = "";
             List<string> list = new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new ObservableCollection<string>(list);
@@ -72,30 +64,26 @@ namespace IMP_reseni.ViewModels
                 Supplier supplier = new Supplier();
                 supplier = saveholder.FindSupplierByName(SelectedSupplier);
                 supplier.Name = name;
-                if (!saveholder.ExistSupplierByName(name))
+                saveholder.DeleteSupplier(supplier);
+                saveholder.Save();
+                Toast.Make("Dodavatel smazán").Show();
+                Text = "";
+                SelectedSupplier = null;
+                List<string> list = new List<string>(saveholder.GetSupplierNames());
+                list.Sort();
+                ListOfSupplier.Clear();
+                foreach (var Item in list)
                 {
-                    saveholder.ModifySupplier(supplier);
-                    saveholder.Save();
-                    Toast.Make("Dodavatel změněn").Show();
-                    Text = "";
-                    SelectedSupplier = null;
-                    List<string> list = new List<string>(saveholder.GetSupplierNames());
-                    list.Sort();
-                    ListOfSupplier.Clear();
-                    foreach (var Item in list)
-                    {
-                        ListOfSupplier.Add(Item);
-                    }
+                    ListOfSupplier.Add(Item);
                 }
-                else
-                {
-                    Toast.Make("Dodavatel s tímto jménem již existuje").Show();
-                }
-
             });
         }
 
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))

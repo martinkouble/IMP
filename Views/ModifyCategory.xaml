@@ -27,7 +27,6 @@
                 SelectedItem="{Binding SelectedCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 >
             </Picker>
         </Border>

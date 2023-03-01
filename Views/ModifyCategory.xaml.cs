@@ -6,6 +6,5 @@ public partial class ModifyCategory : ContentPage
 	{
 		InitializeComponent();
         BindingContext = modifyCategoryViewModel;
-
     }
 }

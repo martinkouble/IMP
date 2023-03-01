@@ -32,8 +32,8 @@ namespace IMP_reseni.Services
             }
             this.Order.OrderCompletion = DateTime.Now;
             App.saveholder.AddToOrderHistory(this.Order);
+            Order = new Order();
             /*
-            MainActivity.main.TryShowBasketButton(false);
             MyApplication.myapp.Basket = new BasketHolder();*/
         }
         public void AddItemToBasket(OrderItem item)
@@ -56,6 +56,10 @@ namespace IMP_reseni.Services
             foreach (OrderItem o in found)
                 output += o.Amount;
             return output;
+        }
+        public bool ExistItem(Items item)
+        {
+            return Items.Any(x=>x.CategoryId==item.CategoryId && x.SubCategoryId==item.CategoryId && x.ItemId==item.Id);
         }
         public BasketHolder()
         {

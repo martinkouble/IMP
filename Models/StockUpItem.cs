@@ -53,19 +53,19 @@ namespace IMP_reseni.Models
                 return false;
             return true;
         }
-        /*
-        public bool CompleteDeleting(int SelectedStockUpCategoryId, int SelectedStockUpSubCategoryId, int SelectedStockUpItemId)
-        {
-            if (!Completed && CategoryId != default(int) && SubCategoryId != default(int) && ItemId != default(int))
-            {
-                SaveHolder saveHolder = App.saveholder;
-                Items item = saveHolder.FindCategory(SelectedStockUpCategoryId).FindSubCategory(SelectedStockUpSubCategoryId).FindItem(SelectedStockUpItemId);
-                this.Completed = true;
-                saveHolder.RemoveToStockUpHistory(this);
-            }
-            else
-                return false;
-            return true;
-        }*/
+        
+        //public bool CompleteDeleting(int SelectedStockUpCategoryId, int SelectedStockUpSubCategoryId, int SelectedStockUpItemId)
+        //{
+        //    if (!Completed && CategoryId != default(int) && SubCategoryId != default(int) && ItemId != default(int))
+        //    {
+        //        SaveHolder saveHolder = App.saveholder;
+        //        Items item = saveHolder.FindCategory(SelectedStockUpCategoryId).FindSubCategory(SelectedStockUpSubCategoryId).FindItem(SelectedStockUpItemId);
+        //        this.Completed = true;
+        //        saveHolder.RemoveToStockUpHistory(this);
+        //    }
+        //    else
+        //        return false;
+        //    return true;
+        //}
     }
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.NewSubCategory"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="IMP_reseni.Views.DeleteSubCategory"
+                          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="NewSubCategory">
+             Title="DeleteSubCategory">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 
                 x:Key="VariableMultiValueConverter"
                 ConditionType="Exact"
-                Count="2" />
+                Count="3" />
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
@@ -19,20 +19,31 @@
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>
-
     <StackLayout Margin="75">
+
         <Border StyleClass="PickerBorder"
                 Margin="0,0,0,80"
                 >
-        <Picker Title="Zvol Kategorii"
+            <Picker Title="Zvol Kategorii"
                 x:Name="Picker"
                 ItemsSource="{Binding ListOfCategory}"
-                SelectedItem="{Binding SelectedItem}"
+                SelectedItem="{Binding SelectedCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
                 />
         </Border>
 
+        <Border StyleClass="PickerBorder"
+                Margin="0,0,0,80"
+                >
+            <Picker Title="Zvol Kategorii"
+                x:Name="SubCategoryPicker"
+                ItemsSource="{Binding ListOfSubCategory}"
+                SelectedItem="{Binding SelectedSubCategory}"
+                HorizontalTextAlignment="Center"
+                FontSize="Large"
+                />
+        </Border>
         <Label Text="Název Podkategorie" 
                HorizontalOptions="Center"
                FontSize="Large"
@@ -49,21 +60,17 @@
         />
         </Border>
 
-        <Button Text="{Binding UploadButtonText}"       
-                HorizontalOptions="Center"
-                Margin="0,0,0,60"
-                Command="{Binding UploadOPictureCommand}"/>
 
-
-        <Button Text="Vytvořit Kategorii"
+        <Button Text="Potvrdit"
                 HorizontalOptions="Center"
-                Command="{Binding CreateCommand}"
+                Command="{Binding ModifyCommand}"
                 CommandParameter="{Binding Source={x:Reference Entry},
                                             Path=Text}">
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Picker}" Path="SelectedItem.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>

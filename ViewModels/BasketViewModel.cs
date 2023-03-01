@@ -35,7 +35,7 @@ namespace IMP_reseni.ViewModels
         }
         byte[] buffer;
         NetworkStream outStream;
-        public BasketViewModel() 
+        public BasketViewModel(BasketHolder basketHolder) 
         {
             BasketItems=new ObservableCollection<OrderItem>();
             foreach (var item in App.basketHolder.Items)
@@ -45,32 +45,36 @@ namespace IMP_reseni.ViewModels
             Button_Clicked = new Command(
            async () =>
            {
-               PermissionStatus status=PermissionStatus.Granted;
-               //PermissionStatus status=await Permissions.RequestAsync<MyBluetoothPermission>();
-               //PermissionStatus status= await CheckAndRequestContactsReadPermission();
-               // PermissionStatus status =await Permissions.CheckStatusAsync<MyBluetoothPermission>();
-               if (status == PermissionStatus.Granted)
+               if (basketHolder.Items.Count!=0)
                {
-                   var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
-                   BluetoothClient client = new BluetoothClient();
-                   var address = picker.DeviceAddress;
-                   //ulong sevenItems = 0x020000000000;
-                   //BluetoothAddress address = new BluetoothAddress(sevenItems);
-                   //bool paired = BluetoothSecurity.PairRequest(address, "0000");
+                   //PermissionStatus status = PermissionStatus.Granted;
+                   PermissionStatus status=await Permissions.RequestAsync<MyBluetoothPermission>();
+                   //PermissionStatus status= await CheckAndRequestContactsReadPermission();
+                   // PermissionStatus status =await Permissions.CheckStatusAsync<MyBluetoothPermission>();
+                   if (status == PermissionStatus.Granted)
+                   {
+                       var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                       BluetoothClient client = new BluetoothClient();
+                       var address = picker.DeviceAddress;
+                       //ulong sevenItems = 0x020000000000;
+                       //BluetoothAddress address = new BluetoothAddress(sevenItems);
+                       //bool paired = BluetoothSecurity.PairRequest(address, "0000");
 
-                   //var guid = picker.GetRfcommServicesAsync().Result.;
-                   //var guid =await picker.GetRfcommServicesAsync();
-                   //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
-                   var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
-                   client.Connect(address, guid);
-                   
-                   outStream = client.GetStream();
-                   Printer.output.Add(0x1B);
-                   Printer.output.Add(0x40);
-                   buffer = Printer.output.ToArray();
-                   ReceiptPrint();
-                   client.Close();
+                       //var guid = picker.GetRfcommServicesAsync().Result.;
+                       //var guid =await picker.GetRfcommServicesAsync();
+                       //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
+                       var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
+                       client.Connect(address, guid);
+
+                       outStream = client.GetStream();
+                       Printer.output.Add(0x1B);
+                       Printer.output.Add(0x40);
+                       buffer = Printer.output.ToArray();
+                       ReceiptPrint();
+                       client.Close();
+                   }
                }
+          
            });
 
             DeleteCommand = new Command<OrderItem>(

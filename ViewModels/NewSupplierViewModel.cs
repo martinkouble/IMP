@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
-
+using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
@@ -29,7 +29,7 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public NewSupplierViewModel()
+        public NewSupplierViewModel(SaveHolder saveholder)
         {
             Text = "";
             CreateCommand = new Command<string>(
@@ -48,11 +48,18 @@ namespace IMP_reseni.ViewModels
             {
                 Supplier newSupplier = new Supplier();
                 newSupplier.Name = name;
+                if (!saveholder.ExistSupplierByName(name))
+                {
+                    saveholder.AddSupplier(newSupplier);
+                    saveholder.Save();
+                    Toast.Make("Nový dodavatel vytvořen").Show();
+                    Text = "";
+                }
+                else
+                {
+                    Toast.Make("Dodavatel s tímto jménem již existuje").Show();
+                }
 
-                App.saveholder.AddSupplier(newSupplier);
-                App.saveholder.Save();
-                Toast.Make("Nový dodavatel vytvořen").Show();
-                Text = "";
             });
         }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)

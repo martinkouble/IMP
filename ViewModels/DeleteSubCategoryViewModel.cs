@@ -13,7 +13,7 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifySubCategoryViewModel : INotifyPropertyChanged
+    public class DeleteSubCategoryViewModel : INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public ObservableCollection<string> ListOfSubCategory { get; set; }
@@ -43,15 +43,15 @@ namespace IMP_reseni.ViewModels
 
         private string _selectedSubCategory;
 
-        public string SelectedSubCategory 
+        public string SelectedSubCategory
         {
             get { return _selectedSubCategory; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedSubCategory, value);
-                if(value!= "") 
+                if (value != "")
                 {
-                    Text=value;
+                    Text = value;
                 }
             }
         }
@@ -64,12 +64,7 @@ namespace IMP_reseni.ViewModels
         }
         private SaveHolder saveholder;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public ModifySubCategoryViewModel(SaveHolder saveholder)
+        public DeleteSubCategoryViewModel(SaveHolder saveholder)
         {
             this.saveholder = saveholder;
             Text = "";
@@ -79,38 +74,34 @@ namespace IMP_reseni.ViewModels
             ListOfSubCategory = new ObservableCollection<string>();
             ModifyCommand = new Command<string>(
            (string name) =>
-            {
-                SubCategory subCategory = new SubCategory();
-                Category category = new Category();
+           {
+               SubCategory subCategory = new SubCategory();
+               Category category = new Category();
 
-                category = saveholder.FindCategoryByName(SelectedCategory);
-                subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-                subCategory.Name = name;
-                if (!category.ExistSubCategoryByName(name))
-                {
-                    saveholder.ModifySubCategory(category, subCategory);
-                    saveholder.Save();
-                    Toast.Make("Podkategorie změněna").Show();
-                    Text = "";
-                    //SelectedCategory = null;
-                    SelectedSubCategory = null;
-                    list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
-                    list.Sort();
-                    ListOfSubCategory.Clear();
-                    foreach (var Item in list)
-                    {
-                        ListOfSubCategory.Add(Item);
-                    }
-                }
-                else
-                {
-                    Toast.Make("Podkategorie s tímto jménem již existuje").Show();
-                }
-
-            });
+               category = saveholder.FindCategoryByName(SelectedCategory);
+               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
+               saveholder.DeleteSubCategory(category, subCategory);
+               saveholder.Save();
+               Toast.Make("Podkategorie smazána").Show();
+               Text = "";
+               //SelectedCategory = null;
+               SelectedSubCategory = null;
+               list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
+               list.Sort();
+               ListOfSubCategory.Clear();
+               foreach (var Item in list)
+               {
+                   ListOfSubCategory.Add(Item);
+               }
+           });
         }
 
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))

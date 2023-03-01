@@ -136,8 +136,15 @@ namespace IMP_reseni.ViewModels
                 },
                 execute: (string Count) =>
                 {
-                    AddItemToBasket(item);
-                    _page.Navigation.PopAsync();
+                    if (!App.basketHolder.ExistItem(item))
+                    {
+                        AddItemToBasket(item);
+                        _page.Navigation.PopAsync();
+                    }
+                    else
+                    {
+
+                    }
                 });
         }
         public void AddItemToBasket(Items item)

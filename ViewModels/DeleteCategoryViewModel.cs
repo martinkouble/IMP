@@ -13,7 +13,7 @@ using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifyCategoryViewModel : INotifyPropertyChanged
+    public class DeleteCategoryViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<string> ListOfCategory { get; set; }
 
@@ -23,8 +23,8 @@ namespace IMP_reseni.ViewModels
 
         public string SelectedCategory
         {
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedCategory, value);
                 if (value != "")
                 {
@@ -41,17 +41,11 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public DeleteCategoryViewModel(SaveHolder saveholder)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public ModifyCategoryViewModel(SaveHolder saveholder)
-        {
-            //Text = "";
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
-            ListOfCategory =new ObservableCollection<string>(list);
+            ListOfCategory = new ObservableCollection<string>(list);
 
             ModifyCommand = new Command<string>(
             canExecute: (string name) =>
@@ -70,31 +64,25 @@ namespace IMP_reseni.ViewModels
             {
                 Category category = new Category();
                 category = saveholder.FindCategoryByName(SelectedCategory);
-                category.Name = name;
-                if (!saveholder.ExistCategoryByName(name))
+                saveholder.DeleteCategory(category);
+                saveholder.Save();
+                Toast.Make("kategorie smazána").Show();
+                Text = "";
+                SelectedCategory = null;
+                List<string> list = new List<string>(saveholder.GetCategoriesNames());
+                list.Sort();
+                ListOfCategory.Clear();
+                foreach (var Item in list)
                 {
-                    saveholder.ModifyCategory(category);
-                    saveholder.Save();
-                    Toast.Make("kategorie změněna").Show();
-                    Text = "";
-                    SelectedCategory = null;
-                    List<string> list = new List<string>(saveholder.GetCategoriesNames());
-                    list.Sort();
-                    ListOfCategory.Clear();
-                    foreach (var Item in list)
-                    {
-                        ListOfCategory.Add(Item);
-                    }
+                    ListOfCategory.Add(Item);
                 }
-                else
-                {
-                    Toast.Make("Kategorie s tímto jménem již existujes").Show();
-                }
-
             });
         }
-
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))

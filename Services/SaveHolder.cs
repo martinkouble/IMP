@@ -33,7 +33,7 @@ namespace IMP_reseni.Services
             Suppliers = new List<Supplier>();
             StockUpHistory= new List<StockUpItem>();
             OrderHistory=new List<Order>();
-    }
+        }
 
     private void SetSaveHolderProperties(SaveHolder save)
         {
@@ -118,6 +118,10 @@ namespace IMP_reseni.Services
         {
             return this.Inventory.Find(f => f.Name == categoryName);
         }
+        public bool ExistCategoryByName(string categoryName)
+        {
+            return this.Inventory.Any(f => f.Name == categoryName);
+        }
         public List<string> GetCategoriesNames(bool getDisabled = false)
         {
             List<string> output = new List<string>();
@@ -140,9 +144,14 @@ namespace IMP_reseni.Services
            if(index != -1)
               Inventory[index] = category;
         }
+        public void DeleteCategory(Category category)
+        {
+            int index = Inventory.FindIndex(f => f.Id == category.Id);
+            if (index != -1)
+                Inventory.RemoveAt(index);
+        }
 
         //Subcategory
-
         public void AddSubCategory(int categoryId, SubCategory subCategory)
         {
             FindCategory(categoryId).AddSubCategory(subCategory);
@@ -157,6 +166,19 @@ namespace IMP_reseni.Services
                Inventory[index].SubCategories[subCategoryIndex] = subCategory;
             }
         }
+
+        public void DeleteSubCategory(Category category, SubCategory subCategory)
+        {
+            int index = Inventory.FindIndex(f => f.Id == category.Id);
+            if (index != -1)
+            {
+                int subCategoryIndex = Inventory[index].SubCategories.FindIndex(f => f.Id == subCategory.Id);
+                Inventory[index].SubCategories.RemoveAt(subCategoryIndex);
+            }
+        }
+
+
+
         //Item
         public void AddItem(int categoryId, int subCategoryId, Items item)
         {
@@ -171,6 +193,16 @@ namespace IMP_reseni.Services
                 int subCategoryIndex = Inventory[index].SubCategories.FindIndex(f => f.Id == subCategory.Id);
                 int itemIndex = Inventory[index].SubCategories[subCategoryIndex].Items.FindIndex(f => f.Id == item.Id);
                 Inventory[index].SubCategories[subCategoryIndex].Items[itemIndex] = item;
+            }
+        }
+        public void DeleteItem(Category category, SubCategory subCategory, Items item)
+        {
+            int index = Inventory.FindIndex(f => f.Id == category.Id);
+            if (index != -1)
+            {
+                int subCategoryIndex = Inventory[index].SubCategories.FindIndex(f => f.Id == subCategory.Id);
+                int itemIndex = Inventory[index].SubCategories[subCategoryIndex].Items.FindIndex(f => f.Id == item.Id);
+                Inventory[index].SubCategories[subCategoryIndex].Items.RemoveAt(itemIndex);
             }
         }
         //Supplier
@@ -203,6 +235,10 @@ namespace IMP_reseni.Services
         {
             return this.Suppliers.Find(f => f.Id == supplierId);
         }
+        public bool ExistSupplierByName(string supplierName)
+        {
+            return this.Suppliers.Any(f => f.Name == supplierName);
+        }
         public List<string> GetSupplierNames()
         {
             List<string> output = new List<string>();
@@ -218,12 +254,20 @@ namespace IMP_reseni.Services
                 Suppliers[index] = supplier;
         }
 
+        public void DeleteSupplier(Supplier supplier)
+        {
+            int index = Inventory.FindIndex(f => f.Id == supplier.Id);
+            if (index != -1)
+                Suppliers.RemoveAt(index);
+        }
+
         //StockUpItem
         public void AddToStockUpHistory(StockUpItem stockUp)
         {
             StockUpHistory.Add(stockUp);
             this.Save();
         }
+
         public void RemoveToStockUpHistory(StockUpItem stockUp)
         {
             StockUpHistory.Remove(stockUp);

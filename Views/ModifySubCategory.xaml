@@ -30,7 +30,6 @@
                 SelectedItem="{Binding SelectedCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 />
         </Border>
 
@@ -43,7 +42,6 @@
                 SelectedItem="{Binding SelectedSubCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 />
         </Border>
         <Label Text="Název Podkategorie" 

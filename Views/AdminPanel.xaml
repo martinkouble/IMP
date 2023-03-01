@@ -32,7 +32,9 @@
             <Button Text="Upravit"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Modify}"/>
-            
+            <Button Text="Smazat"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Type Views:Delete}"/>
             <Button Text="Učetnictví"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Accounting}"/>

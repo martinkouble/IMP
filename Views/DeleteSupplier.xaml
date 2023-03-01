@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.ModifySupplier"
-              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="IMP_reseni.Views.DeleteSupplier"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="ModifySupplier">
+             Title="DeleteSupplier">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 

@@ -43,6 +43,10 @@ namespace IMP_reseni.Models
         {
             return this.SubCategories.Find(f => f.Name == subCategoryName);
         }
+        public bool ExistSubCategoryByName(string subCategoryName)
+        {
+            return this.SubCategories.Any(f => f.Name == subCategoryName);
+        }
         public SubCategory FindSubCategory(int subCategoryId)
         {
             return this.SubCategories.Find(f => f.Id == subCategoryId);

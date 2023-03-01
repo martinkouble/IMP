@@ -64,11 +64,20 @@ namespace IMP_reseni.ViewModels
             {
                 SubCategory newSubCategory = new SubCategory();
                 newSubCategory.Name = name;
-                int categoryId= saveholder.FindCategoryByName(SelectedItem).Id;
-                saveholder.AddSubCategory(categoryId, newSubCategory);
-                saveholder.Save();
-                Toast.Make("Nová PodKategorie vytvořena").Show();
-                Text = "";
+                Category category = saveholder.FindCategoryByName(SelectedItem);
+                int categoryId= category.Id;
+                if (!category.ExistSubCategoryByName(name))
+                {
+                    saveholder.AddSubCategory(categoryId, newSubCategory);
+                    saveholder.Save();
+                    Toast.Make("Nová PodKategorie vytvořena").Show();
+                    Text = "";
+                }
+                else
+                {
+                    Toast.Make("PodKategorie s tímto jménem již existuje").Show();
+                }
+
             });
 
             UploadOPictureCommand = new Command(

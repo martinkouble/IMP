@@ -1,20 +1,18 @@
-﻿using System;
+﻿using CommunityToolkit.Maui.Alerts;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using IMP_reseni.Models;
-using CommunityToolkit.Maui.Alerts;
-using System.Collections.ObjectModel;
-using System.Collections;
 using IMP_reseni.Services;
 
 namespace IMP_reseni.ViewModels
 {
-    public class ModifyItemViewModel : INotifyPropertyChanged
+    public class DeleteItemViewModel : INotifyPropertyChanged
     {
         public List<string> ListOfCategory { get; set; }
         public List<string> ListOfSupplier { get; set; }
@@ -23,8 +21,6 @@ namespace IMP_reseni.ViewModels
 
         public ObservableCollection<string> ListOfItem { get; set; }
 
-        //public ICommand AddCommand { get; set; }
-        //public ICommand SubtractCommand { get; set; }
         public ICommand ModifyCommand { get; set; }
 
         //Pickers' selected items
@@ -60,7 +56,7 @@ namespace IMP_reseni.ViewModels
             set
             {
                 SetProperty(ref _selectedSubCategory, value);
-                if (value!=null && value!="")
+                if (value != null && value != "")
                 {
                     if (ListOfItem.Count != 0)
                     {
@@ -88,18 +84,15 @@ namespace IMP_reseni.ViewModels
                 if (value != null && value != "")
                 {
                     Text = value;
-                    Items item = new Items();              
-                    item =saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
+                    Items item = new Items();
+                    item = saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
                     itemId = item.Id;
                     Count = item.Stock.ToString();
-                    BuyPrice=item.BuyCost.ToString();
-                    SellPrice=item.SellCost.ToString();
+                    BuyPrice = item.BuyCost.ToString();
+                    SellPrice = item.SellCost.ToString();
                     DisableCheck = item.Disabled;
                     SorChecked = item.SoR;
                     SelectedSupplier = saveholder.FindSupplier(item.SupplierId).Name;
-
-                    originalSellCost = item.SellCost;
-                    originalBuyCost = item.BuyCost;
                 }
             }
         }
@@ -154,40 +147,18 @@ namespace IMP_reseni.ViewModels
             get { return _sorChecked; }
             set { SetProperty(ref _sorChecked, value); }
         }
-
-        private double originalSellCost;
-        private double originalBuyCost;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private SaveHolder saveholder;
-        public ModifyItemViewModel(SaveHolder Saveholder)
+        public DeleteItemViewModel(SaveHolder Saveholder)
         {
             saveholder = Saveholder;
             ListOfSubCategory = new ObservableCollection<string>();
             ListOfItem = new ObservableCollection<string>();
-            //BindingBase.EnableCollectionSynchronization(ListOfSubCategory,null, ObservableCollectionCallback);
-            //BindingBase.EnableCollectionSynchronization(ListOfItem, null, ObservableCollectionCallback);
-
             ListOfSupplier = new List<string>(saveholder.GetSupplierNames());
             DefaultedValues();
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
             ListOfCategory = new List<string>(list);
-
-            //void ObservableCollectionCallback(IEnumerable collection, object context, Action accessMethod, bool writeAccess)
-            //{
-            //    // `lock` ensures that only one thread access the collection at a time
-            //    lock (collection)
-            //    {
-            //        accessMethod?.Invoke();
-            //    }
-            //}
-            list =new List<string>(saveholder.GetSupplierNames());
+            list = new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new List<string>(list);
             ModifyCommand = new Command<string>(
@@ -195,83 +166,18 @@ namespace IMP_reseni.ViewModels
           {
               SubCategory subCategory = new SubCategory();
               Category category = new Category();
-              Items item=new Items();
+              Items item = new Items();
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-              //item = subCategory.FindItemByName(name);
-              if (!subCategory.ExistItemByName(name))
-              {
-                  item.Id = itemId;
-                  item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
-
-                  if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
-                  {
-                      StockUpItem stockUp = new StockUpItem();
-                      stockUp.CategoryId = category.Id;
-                      stockUp.SubCategoryId = subCategory.Id;
-                      stockUp.ItemId = itemId;
-                      stockUp.ChangedSellCost = Convert.ToInt32(SellPrice);
-                      stockUp.ChangedBuyCost = Convert.ToInt32(BuyPrice);
-                      stockUp.CompleteChangeCost(category.Id, subCategory.Id, itemId);
-                  }
-
-                  saveholder.ModifyItem(category, subCategory, item);
-                  saveholder.Save();
-                  Toast.Make("Položka změněna").Show();
-                  DefaultedValues();
-                  SelectedItem = null;
-                  //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
-                  //list.Sort();
-                  //ListOfItem.Clear();
-                  //foreach (var Item in list)
-                  //{
-                  //    ListOfItem.Add(Item);
-                  //}
-              }
-              else
-              {
-                  Toast.Make("Položka s tímto jménem již existuje").Show();                
-              }
-
+              item.Id = itemId;
+              //item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
+              saveholder.DeleteItem(category, subCategory, item);
+              saveholder.Save();
+              Toast.Make("Smazáno").Show();
+              DefaultedValues();
+              SelectedItem = null;
           });
-            /*
-            AddCommand = new Command<string>(
-                 canExecute: (string Count) =>
-                 {
-                     if (Convert.ToInt32(Count) >= MaxCount)
-                     {
-                         return false;
-                     }
-                     else
-                     {
-                         return true;
-                     }
-                 },
-                 execute: (string Count) =>
-                 {
-                     this.Count = (Convert.ToInt32(Count) + 1).ToString();
-                 });
-
-            SubtractCommand = new Command<string>(
-                canExecute: (string Count) =>
-                {
-                    if (Convert.ToInt32(Count) <= 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                },
-                execute: (string Count) =>
-                {
-                    this.Count = (Convert.ToInt32(Count) - 1).ToString();
-                });*/
-
-
         }
-
         private void DefaultedValues()
         {
             SelectedSubCategory = "";
@@ -286,7 +192,11 @@ namespace IMP_reseni.ViewModels
             DisableCheck = false;
             SorChecked = false;
         }
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))

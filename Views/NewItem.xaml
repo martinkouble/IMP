@@ -38,7 +38,6 @@
                 SelectedItem="{Binding SelectedCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 />
         </Border>
         <Border StyleClass="PickerBorder">
@@ -48,7 +47,6 @@
                 SelectedItem="{Binding SelectedSubCategory}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 />
         </Border>
 
@@ -59,7 +57,6 @@
                 SelectedItem="{Binding SelectedSupplier}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                TitleColor="Black"
                 />
         </Border>
 

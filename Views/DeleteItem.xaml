@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMP_reseni.Views.ModifyItem"
+             x:Class="IMP_reseni.Views.DeleteItem"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="ModifyItem">
+             Title="DeleteItem">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 
                 x:Key="VariableMultiValueConverter"
                 ConditionType="Exact"
-                Count="6" />
+                Count="7" />
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
@@ -71,57 +71,27 @@
         <Border StyleClass="EntryBorder"
                 StrokeShape="RoundRectangle 40,40,40,40"
                 >
-            <Entry Placeholder="Zadejte název"
-               Keyboard="Default"
+            <Label 
                x:Name="Entry"
                Text="{Binding Text}"/>
         </Border>
-
-        <!--
-        <HorizontalStackLayout
-            HorizontalOptions="Center">
-
-            <Button
-                FontAttributes="Bold" 
-                FontSize="20"
-                Text="-"
-                CornerRadius="90" 
-                WidthRequest="45" 
-                HeightRequest="45" 
-                />
-
-            <Border StyleClass="EntryBorder" 
+        <Border StyleClass="EntryBorder" 
                 WidthRequest="60" Margin="30,0"       
                 >
-                <Entry Placeholder="počet"
-                       ReturnType="Done"
+            <Label 
                        x:Name="EntryCount"
-                       Keyboard="Numeric"
                        Text="{Binding Count}" 
                        VerticalTextAlignment="Center"/>
-            </Border>
-
-            <Button
-                FontAttributes="Bold" 
-                FontSize="20"
-                Text="+"
-                CornerRadius="90" 
-                WidthRequest="45" 
-                HeightRequest="45" 
-                />
-        </HorizontalStackLayout>
-       -->
+        </Border>
         <Border StyleClass="EntryBorder">
-            <Entry Placeholder="Zadejte nákupní cenu (nepovinné)"
+            <Label 
                x:Name="EntryBuyPrice"
-               Keyboard="Numeric"
                Text="{Binding BuyPrice}"/>
         </Border>
 
         <Border StyleClass="EntryBorder">
-            <Entry Placeholder="Zadejte Prodejní cenu"
+            <Label 
                x:Name="EntrySellPrice"
-               Keyboard="Numeric"
                Text="{Binding SellPrice}"/>
         </Border>
         <HorizontalStackLayout HorizontalOptions="Center">
@@ -146,7 +116,7 @@
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
-                    <!--<Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />-->
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
 
