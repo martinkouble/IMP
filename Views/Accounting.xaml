@@ -21,8 +21,10 @@
              Direction="Column"
              AlignItems="Stretch"
              JustifyContent="SpaceEvenly">
-            <Button Text="Vložení dat"
+            <Button Text="Načtení dat ze souboru"
                     Command="{Binding InsertDataCommand}"/>
+            <Button Text="Vložení dat z CSV"
+                    Command="{Binding InsertExcelDataCommand}"/>
             <Label Text="Počáteční datum"/>
             <DatePicker Date="{Binding StartDate}"
                         Format="dd/MM/yyyy"/>

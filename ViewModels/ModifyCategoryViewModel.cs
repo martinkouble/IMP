@@ -10,6 +10,10 @@ using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using IMP_reseni.Services;
+using Mopups.Services;
+using IMP_reseni.Controls;
+
+
 
 namespace IMP_reseni.ViewModels
 {
@@ -18,6 +22,8 @@ namespace IMP_reseni.ViewModels
         public ObservableCollection<string> ListOfCategory { get; set; }
 
         public ICommand ModifyCommand { get; set; }
+        public ICommand ChangePictureCommand { get; set; }
+        public ICommand ShowPictureCommand { get; set; }
 
         private string _selectedCategory;
 
@@ -48,6 +54,14 @@ namespace IMP_reseni.ViewModels
             }
             get { return _text; }
         }
+
+        private string _pictureButtonText = "Změnit obrázek";
+        public string PictureButtonText
+        {
+            set { SetProperty(ref _pictureButtonText, value); }
+            get { return _pictureButtonText; }
+        }
+        private string ImageUrl;
         private string previusName = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -82,6 +96,7 @@ namespace IMP_reseni.ViewModels
                 category.Name = name;
                 if (!saveholder.ExistCategoryByName(name)||previusName==name)
                 {
+                    category.ImageUrl = ImageUrl;
                     saveholder.ModifyCategory(category);
                     saveholder.Save();
                     Toast.Make("kategorie změněna").Show();
@@ -101,8 +116,69 @@ namespace IMP_reseni.ViewModels
                 }
 
             });
-        }
 
+            ShowPictureCommand = new Command<string>(
+           canExecute: (string SelectedSubCategory) =>
+           {
+               if (SelectedSubCategory != null && SelectedSubCategory != "")
+               {
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+           },
+           execute: async (string SelectedSubCategory) =>
+           {
+               if (ImageUrl != null)
+               {
+                   await MopupService.Instance.PushAsync(new ShowPicturePopup(ImageUrl));
+               }
+               else
+               {
+                   await Toast.Make("Obrázek nebyl nalezen").Show();
+               }
+           });
+
+            ChangePictureCommand = new Command<string>(
+             canExecute: (string SelectedCategory) =>
+             {
+                 if (SelectedCategory != null && SelectedCategory != "")
+                 {
+                     return true;
+                 }
+                 else
+                 {
+                     return false;
+                 }
+             },
+            execute: async (string SelectedCategory) =>
+            {
+                ImageUrl = await PickAndShow(PickOptions.Images);
+                if (ImageUrl != null)
+                {
+                    PictureButtonText = "Změněno";
+                }
+                else
+                {
+                    PictureButtonText = "Změnit obrázek";
+                }
+            });
+        }
+        public async Task<string> PickAndShow(PickOptions options)
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(options);
+                return result.FullPath;
+            }
+            catch (Exception)
+            {
+                await Toast.Make("Obrázek nebyl vybrán").Show();
+            }
+            return null;
+        }
 
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {

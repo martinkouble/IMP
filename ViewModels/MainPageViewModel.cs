@@ -43,6 +43,7 @@ namespace IMP_reseni.ViewModels
 
         //};
         public ICommand NavigateCommand { get; private set; }
+        public ICommand NavigateToBasketCommand { get; private set; }
         public ICommand PerformSearch { get; private set; }
         public ICommand ItemSelect { get; private set; }
         public ICommand NavigateCollectionCommand { get; private set; }
@@ -256,6 +257,12 @@ namespace IMP_reseni.ViewModels
                 }
                 }
             });
+            NavigateToBasketCommand = new Command(
+            async ()=>
+            {
+                await _page.Navigation.PushAsync<Basket>();
+            });
+
             _page.Appearing += Page_Resumed;
         }
 

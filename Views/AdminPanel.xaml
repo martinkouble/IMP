@@ -25,6 +25,7 @@
             <Button Text="Naskladnit"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:StockUp}"/>
+            
             <Button Text="Vytvořit"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Create}"/>
@@ -32,19 +33,23 @@
             <Button Text="Upravit"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Modify}"/>
+            
             <Button Text="Smazat"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Delete}"/>
+            
             <Button Text="Učetnictví"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Accounting}"/>
-            
-            <Button Text="CLoud"
+
+            <Button Text="Cloud"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Cloud}"/>
-            <Button Text="Test"
+            <Button Text="Změnit heslo"
+                    Command="{Binding ChangePasswordCommand}"/>
+            <!--<Button Text="Test"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Basket}"/>
+                    CommandParameter="{x:Type Views:Basket}"/>-->
         </FlexLayout>
     </Border>
 
