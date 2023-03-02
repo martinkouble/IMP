@@ -21,6 +21,7 @@ namespace IMP_reseni.ViewModels
 
         public ObservableCollection<string> ListOfSubCategory { get; set; }
 
+        public ICommand UploadOPictureCommand { get; set; }
         public ICommand CreateCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand SubtractCommand { get; set; }
@@ -112,6 +113,14 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _sorCheck, value); }
         }
 
+        private string _pictureButtonText = "Nahrát obrázek";
+        public string PictureButtonText
+        {
+            set { SetProperty(ref _pictureButtonText, value); }
+            get { return _pictureButtonText; }
+        }
+        private string ImageUrl;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -157,6 +166,21 @@ namespace IMP_reseni.ViewModels
                     Count = (Convert.ToInt32(count) - 1).ToString();
                 }
             });
+
+            UploadOPictureCommand = new Command(
+            async () =>
+            {
+                ImageUrl=await PickAndShow(PickOptions.Images);
+                if (ImageUrl!=null)
+                {
+                    PictureButtonText = "Nahráno";
+                }
+                else
+                {
+                    PictureButtonText = "Nahrát obrázek";
+                }
+            });
+
             CreateCommand = new Command<string>(
             (string name) =>
             {
@@ -169,9 +193,9 @@ namespace IMP_reseni.ViewModels
                 if (!subCategory.ExistItemByName(name))
                 {
                     newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
-
                     newItem.SellCost = Convert.ToInt32(SellPrice);
                     newItem.BuyCost = Convert.ToInt32(BuyPrice);
+                    newItem.ImageUrl = ImageUrl;
                     newItem.SoR = SorCheck;
                     newItem.Stock = Convert.ToInt32(Count);
                     newItem.Disabled = DisableCheck;
@@ -204,8 +228,22 @@ namespace IMP_reseni.ViewModels
             SellPrice = "";
             DisableCheck = false;
             SorCheck = false;
+            PictureButtonText = "Nahrát obrázek";
+            ImageUrl = null;
         }
-
+        public async Task<string> PickAndShow(PickOptions options)
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(options);
+                return result.FullPath;
+            }
+            catch(Exception)
+            {
+                await Toast.Make("Obrázek nebyl vybrán").Show();
+            }
+            return null;
+        }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Object.Equals(storage, value))

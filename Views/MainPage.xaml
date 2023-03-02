@@ -183,7 +183,7 @@
                 <ImageButton
                     Grid.Row="0"
                     Grid.Column="0"
-                    Source="arrow_back.svg"
+                    Source="{AppThemeBinding Light=arrow_back_white.png, Dark=arrow_back_dark.png}"
                     HeightRequest="50" WidthRequest="50"
                     Margin="25,0,0,0"
                     Command="{Binding NavigateCollectionCommand}"
@@ -202,11 +202,18 @@
                 <ImageButton
                     Grid.Row="0"
                     Grid.Column="2"
+                    Source="{AppThemeBinding Light=shopping_basket_white.png, Dark=shopping_basket_dark.png}"
+                    WidthRequest="45"
+                    Margin="0,-10,30,0"
+                    Command="{Binding NavigateToBasketCommand}"/>
+                <!--<ImageButton
+                    Grid.Row="0"
+                    Grid.Column="2"
                     Source="arrow_forward.svg"
                     HeightRequest="50" WidthRequest="50"
                     Margin="0,0,25,0"
                     Command="{Binding NavigateCollectionCommand}"
-                    CommandParameter="Forward"/>
+                    CommandParameter="Forward"/>-->
 
 
                 <CollectionView 

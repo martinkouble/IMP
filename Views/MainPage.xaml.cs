@@ -11,7 +11,7 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
-        BindingContext =new MainPageViewModel(this,App.saveholder);
+        BindingContext =new MainPageViewModel(this,App.saveholder,App.basketHolder);
         
     }
 

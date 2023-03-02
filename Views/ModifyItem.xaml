@@ -137,6 +137,14 @@
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         </HorizontalStackLayout>
+        <Button Text="Zobrazit obrázek"       
+                HorizontalOptions="Center"
+                Command="{Binding ShowPictureCommand}"
+                CommandParameter="{Binding SelectedItem}"/>
+        <Button Text="Změnit obrázek"       
+                HorizontalOptions="Center"
+                Command="{Binding ChangePictureCommand}"
+                CommandParameter="{Binding SelectedItem}"/>
         <Button Text="Potvrdit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"

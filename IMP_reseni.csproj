@@ -56,14 +56,17 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\loginicon.svg" />
-	  <None Remove="Resources\Images\arrow_back.svg" />
+	  <None Remove="Resources\Images\arrow_back_dark.svg" />
+	  <None Remove="Resources\Images\arrow_back_white.svg" />
 	  <None Remove="Resources\Images\arrow_forward.svg" />
 	  <None Remove="Resources\Images\cross.svg" />
 	  <None Remove="Resources\Images\loginicon.svg" />
+	  <None Remove="Resources\Images\shopping_basket_dark.svg" />
+	  <None Remove="Resources\Images\shopping_basket_white.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
 	  <PackageReference Include="Goldie.MauiPlugins.PageResolver" Version="1.1.1" />
 	  <PackageReference Include="InTheHand.Net.Bluetooth" Version="4.0.33.1" />
 	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
@@ -72,6 +75,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\ShowPicturePopup.xaml.cs">
+	    <DependentUpon>ShowPicturePopup.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Create.xaml.cs">
 	    <DependentUpon>Create.xaml</DependentUpon>
 	  </Compile>
@@ -82,6 +88,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Controls\OptionView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\ShowPicturePopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\SpinnerPopup.xaml">

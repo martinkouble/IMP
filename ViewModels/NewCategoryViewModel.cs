@@ -19,12 +19,21 @@ namespace IMP_reseni.ViewModels
         public ICommand CreateCommand { get; set; }
         public ICommand UploadOPictureCommand { get; set; }
 
+        private string _pictureButtonText= "Nahrát obrázek";
+        public string PictureButtonText
+        {
+            set { SetProperty(ref _pictureButtonText, value); }
+            get { return _pictureButtonText; }
+        }
+
         private string _text;
         public string Text
         {
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
+        private string ImageUrl;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -67,24 +76,25 @@ namespace IMP_reseni.ViewModels
             UploadOPictureCommand = new Command(
             async () =>
                 {
-                    await PickAndShow(PickOptions.Images);
+                    PickAndShow(PickOptions.Images);
                 });
 
         }
 
-        public async Task<string> PickAndShow(PickOptions options)
+        public async void PickAndShow(PickOptions options)
         {
             try
             {
                 var result = await FilePicker.Default.PickAsync(options);
-                return result.FullPath;
+                ImageUrl = result.FullPath;
+                //return result.FullPath;
             }
             catch (Exception ex)
             {
                 // The user canceled or something went wrong
             }
 
-            return null;
+            //return null;
         }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {

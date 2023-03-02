@@ -11,6 +11,8 @@ using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using System.Collections;
 using IMP_reseni.Services;
+using Mopups.Services;
+using IMP_reseni.Controls;
 
 namespace IMP_reseni.ViewModels
 {
@@ -26,6 +28,8 @@ namespace IMP_reseni.ViewModels
         //public ICommand AddCommand { get; set; }
         //public ICommand SubtractCommand { get; set; }
         public ICommand ModifyCommand { get; set; }
+        public ICommand ChangePictureCommand { get; set; }
+        public ICommand ShowPictureCommand { get; set; }
 
         //Pickers' selected items
         private string _selectedCategory;
@@ -87,6 +91,10 @@ namespace IMP_reseni.ViewModels
                 SetProperty(ref _selectedItem, value);
                 if (value != null && value != "")
                 {
+                    if(previusName==null)
+                    {
+                        previusName = value;
+                    }
                     Text = value;
                     Items item = new Items();              
                     item =saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
@@ -97,7 +105,7 @@ namespace IMP_reseni.ViewModels
                     DisableCheck = item.Disabled;
                     SorChecked = item.SoR;
                     SelectedSupplier = saveholder.FindSupplier(item.SupplierId).Name;
-
+                    ImageUrl= item.ImageUrl;
                     originalSellCost = item.SellCost;
                     originalBuyCost = item.BuyCost;
                 }
@@ -164,7 +172,15 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private string _pictureButtonText = "Změnit obrázek";
+        public string PictureButtonText
+        {
+            set { SetProperty(ref _pictureButtonText, value); }
+            get { return _pictureButtonText; }
+        }
+        private string ImageUrl;
         private SaveHolder saveholder;
+        private string previusName=null;
         public ModifyItemViewModel(SaveHolder Saveholder)
         {
             saveholder = Saveholder;
@@ -199,9 +215,10 @@ namespace IMP_reseni.ViewModels
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
               //item = subCategory.FindItemByName(name);
-              if (!subCategory.ExistItemByName(name))
+              if (!subCategory.ExistItemByName(name)||name==previusName)
               {
                   item.Id = itemId;
+                  item.ImageUrl = ImageUrl;
                   item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
 
                   if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
@@ -234,6 +251,55 @@ namespace IMP_reseni.ViewModels
               }
 
           });
+
+            ShowPictureCommand = new Command<string>(
+            canExecute: (string SelectedSubCategory) =>
+            {
+                if (SelectedSubCategory != null && SelectedSubCategory != "")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            },
+            execute: async(string SelectedSubCategory) =>
+            {
+                if (ImageUrl!=null)
+                {
+                    await MopupService.Instance.PushAsync(new ShowPicturePopup(ImageUrl));
+                }
+                else
+                {
+                    await Toast.Make("Obrázek nebyl nalezen").Show();
+                }
+            });
+
+            ChangePictureCommand = new Command<string>(
+             canExecute: (string SelectedSubCategory) =>
+             {
+                 if (SelectedSubCategory != null && SelectedSubCategory != "")
+                 {
+                     return true;
+                 }
+                 else
+                 {
+                     return false;
+                 }
+             },
+            execute: async (string SelectedSubCategory) =>
+            {
+                ImageUrl = await PickAndShow(PickOptions.Images);
+                if (ImageUrl != null)
+                {
+                    PictureButtonText = "Změněno";
+                }
+                else
+                {
+                    PictureButtonText = "Změnit obrázek";
+                }
+            });         
             /*
             AddCommand = new Command<string>(
                  canExecute: (string Count) =>
@@ -271,7 +337,19 @@ namespace IMP_reseni.ViewModels
 
 
         }
-
+        public async Task<string> PickAndShow(PickOptions options)
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(options);
+                return result.FullPath;
+            }
+            catch (Exception)
+            {
+                await Toast.Make("Obrázek nebyl vybrán").Show();
+            }
+            return null;
+        }
         private void DefaultedValues()
         {
             SelectedSubCategory = "";

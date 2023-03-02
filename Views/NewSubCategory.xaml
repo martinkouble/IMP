@@ -49,7 +49,7 @@
         />
         </Border>
 
-        <Button Text="{Binding UploadButtonText}"       
+        <Button Text="{Binding PictureButtonText}"       
                 HorizontalOptions="Center"
                 Margin="0,0,0,60"
                 Command="{Binding UploadOPictureCommand}"/>

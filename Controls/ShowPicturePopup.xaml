@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage 
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="IMP_reseni.Controls.ShowPicturePopup"
+             Title="MyPopup"
+             BackgroundColor="Transparent"
+             CloseWhenBackgroundIsClicked="True">
+    <Grid WidthRequest="200" 
+          HeightRequest="200" 
+          BackgroundColor="DarkGrey"
+          x:Name="MyGrid">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--<Image
+           Grid.Column="0"
+           Grid.Row="1"
+           HorizontalOptions="Center"
+           Source='{Binding url}'/>-->
+    </Grid>
+   
+
+</mopups:PopupPage>

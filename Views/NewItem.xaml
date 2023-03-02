@@ -10,7 +10,7 @@
         <toolkit:VariableMultiValueConverter 
                 x:Key="VariableMultiValueConverter"
                 ConditionType="Exact"
-                Count="6" />
+                Count="5" />
         
         
         <Style TargetType="Button">
@@ -71,7 +71,7 @@
                Text="{Binding Text}"/>
         </Border>
 
-        <HorizontalStackLayout
+        <!--<HorizontalStackLayout
             HorizontalOptions="Center">
 
             <Button
@@ -106,7 +106,7 @@
                 CommandParameter="{Binding Source={x:Reference EntryCount},
                                             Path=Text}"
                 />
-        </HorizontalStackLayout>
+        </HorizontalStackLayout>-->
 
 
         <Border StyleClass="EntryBorder">
@@ -135,6 +135,10 @@
                FontSize="Large"
                LineBreakMode="WordWrap"/>
             </HorizontalStackLayout>
+        <Button 
+                Text="{Binding PictureButtonText}"       
+                HorizontalOptions="Center"
+                Command="{Binding UploadOPictureCommand}"/>
         <Button Text="Vytvořit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"
@@ -144,7 +148,7 @@
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />
+                    <!--<Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />-->
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
 
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />

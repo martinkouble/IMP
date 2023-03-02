@@ -35,21 +35,19 @@ namespace IMP_reseni.ViewModels
             get { return _text; }
         }
 
-        string _uploadButtonText="Nahrát";
-        public string UploadButtonText
+        private string _pictureButtonText = "Nahrát obrázek";
+        public string PictureButtonText
         {
-            set { SetProperty(ref _uploadButtonText, value); }
-            get { return _uploadButtonText; }
+            set { SetProperty(ref _pictureButtonText, value); }
+            get { return _pictureButtonText; }
         }
-
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        private string ImageUrl;
         public NewSubCategoryViewModel(SaveHolder saveholder)
-
         {
             ListOfCategory = new List<string>(saveholder.GetCategoriesNames());
 
@@ -64,6 +62,7 @@ namespace IMP_reseni.ViewModels
             {
                 SubCategory newSubCategory = new SubCategory();
                 newSubCategory.Name = name;
+                newSubCategory.ImageUrl = ImageUrl;
                 Category category = saveholder.FindCategoryByName(SelectedItem);
                 int categoryId= category.Id;
                 if (!category.ExistSubCategoryByName(name))
@@ -83,7 +82,15 @@ namespace IMP_reseni.ViewModels
             UploadOPictureCommand = new Command(
             async () =>
             {
-                await PickAndShow(PickOptions.Images);
+                ImageUrl=await PickAndShow(PickOptions.Images);
+                if (ImageUrl!=null)
+                {
+                    PictureButtonText = "Nahráno";
+                }
+                else
+                {
+                    PictureButtonText = "Nahrát obrázek";
+                }
             });
         }
         public async Task<string> PickAndShow(PickOptions options)
@@ -93,11 +100,10 @@ namespace IMP_reseni.ViewModels
                 var result = await FilePicker.Default.PickAsync(options);
                 return result.FullPath;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // The user canceled or something went wrong
+                await Toast.Make("Obrázek nebyl vybrán").Show();
             }
-
             return null;
         }
         bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)

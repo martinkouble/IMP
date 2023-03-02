@@ -31,7 +31,7 @@
                Text="{Binding Text}"
         />
         </Border>
-        <Button Text="Vytvořit Kategorii"
+        <Button Text="Vytvořit dodavatele"
                 HorizontalOptions="Center"
                 Command="{Binding CreateCommand}"
                 CommandParameter="{Binding Text}"/>

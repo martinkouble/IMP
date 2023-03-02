@@ -31,7 +31,8 @@
                Text="{Binding Text}"/>
         </Border>
 
-        <Button Text="Nahrát obrázek"       
+        <Button 
+                Text="{Binding PictureButtonText}"       
                 HorizontalOptions="Center"
                 Command="{Binding UploadOPictureCommand}"/>
 

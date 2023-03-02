@@ -59,7 +59,14 @@
                Text="{Binding Text}"
         />
         </Border>
-
+        <Button Text="Zobrazit obrázek"       
+                HorizontalOptions="Center"
+                Command="{Binding ShowPictureCommand}"
+                CommandParameter="{Binding SelectedSubCategory}"/>
+        <Button Text="Změnit obrázek"       
+                HorizontalOptions="Center"
+                Command="{Binding ChangePictureCommand}"
+                CommandParameter="{Binding SelectedSubCategory}"/>
 
         <Button Text="Potvrdit"
                 HorizontalOptions="Center"

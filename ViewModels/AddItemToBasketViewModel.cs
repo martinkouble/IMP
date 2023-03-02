@@ -143,7 +143,7 @@ namespace IMP_reseni.ViewModels
                     }
                     else
                     {
-
+                        Toast.Make("Položka je již v košíku").Show();
                     }
                 });
         }

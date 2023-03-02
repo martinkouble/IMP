@@ -61,6 +61,7 @@ namespace IMP_reseni.Services
         {
             return Items.Any(x=>x.CategoryId==item.CategoryId && x.SubCategoryId==item.CategoryId && x.ItemId==item.Id);
         }
+
         public BasketHolder()
         {
             if (Order == null)

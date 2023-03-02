@@ -119,16 +119,19 @@ namespace IMP_reseni.ViewModels
             return true;
         }
         private SaveHolder saveholder;
+        private BasketHolder basketholder;
         public MainPageViewModel()
         {
         }
-        public MainPageViewModel(ContentPage _page,SaveHolder saveholder)
+        public MainPageViewModel(ContentPage _page,SaveHolder saveholder,BasketHolder basketholder)
         {
             //SaveHolder h = App.saveholder;
             //source = h.Inventory;
             //h.Save();
             //h.Load();
+
             source = saveholder.Inventory;
+            this.basketholder = basketholder;
             this.saveholder = saveholder;
             TypeOfItems = "Kategorie";
 
@@ -260,7 +263,12 @@ namespace IMP_reseni.ViewModels
         {
             TypeOfItems = "Kategorie";
             CurrentSelection = null;
+            SelectedItem=null;
             filter("");
+            if (basketholder.Empty==false)
+            {
+
+            }
         }
 
         private void filter(string Text)

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Alerts;
 using IMP_reseni.Models;
 using Microsoft.Maui.Platform;
 
@@ -105,9 +106,17 @@ namespace IMP_reseni.ViewModels
                 },
                 execute: (string Count) =>
                 {
-                    AddItemToStockUp(item, Count);
-                    OnPropertyChanged("Item");
-                    this.Count = "0";
+                    if (!App.basketHolder.ExistItem(item))
+                    {
+                        AddItemToStockUp(item, Count);
+                        OnPropertyChanged("Item");
+                        this.Count = "0";
+                    }
+                    else
+                    {
+                        Toast.Make("Nelze na/odskladnit položka je v košíku").Show();
+                    }
+
                 });
             UnFocusCommand = new Command<Entry>(
             (Entry entry) =>

@@ -48,7 +48,7 @@ namespace IMP_reseni.Services
             }
         }
 
-        private string _password;
+        //private string _password;
         public string Password
         {
             private set

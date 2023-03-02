@@ -39,9 +39,18 @@ namespace IMP_reseni.ViewModels
         private string _text;
         public string Text
         {
-            set { SetProperty(ref _text, value); }
+            set 
+            {
+                if (previusName == null)
+                {
+                    previusName = value;
+                }
+                SetProperty(ref _text, value); 
+            }
             get { return _text; }
         }
+        private string previusName = null;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -72,7 +81,7 @@ namespace IMP_reseni.ViewModels
                 Supplier supplier = new Supplier();
                 supplier = saveholder.FindSupplierByName(SelectedSupplier);
                 supplier.Name = name;
-                if (!saveholder.ExistSupplierByName(name))
+                if (!saveholder.ExistSupplierByName(name)||name==previusName)
                 {
                     saveholder.ModifySupplier(supplier);
                     saveholder.Save();

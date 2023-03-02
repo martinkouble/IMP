@@ -38,9 +38,18 @@ namespace IMP_reseni.ViewModels
         private string _text;
         public string Text
         {
-            set { SetProperty(ref _text, value); }
+            set 
+            {
+                if (previusName==null)
+                {
+                    previusName = value;
+                }
+                SetProperty(ref _text, value); 
+            }
             get { return _text; }
         }
+        private string previusName = null;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -56,7 +65,7 @@ namespace IMP_reseni.ViewModels
             ModifyCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "")
+                if (name == ""||name==null)
                 {
                     return false;
                 }
@@ -71,7 +80,7 @@ namespace IMP_reseni.ViewModels
                 Category category = new Category();
                 category = saveholder.FindCategoryByName(SelectedCategory);
                 category.Name = name;
-                if (!saveholder.ExistCategoryByName(name))
+                if (!saveholder.ExistCategoryByName(name)||previusName==name)
                 {
                     saveholder.ModifyCategory(category);
                     saveholder.Save();
