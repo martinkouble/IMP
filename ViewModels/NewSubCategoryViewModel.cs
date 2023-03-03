@@ -79,8 +79,12 @@ namespace IMP_reseni.ViewModels
 
             });
 
-            UploadOPictureCommand = new Command(
-            async () =>
+            UploadOPictureCommand = new Command<bool>(
+            canExecute: (bool CanBeEnabled) =>
+            {
+                return CanBeEnabled;
+            },
+            execute:async (bool CanBeEnabled) =>
             {
                 ImageUrl=await PickAndShow(PickOptions.Images);
                 if (ImageUrl!=null)

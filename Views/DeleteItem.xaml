@@ -110,7 +110,7 @@
         <Button Text="Potvrdit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"
-                Command="{Binding ModifyCommand}"
+                Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding Source={x:Reference Entry},
                                             Path=Text}">
             <Button.IsEnabled>

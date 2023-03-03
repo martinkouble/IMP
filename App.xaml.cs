@@ -22,6 +22,7 @@ public partial class App : Application
 
         //cloudService = cs;
         //SecureStorage.Default.RemoveAll();
+
         sp.Load();
         Task get = new Task(GetPassword);
         get.Start();
@@ -48,6 +49,7 @@ public partial class App : Application
         string Passwd = await SecureStorage.Default.GetAsync("token");
         if (Passwd != null)
         {
+
             MainPage = new NavigationPage(new MainPage());
         }
         else
@@ -55,7 +57,7 @@ public partial class App : Application
             MainPage = new NavigationPage(new SetPassword());
         }
     }
-
     
+
 
 }

@@ -33,6 +33,7 @@
                         
                         <Label Grid.Column="1"
                                Text="{Binding Path=Item.Name}"
+                               Margin="10,0,0,0"
                                FontSize="Large"
                                VerticalTextAlignment="Center"
                                FontAttributes="Bold" />
@@ -42,7 +43,7 @@
                                VerticalTextAlignment="Center"
                                HorizontalTextAlignment="End">
                             <Label.Text>
-                                <MultiBinding StringFormat="{}{0}x{1}">
+                                <MultiBinding StringFormat="{}{0}x{1}Kč">
                                     <Binding Path="Amount"/>
                                     <Binding Path="SellCostPerPiece"/>
                                 </MultiBinding>

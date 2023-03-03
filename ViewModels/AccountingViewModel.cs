@@ -10,6 +10,7 @@ using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using IMP_reseni.Models;
 using IMP_reseni.Services;
+using IMP_reseni.MyPermissions;
 
 
 namespace IMP_reseni.ViewModels
@@ -50,11 +51,15 @@ namespace IMP_reseni.ViewModels
         {
             this.saveholder= saveholder;
             DialySalesCommand = new Command(
-            () =>
+            async () =>
             {
                 DateTime from = DateTime.Today;
                 DateTime to = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
-                GenerateFile(from, to);
+                PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (PermissionStatus.Granted == status)
+                {
+                    GenerateFile(from, to);
+                }
             });
 
             GenerateAccountingCommand = new Command(
@@ -69,9 +74,13 @@ namespace IMP_reseni.ViewModels
                     return false;
                 }
             },
-            execute: () =>
+            execute: async() =>
             {
-                GenerateFile(StartDate, EndDate);
+                PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (PermissionStatus.Granted == status)
+                {
+                    GenerateFile(StartDate, EndDate);
+                }
             });
 
             GenerateAccountingOnlyStockCommand = new Command(
@@ -86,9 +95,13 @@ namespace IMP_reseni.ViewModels
                    return false;
                }
             },
-            execute: () =>
+            execute: async() =>
             {
-               GenerateFileStock(StartDate, EndDate);
+            PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (PermissionStatus.Granted == status)
+                {
+                    GenerateFileStock(StartDate, EndDate);
+                }
             });
 
             InsertDataCommand = new Command(
@@ -156,14 +169,15 @@ namespace IMP_reseni.ViewModels
         }
 
 
-        private void GenerateFile(DateTime from, DateTime to)
+        private  void GenerateFile(DateTime from, DateTime to)
         {
             if (from != default(DateTime) && to != default(DateTime))
             {
                 AccountingHandler accounting = new AccountingHandler();
                 string path;
 #if ANDROID
-                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/účetnictví_" + from.ToString("dd-mm-yyyy") + "---" + to.ToString("dd-mm-yyyy") + ".csv";
 #else
                 path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
 #endif
@@ -171,11 +185,11 @@ namespace IMP_reseni.ViewModels
                 if (!File.Exists(path)) 
                 {
                     File.WriteAllText(path, accFileText, Encoding.UTF8);
-                    Toast.Make("Soubor vytvořen").Show();
+                     Toast.Make("Soubor vytvořen").Show();
                 }
                 else
                 {
-                    Toast.Make("Soubor vytvořen").Show();
+                     Toast.Make("Soubor již existuje").Show();
                 }
             }
         }

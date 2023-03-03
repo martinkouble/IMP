@@ -12,8 +12,28 @@
             <Setter Property="TextColor" Value="Black"/>
             <Setter Property="BackgroundColor" Value="#FFA500"/>
         </Style>
+        <Style TargetType="Border">
+            <Setter Property="BackgroundColor" Value="#FFA500"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 8"/>
+
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="FontSize" Value="Title" />
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="Grid.Column" Value="1" />
+
+        </Style>
+        <Style TargetType="Image">
+            <Setter Property="Grid.Column" Value="0" />
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="ColumnDefinitions" Value="*,AUTO,*"/>
+            <Setter Property="RowDefinitions" Value="*"/>
+        </Style>
     </ContentPage.Resources>
-        <Border            
+    <Border            
         Margin="25,75,25,75"
         Padding="50"
         StrokeShape="RoundRectangle 20"
@@ -22,31 +42,156 @@
              Direction="Column"
                 AlignItems="Stretch"
                 JustifyContent="SpaceEvenly">
-            <Button Text="Naskladnit"
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="add.png"
+                           WidthRequest="40"
+                           Margin="0,0,10,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Naskladnit"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:StockUp}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Border>
+                <Grid>
+                    <Image Source="create.png"
+                           WidthRequest="40"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Vytvořit"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"/>
+                </Grid>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:Create}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="pencil.png"
+                           WidthRequest="40"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Upravit"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:Modify}"/>
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="delete.png"
+                           WidthRequest="40"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Smazat"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:Delete}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="book.png"
+                           WidthRequest="40"
+                           Margin="0,0,20,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Učetnictví"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:Accounting}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="cloud.png"
+                           WidthRequest="40"
+                           Margin="0,0,40,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Cloud"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:Cloud}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <Border>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Image Source="password.png"
+                           WidthRequest="40"
+                           Margin="0,0,10,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Změnit heslo"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding ChangePasswordCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
+
+            <!--<Button                   
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:StockUp}"/>
-            
+                    CommandParameter="{x:Type Views:StockUp}"
+                    ImageSource="add.png"
+                    ContentLayout="Left,20">
+            </Button>
+
             <Button Text="Vytvořit"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Create}"/>
+                    CommandParameter="{x:Type Views:Create}"
+                    ImageSource="create.png"
+                    ContentLayout="Left,20"/>
             
             <Button Text="Upravit"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Modify}"/>
+                    CommandParameter="{x:Type Views:Modify}"
+                    ImageSource="pencil.png"
+                    ContentLayout="Left,20"/>
             
             <Button Text="Smazat"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Delete}"/>
+                    CommandParameter="{x:Type Views:Delete}"
+                    ImageSource="delete.png"
+                    ContentLayout="Left,20"/>
+            
             
             <Button Text="Učetnictví"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Accounting}"/>
+                    CommandParameter="{x:Type Views:Accounting}"
+                    ImageSource="book.png"
+                    ContentLayout="Left,20"/>
 
             <Button Text="Cloud"
                     Command="{Binding NavigateCommand}"
-                    CommandParameter="{x:Type Views:Cloud}"/>
+                    CommandParameter="{x:Type Views:Cloud}"
+                    ImageSource="cloud.png"
+                    ContentLayout="Left,20"/>
+            
             <Button Text="Změnit heslo"
-                    Command="{Binding ChangePasswordCommand}"/>
+                    Command="{Binding ChangePasswordCommand}"
+                    ImageSource="password.png"
+                    ContentLayout="Left,20"/>
+            -->
             <!--<Button Text="Test"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:Basket}"/>-->

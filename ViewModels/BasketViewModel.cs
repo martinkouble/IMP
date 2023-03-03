@@ -71,31 +71,48 @@ namespace IMP_reseni.ViewModels
            {
                if (basketHolder.Items.Count!=0)
                {
-                   //PermissionStatus status = PermissionStatus.Granted;
-                   PermissionStatus status=await Permissions.RequestAsync<MyBluetoothPermission>();
+                   PermissionStatus status = PermissionStatus.Granted;
+                   //PermissionStatus status;
+                   if (DeviceInfo.Version.Major >= 12)
+                   {
+                        status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
+                   }
+                   else
+                   {
+                       status = await Permissions.CheckStatusAsync<MyBluetoothPermissionOldVersion>();
+                   }
                    //PermissionStatus status= await CheckAndRequestContactsReadPermission();
                    // PermissionStatus status =await Permissions.CheckStatusAsync<MyBluetoothPermission>();
                    if (status == PermissionStatus.Granted)
                    {
-                       var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
-                       BluetoothClient client = new BluetoothClient();
-                       var address = picker.DeviceAddress;
-                       //ulong sevenItems = 0x020000000000;
-                       //BluetoothAddress address = new BluetoothAddress(sevenItems);
-                       //bool paired = BluetoothSecurity.PairRequest(address, "0000");
+                       try
+                       {
+                           var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                           BluetoothClient client = new BluetoothClient();
+                           var address = picker.DeviceAddress;
+                           /*
+                           //ulong sevenItems = 0x020000000000;
+                           //BluetoothAddress address = new BluetoothAddress(sevenItems);
+                           //bool paired = BluetoothSecurity.PairRequest(address, "0000");
+                           //var guid = picker.GetRfcommServicesAsync().Result.;
+                           //var guid =await picker.GetRfcommServicesAsync();
+                           //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();*/
+                           var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
+                           client.Connect(address, guid);
 
-                       //var guid = picker.GetRfcommServicesAsync().Result.;
-                       //var guid =await picker.GetRfcommServicesAsync();
-                       //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
-                       var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
-                       client.Connect(address, guid);
+                           outStream = client.GetStream();
+                           Printer.output.Add(0x1B);
+                           Printer.output.Add(0x40);
+                           buffer = Printer.output.ToArray();
+                           ReceiptPrint();
+                           client.Close();
+                       }
+                       catch (Exception)
+                       {
 
-                       outStream = client.GetStream();
-                       Printer.output.Add(0x1B);
-                       Printer.output.Add(0x40);
-                       buffer = Printer.output.ToArray();
-                       ReceiptPrint();
-                       client.Close();
+                           await Toast.Make("Došlo k chybě").Show();
+                       }
+
                    }
                }
                else
@@ -176,29 +193,29 @@ namespace IMP_reseni.ViewModels
         }
 
 
-        public async Task<PermissionStatus> CheckAndRequestContactsReadPermission(Type Permission)
-        {
-            PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
+        //public async Task<PermissionStatus> CheckAndRequestContactsReadPermission(Type Permission)
+        //{
+        //    PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
 
-            if (status == PermissionStatus.Granted)
-                return status;
+        //    if (status == PermissionStatus.Granted)
+        //        return status;
 
-            if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
-            {
-                // Prompt the user to turn on in settings
-                // On iOS once a permission has been denied it may not be requested again from the application
-                return status;
-            }
+        //    if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+        //    {
+        //        // Prompt the user to turn on in settings
+        //        // On iOS once a permission has been denied it may not be requested again from the application
+        //        return status;
+        //    }
 
-            if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
-            {
-                // Prompt the user with additional information as to why the permission is needed
-            }
+        //    if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
+        //    {
+        //        // Prompt the user with additional information as to why the permission is needed
+        //    }
 
-            status = await Permissions.RequestAsync<MyBluetoothPermission>();
+        //    status = await Permissions.RequestAsync<MyBluetoothPermission>();
 
-            return status;
-        }
+        //    return status;
+        //}
 
         public static string RemoveDiacritics(String s)
         {

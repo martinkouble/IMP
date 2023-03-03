@@ -17,7 +17,7 @@ namespace IMP_reseni.ViewModels
     {
         public ObservableCollection<string> ListOfCategory { get; set; }
 
-        public ICommand ModifyCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         private string _selectedCategory;
 
@@ -47,7 +47,7 @@ namespace IMP_reseni.ViewModels
             list.Sort();
             ListOfCategory = new ObservableCollection<string>(list);
 
-            ModifyCommand = new Command<string>(
+            DeleteCommand = new Command<string>(
             canExecute: (string name) =>
             {
                 if (name == "")

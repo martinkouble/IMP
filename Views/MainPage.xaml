@@ -237,7 +237,7 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.Row="0"
-                                           Source="{Binding ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}" 
+                                           Source="{Binding ImageUrl, TargetNullValue='question_mark.jpg'}" 
                                            Aspect="AspectFill" 
                                            WidthRequest="100"
                                            HeightRequest="120"/>

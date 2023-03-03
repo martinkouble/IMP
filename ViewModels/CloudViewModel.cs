@@ -92,7 +92,7 @@ namespace IMP_reseni.ViewModels
         public ICommand GetCommand { get; set; }
         public ICommand ManualSaveCommand { get; set; }
 
-        public ICommand TestCommand { get; set; }
+       // public ICommand TestCommand { get; set; }
         public List<string> TimeTable { get;private set; }
         private IDictionary<string, int> Times;
         public CloudViewModel(CloudService cloudService)
@@ -121,23 +121,23 @@ namespace IMP_reseni.ViewModels
                 UploadedBackups = new List<string>(cloudService.GetFilesNames());
             }
 
-            TestCommand = new Command(
-            () => 
-            { 
-            MegaApiClient client = new MegaApiClient();
-            client.Login(Email, Password);
-            IEnumerable<INode> nodes = client.GetNodes();
+            //TestCommand = new Command(
+            //() => 
+            //{ 
+            //MegaApiClient client = new MegaApiClient();
+            //client.Login(Email, Password);
+            //IEnumerable<INode> nodes = client.GetNodes();
 
-            INode root = nodes.Single(x => x.Type == NodeType.Root);
-            INode myFolder = client.CreateFolder("Upload", root);
+            //INode root = nodes.Single(x => x.Type == NodeType.Root);
+            //INode myFolder = client.CreateFolder("Upload", root);
 
-            string _appDirectory = FileSystem.Current.AppDataDirectory;
-                //App.saveholder.Save("IMP.json");
-            string _fileName = "IMP.json";
+            //string _appDirectory = FileSystem.Current.AppDataDirectory;
+            //    //App.saveholder.Save("IMP.json");
+            //string _fileName = "IMP.json";
 
-            client.UploadFile(_appDirectory + "/" + _fileName, myFolder);
-            client.Logout();
-            });
+            //client.UploadFile(_appDirectory + "/" + _fileName, myFolder);
+            //client.Logout();
+            //});
             
             GetCommand = new Command<bool>(
              canExecute: (bool IsValid) =>
@@ -171,11 +171,12 @@ namespace IMP_reseni.ViewModels
                 if (answer == true)
                 {
                     await MopupService.Instance.PushAsync(new SpinnerPopup());
-                    cloudService.SetLogin(Email, Password);
+                    //cloudService.SetLogin(Email, Password);
                     cloudService.UploadFile();
-                    await Toast.Make("Uspěšně uloženo").Show();
                     await MopupService.Instance.PopAsync();
-                }              
+                    await Toast.Make("Uspěšně uloženo").Show();
+
+                }
             });
         }
         private void SetTimer(string minutes)

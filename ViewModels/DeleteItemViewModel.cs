@@ -21,7 +21,7 @@ namespace IMP_reseni.ViewModels
 
         public ObservableCollection<string> ListOfItem { get; set; }
 
-        public ICommand ModifyCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         //Pickers' selected items
         private string _selectedCategory;
@@ -161,7 +161,7 @@ namespace IMP_reseni.ViewModels
             list = new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new List<string>(list);
-            ModifyCommand = new Command<string>(
+            DeleteCommand = new Command<string>(
           (string name) =>
           {
               SubCategory subCategory = new SubCategory();

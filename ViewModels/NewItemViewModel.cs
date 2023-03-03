@@ -167,8 +167,12 @@ namespace IMP_reseni.ViewModels
                 }
             });
 
-            UploadOPictureCommand = new Command(
-            async () =>
+            UploadOPictureCommand = new Command <bool>(
+            canExecute:(bool CanBeEnabled)=>
+            {
+                return CanBeEnabled;
+            },
+            execute:async (bool CanBeEnabled) =>
             {
                 ImageUrl=await PickAndShow(PickOptions.Images);
                 if (ImageUrl!=null)
@@ -192,7 +196,14 @@ namespace IMP_reseni.ViewModels
                 int subCategoryId = subCategory.Id;
                 if (!subCategory.ExistItemByName(name))
                 {
-                    newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
+                    if (BuyPrice==null||BuyPrice=="")
+                    {
+                        newItem.Create(name, DisableCheck, 0, Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
+                    }
+                    else
+                    {
+                        newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
+                    }
                     newItem.SellCost = Convert.ToInt32(SellPrice);
                     newItem.BuyCost = Convert.ToInt32(BuyPrice);
                     newItem.ImageUrl = ImageUrl;

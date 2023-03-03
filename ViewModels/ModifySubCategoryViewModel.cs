@@ -55,6 +55,7 @@ namespace IMP_reseni.ViewModels
                 if(value!= "") 
                 {
                     Text=value;
+                    ImageUrl = saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).ImageUrl;
                 }
             }
         }

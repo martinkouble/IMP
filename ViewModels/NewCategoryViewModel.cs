@@ -75,19 +75,30 @@ namespace IMP_reseni.ViewModels
 
             });
 
-            UploadOPictureCommand = new Command(
-            async () =>
+            UploadOPictureCommand = new Command<string>(
+            canExecute: (string Text) =>
+            {
+                if (Text!=null && Text!="")
                 {
-                    ImageUrl = await PickAndShow(PickOptions.Images);
-                    if (ImageUrl != null)
-                    {
-                        PictureButtonText = "Nahráno";
-                    }
-                    else
-                    {
-                        PictureButtonText = "Nahrát obrázek";
-                    }
-                });
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            },
+            execute: async (string CanBeEnabled) =>
+            {
+                ImageUrl = await PickAndShow(PickOptions.Images);
+                if (ImageUrl != null)
+                {
+                    PictureButtonText = "Nahráno";
+                }
+                else
+                {
+                    PictureButtonText = "Nahrát obrázek";
+                }
+            });
 
         }
 

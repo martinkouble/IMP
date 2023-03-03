@@ -11,7 +11,10 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 
-		<!-- Display name -->
+    <!-- test-->
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+
+    <!-- Display name -->
 		<ApplicationTitle>IMP_reseni</ApplicationTitle>
 
 		<!-- App Identifier -->
@@ -56,11 +59,19 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\loginicon.svg" />
+	  <None Remove="Resources\Images\add.svg" />
 	  <None Remove="Resources\Images\arrow_back_dark.svg" />
 	  <None Remove="Resources\Images\arrow_back_white.svg" />
 	  <None Remove="Resources\Images\arrow_forward.svg" />
+	  <None Remove="Resources\Images\book.svg" />
+	  <None Remove="Resources\Images\cloud.svg" />
+	  <None Remove="Resources\Images\create.svg" />
 	  <None Remove="Resources\Images\cross.svg" />
+	  <None Remove="Resources\Images\delete.svg" />
 	  <None Remove="Resources\Images\loginicon.svg" />
+	  <None Remove="Resources\Images\password.svg" />
+	  <None Remove="Resources\Images\pencil.svg" />
+	  <None Remove="Resources\Images\question_mark.jpg" />
 	  <None Remove="Resources\Images\shopping_basket_dark.svg" />
 	  <None Remove="Resources\Images\shopping_basket_white.svg" />
 	</ItemGroup>

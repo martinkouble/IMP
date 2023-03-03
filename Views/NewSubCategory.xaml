@@ -52,7 +52,14 @@
         <Button Text="{Binding PictureButtonText}"       
                 HorizontalOptions="Center"
                 Margin="0,0,0,60"
-                Command="{Binding UploadOPictureCommand}"/>
+                Command="{Binding UploadOPictureCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Picker}" Path="SelectedItem.Length" />
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
 
 
         <Button Text="Vytvořit Kategorii"

@@ -34,7 +34,8 @@
         <Button 
                 Text="{Binding PictureButtonText}"       
                 HorizontalOptions="Center"
-                Command="{Binding UploadOPictureCommand}"/>
+                Command="{Binding UploadOPictureCommand}"
+                CommandParameter="{Binding Text}"/>
 
 
         <Button Text="Vytvořit Kategorii"       

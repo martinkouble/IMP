@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using IMP_reseni.MyPermissions;
 namespace IMP_reseni.ViewModels
 {
     public class MainPageViewModel : INotifyPropertyChanged
@@ -121,17 +121,21 @@ namespace IMP_reseni.ViewModels
         }
         private SaveHolder saveholder;
         private BasketHolder basketholder;
+        private ContentPage _page;
         public MainPageViewModel()
         {
         }
         public MainPageViewModel(ContentPage _page,SaveHolder saveholder,BasketHolder basketholder)
         {
+            this._page = _page;
             //SaveHolder h = App.saveholder;
             //source = h.Inventory;
             //h.Save();
             //h.Load();
 
-            source = saveholder.Inventory;
+            //source = saveholder.Inventory;
+            source = saveholder.Inventory.Where(x => x.Disabled == false).ToList();
+
             this.basketholder = basketholder;
             this.saveholder = saveholder;
             TypeOfItems = "Kategorie";
@@ -266,17 +270,58 @@ namespace IMP_reseni.ViewModels
             _page.Appearing += Page_Resumed;
         }
 
-        private void Page_Resumed(object sender, EventArgs e)
+        private async void Page_Resumed(object sender, EventArgs e)
         {
-            source = saveholder.Inventory;
+            source = saveholder.Inventory.Where(x=>x.Disabled==false).ToList();
             TypeOfItems = "Kategorie";
             CurrentSelection = null;
             SelectedItem=null;
             filter("");
-            if (basketholder.Empty==false)
-            {
+            //if (basketholder.Empty==false)
+            //{
 
-            }
+            //}
+            await Permissions.RequestAsync<Permissions.StorageWrite>();
+            await Permissions.RequestAsync<Permissions.StorageRead>();
+            //PermissionStatus status1 = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
+            //PermissionStatus status2 = await Permissions.CheckStatusAsync<MyBluetoothPermissionOldVersion>();
+
+            //if (DeviceInfo.Platform ==DevicePlatform.Android)
+            //{
+            //    PermissionStatus status = await Permissions.CheckStatusAsync<MyReadWritePermission>();
+
+            //    if (status == PermissionStatus.Granted)
+            //        return;
+
+            //    if (Permissions.ShouldShowRationale<MyReadWritePermission>())
+            //    {
+            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
+            //    }
+            //}
+            //if (DeviceInfo.Version.Major>=12)
+            //{
+            //    PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
+
+            //    if (status == PermissionStatus.Granted)
+            //        return;
+
+            //    if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
+            //    {
+            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
+            //    }
+            //}
+            //if (DeviceInfo.Platform == DevicePlatform.Android)
+            //{
+            //    PermissionStatus status = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
+
+            //    if (status == PermissionStatus.Granted)
+            //        return;
+
+            //    if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
+            //    {
+            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
+            //    }
+            //}
         }
 
         private void filter(string Text)
@@ -300,9 +345,6 @@ namespace IMP_reseni.ViewModels
                 }
             }
         }
-
-
-
         private void addToList<T>(List<T> list)
         {
             if(list!=null)

@@ -30,7 +30,7 @@ namespace IMP_reseni.Models
             Items output = new Items();
             output.Id = this.Id;
             output.Name = this.Name;
-           // output.imagePath = this.imagePath;
+            output.ImageUrl = this.ImageUrl;
             output.Disabled = this.Disabled;
             output.BuyCost = this.BuyCost;
             output.SellCost = this.SellCost;

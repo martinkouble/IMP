@@ -35,6 +35,7 @@ namespace IMP_reseni.ViewModels
                 if (value != "")
                 {
                     Text = value;
+                    ImageUrl = saveholder.FindCategoryByName(SelectedCategory).ImageUrl;
                 }
             }
 
@@ -63,6 +64,7 @@ namespace IMP_reseni.ViewModels
         }
         private string ImageUrl;
         private string previusName = null;
+        private SaveHolder saveholder;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -71,6 +73,8 @@ namespace IMP_reseni.ViewModels
         }
         public ModifyCategoryViewModel(SaveHolder saveholder)
         {
+            this.saveholder = saveholder;
+
             //Text = "";
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();

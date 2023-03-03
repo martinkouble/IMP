@@ -138,7 +138,17 @@
         <Button 
                 Text="{Binding PictureButtonText}"       
                 HorizontalOptions="Center"
-                Command="{Binding UploadOPictureCommand}"/>
+                Command="{Binding UploadOPictureCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CategoryPicker}" Path="SelectedItem.Length" />
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
         <Button Text="Vytvořit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"

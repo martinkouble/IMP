@@ -390,6 +390,6 @@
     </Style>
     
     <Style TargetType="Border" Class="PickerBorder">
-        <Setter Property="Margin" Value="0,0,0,20"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
     </Style>
 </ResourceDictionary>
