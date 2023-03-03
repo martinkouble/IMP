@@ -268,6 +268,7 @@ namespace IMP_reseni.ViewModels
 
         private void Page_Resumed(object sender, EventArgs e)
         {
+            source = saveholder.Inventory;
             TypeOfItems = "Kategorie";
             CurrentSelection = null;
             SelectedItem=null;

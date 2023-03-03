@@ -64,10 +64,10 @@
         <StackLayout VerticalOptions="End"
                      Grid.Row="2">
             <Label FontSize="Large" 
-                   Text="{Binding SummaryCostWithDPH}"/>
+                   Text="{Binding TotalCostWithNoDPH}"/>
             
             <Label FontSize="Default"
-                   Text="{Binding SummaryCostWithoutDPH}"/>
+                   Text="{Binding TotalCost}"/>
             <Button Text="Prodáno"
                     FontSize="Large"
                     Margin="10,10"

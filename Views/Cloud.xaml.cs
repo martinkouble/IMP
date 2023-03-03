@@ -17,7 +17,7 @@ public partial class Cloud : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = cloudViewModel;
- 
+        cloudViewModel.page = this;
     }
     
 }

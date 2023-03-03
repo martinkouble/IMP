@@ -59,7 +59,7 @@ namespace IMP_reseni.Services
             string _fileName = name;
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             string jsonString = JsonConvert.SerializeObject(this, settings);
-            File.WriteAllText(cacheDir + "/" + _fileName, jsonString);          
+            File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);          
         }
 
 
@@ -76,12 +76,12 @@ namespace IMP_reseni.Services
                 SetSaveHolderProperties(save);
             }
         }
-        public void Load(string name)
+        public void Load(string path)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
-            if (File.Exists(name))
+            if (File.Exists(path))
             {
-                string json = File.ReadAllText(name);
+                string json = File.ReadAllText(path);
                 SaveHolder save = JsonConvert.DeserializeObject<SaveHolder>(json, settings);
                 SetSaveHolderProperties(save);
             }

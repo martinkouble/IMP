@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using Mopups.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Linq;
+using IMP_reseni.Controls;
 
 namespace IMP_reseni.ViewModels
 {
@@ -24,9 +26,11 @@ namespace IMP_reseni.ViewModels
             {
                 //Page _targetPage = (Page)Activator.CreateInstance(_targetPageType);
                 //await _page.Navigation.PushAsync(_targetPage);
+                await MopupService.Instance.PushAsync(new SpinnerPopup());
                 var method = typeof(NavigationExtensions).GetMethods().Where(x => x.Name == "PushAsync").ElementAt(0);
                 MethodInfo generic = method.MakeGenericMethod(_targetPageType);
                 generic.Invoke(_page, new object[1] { _page.Navigation });
+                await MopupService.Instance.PopAsync();
             }
             );
             ChangePasswordCommand = new Command(

@@ -143,6 +143,7 @@ namespace IMP_reseni.ViewModels
                         itemData = excelReading[i].Split(';');
                         NewFileItem(itemData);
                     }
+                    sr.Close();
                 }
                 else
                 {

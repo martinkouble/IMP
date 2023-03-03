@@ -22,9 +22,30 @@ namespace IMP_reseni.ViewModels
 {
     public class BasketViewModel: INotifyPropertyChanged
     {
-        public ICommand Button_Clicked { get; private set; }
+        public ICommand SellCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
 
+        private string TotalCost 
+        {
+            get
+            { 
+                double Cost=0;
+                foreach (OrderItem o in basketHolder.Order.Items)
+                {
+                    Items item = o.Item;
+                    Cost += item.SellCost * o.Amount;
+                }
+                return Convert.ToString(Cost); 
+            } 
+        }
+
+        private string TotalCostWithNoDPH
+        {
+            get
+            {
+                return Math.Round(Convert.ToDouble(TotalCost) / 1.21, 2).ToString();
+            }
+        }
 
         public ObservableCollection<OrderItem> BasketItems { get; set; }
 
@@ -33,16 +54,19 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        int receiptNumber;
         byte[] buffer;
         NetworkStream outStream;
+        private BasketHolder basketHolder;
         public BasketViewModel(BasketHolder basketHolder) 
         {
-            BasketItems=new ObservableCollection<OrderItem>();
+            this.basketHolder = basketHolder;
+            BasketItems =new ObservableCollection<OrderItem>();
             foreach (var item in App.basketHolder.Items)
             {
                 BasketItems.Add(item);
             }
-            Button_Clicked = new Command(
+            SellCommand = new Command(
            async () =>
            {
                if (basketHolder.Items.Count!=0)
@@ -74,6 +98,10 @@ namespace IMP_reseni.ViewModels
                        client.Close();
                    }
                }
+               else
+               {
+                   await Toast.Make("V košíku není žádná položka").Show();
+               }
           
            });
 
@@ -81,11 +109,12 @@ namespace IMP_reseni.ViewModels
                 (OrderItem a) => 
            {
                BasketItems.Remove(a);
-               App.basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
+               basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
            });
         }
         private void ReceiptPrint()
         {
+            /*
             Printer.output.Clear();
             Printer.Align("center");
             Printer.PrintLine("Zivot bez barier Nova Paka");
@@ -99,6 +128,38 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("-------------------------------");
             Printer.Align("right");
             Printer.PrintLine("-------------------------------");
+            Printer.PrintLine();
+            Printer.PrintLine();*/
+            receiptNumber++;
+            string stringNumber = receiptNumber.ToString().PadLeft(7, '0');
+            Printer.output.Clear();
+            Printer.Align("center");
+            Printer.PrintLine("Zivot bez barier Nova Paka");
+            Printer.PrintLine("Lomena 533, 509 01 Nova Paka");
+            Printer.PrintLine("IC: 26652561    DIC: CZ26652561");
+            Printer.PrintLine("--------------------------------");
+            Printer.Align("left");
+            Printer.PrintLine("Datum: " + DateTime.Now);
+            Printer.PrintLine("Cislo uctenky: " + stringNumber);
+            Printer.PrintLine("--------------------------------");
+            foreach (OrderItem o in basketHolder.Order.Items)
+            {
+                Items item = o.Item;
+                Printer.tab(16, 22);
+                Printer.Print(RemoveDiacritics(item.Name));
+                Printer.tabSkok();
+                Printer.PrintLine(item.SellCost.ToString() + " Kc/ks");
+                Printer.tabSkok();
+                Printer.Print(o.Amount.ToString() + "x");
+                Printer.tabSkok();
+                Printer.PrintLine((item.SellCost * o.Amount).ToString() + " Kc");
+            }
+            Printer.PrintLine("-------------------------------");
+            Printer.Align("right");
+            Printer.PrintLine("Mezisoucet bez DPH: " + TotalCostWithNoDPH + "Kc");
+            Printer.PrintLine("DPH: " + (Convert.ToDouble(TotalCost) - Convert.ToDouble(TotalCostWithNoDPH)) + "Kc");
+            Printer.PrintLine("-------------------------------");
+            Printer.PrintLine("Celkova castka: " + TotalCost + "Kc");
             Printer.PrintLine();
             Printer.PrintLine();
 
@@ -137,6 +198,21 @@ namespace IMP_reseni.ViewModels
             status = await Permissions.RequestAsync<MyBluetoothPermission>();
 
             return status;
+        }
+
+        public static string RemoveDiacritics(String s)
+        {
+            s = s.Normalize(System.Text.NormalizationForm.FormD);
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(s[i]) != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(s[i]);
+                }
+            }
+            return sb.ToString();
         }
     }
 }

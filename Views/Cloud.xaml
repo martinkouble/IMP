@@ -135,14 +135,20 @@
                 IsEnabled="{Binding IsEnable}"
                 x:Name="Timepicker"
                 ItemsSource ="{Binding TimeTable}"
-                SelectedItem="{Binding SetTime}">
-        </Picker>
+                SelectedItem="{Binding SetTime}"/>
+
+
+        <Picker Title="Uložené zálohy"
+                IsEnabled="{Binding IsEnable}"
+                ItemsSource="{Binding UploadedBackups}"
+                SelectedItem="{Binding SelectedBackup}"/>
 
 
         <!--<Picker Title="Zálohy">
 
         </Picker>-->
         <Button Command="{Binding ManualSaveCommand}"
+                IsEnabled="{Binding IsEnable}"
                 Text="Manualní uložení"/>
 
     </VerticalStackLayout>

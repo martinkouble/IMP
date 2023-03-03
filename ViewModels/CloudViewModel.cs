@@ -22,6 +22,10 @@ namespace IMP_reseni.ViewModels
     {
         private CloudService cloudService;
 
+        public List<string> UploadedBackups { get; private set; }
+
+        public Page page {private get; set; }
+
         public bool IsEnable
         {
             set 
@@ -43,7 +47,26 @@ namespace IMP_reseni.ViewModels
                 SetProperty(ref _setTime, value);
                 SetTimer(value);
             }
-            get { return _setTime; }
+            get 
+            {
+                return Times.First(x=>x.Value==cloudService.TimerInterval).Key;
+            }
+        }
+
+
+        private string _selectedBackup;
+        public string SelectedBackup
+        {
+            set 
+            { 
+                SetProperty(ref _selectedBackup, value);
+                if (value!=null && value!=null)
+                {
+                    ShowPromt(value);
+                    SelectedBackup = null;
+                }
+            }
+            get { return _selectedBackup; }
         }
 
         private string _email;
@@ -79,6 +102,7 @@ namespace IMP_reseni.ViewModels
             Times = new Dictionary<string,int>
             {
                 {  "Nikdy" ,0},
+                { "1 minut" , 1 },
                 { "5 minut" , 5 },
                 { "15 minut" , 15 },
                 { "30 minut" , 30 },
@@ -91,6 +115,11 @@ namespace IMP_reseni.ViewModels
             this.cloudService = cloudService;
             //cloudService = App.cloudService;
             //IsEnable = cloudService.IsEnabled;
+
+            if (cloudService.Password!=null && cloudService.Password != "" && cloudService.Email!=null && cloudService.Email!="")
+            {
+                UploadedBackups = new List<string>(cloudService.GetFilesNames());
+            }
 
             TestCommand = new Command(
             () => 
@@ -119,31 +148,50 @@ namespace IMP_reseni.ViewModels
             {
                 await MopupService.Instance.PushAsync(new SpinnerPopup());
                 cloudService.SetLogin(Email, Password);
+                if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
+                {
+                    UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                }
                 await MopupService.Instance.PopAsync();
-
-                //MegaApiClient client = new MegaApiClient();
-                //client.Login(Email, Password);
-                //IEnumerable<INode> nodes = client.GetNodes();
-                //INode parent = nodes.Single(n => n.Name == "Upload");
-                //nodes = client.GetNodes(parent);
-                //foreach (var item in nodes)
-                //{
-                //    source.Add(item.Name);
-                //}
+                /*
+                MegaApiClient client = new MegaApiClient();
+                client.Login(Email, Password);
+                IEnumerable<INode> nodes = client.GetNodes();
+                INode parent = nodes.Single(n => n.Name == "Upload");
+                nodes = client.GetNodes(parent);
+                foreach (var item in nodes)
+                {
+                    source.Add(item.Name);
+                }*/
             });
             ManualSaveCommand = new Command(
             async () =>
             {
-                await MopupService.Instance.PushAsync(new SpinnerPopup());
-                cloudService.SetLogin(Email, Password);
-                cloudService.UploadFile();
-                await Toast.Make("Uspěšně uloženo").Show();
-                await MopupService.Instance.PopAsync();
+                bool answer = await page.DisplayAlert("Potvrzení", "Opravdu si přejete uložit záloho", "Ano", "Ne");
+                if (answer == true)
+                {
+                    await MopupService.Instance.PushAsync(new SpinnerPopup());
+                    cloudService.SetLogin(Email, Password);
+                    cloudService.UploadFile();
+                    await Toast.Make("Uspěšně uloženo").Show();
+                    await MopupService.Instance.PopAsync();
+                }              
             });
         }
         private void SetTimer(string minutes)
         {
             cloudService.SetInterval(Times[minutes]);
+        }
+        private async void ShowPromt(string file)
+        {
+            bool answer = await page.DisplayAlert("Potvrzení", "Opravdu si přejete načíst zálohu? Veškerá data budou přepsána zálohou.", "Ano", "Ne");
+            if (answer==true)
+            {
+                await MopupService.Instance.PushAsync(new SpinnerPopup());
+                cloudService.LoadFile(file);
+                await MopupService.Instance.PopAsync();
+                await Toast.Make("Záloha byla načtena").Show();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CG.Web.MegaApiClient;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+
 
 
 
@@ -136,7 +138,7 @@ namespace IMP_reseni.Services
             }
             catch
             {
-                Toast.Make("Špatné přihlašovací údaje").Show();
+                Toast.Make("Špatné přihlašovací údaje nebo nejste připojeni k internetu").Show();
             }
         }
         public async void UploadFileAsync()
@@ -204,6 +206,7 @@ namespace IMP_reseni.Services
         {
             File.Copy(FileSystem.Current.AppDataDirectory + "/" + "IMP.json", FileSystem.Current.AppDataDirectory + "/" + "~IMP.json",true);
         }
+        /*
         public void UploadFile(string filePath)
         {
             MegaApiClient client = new MegaApiClient();
@@ -221,29 +224,45 @@ namespace IMP_reseni.Services
             }
             client.UploadFile(filePath, myFolder);
             client.Logout();
-        }
+        }*/
 
-        public void LoadFile(string fileName)
+        public async void LoadFile(string fileName)
         {
             MegaApiClient client = new MegaApiClient();
             client.Login(Email, Password);
             IEnumerable<INode> nodes = client.GetNodes();
-            INode file = nodes.Single(x => x.Name == "fileName");
+            INode file = nodes.Single(x => x.Name == fileName);
 
-            client.Download(file);
+            string cacheDir = FileSystem.Current.CacheDirectory;
+            string path = cacheDir + "/" + fileName;
+            File.Delete(path);
+
+            await client.DownloadFileAsync(file, path);
+            saveHolder.Load(path);
+            saveHolder.Save();
+            File.Delete(path);
+
             client.Logout();
         }
 
         public List<string> GetFilesNames()
         {
-            MegaApiClient client = new MegaApiClient();
-            client.Login(Email, Password);
-            IEnumerable<INode> nodes = client.GetNodes();
-            INode parent = nodes.Single(n => n.Name == "Upload");
-            nodes = client.GetNodes(parent);
-            client.Logout();
+            try
+            {
+                MegaApiClient client = new MegaApiClient();
+                client.Login(Email, Password);
+                IEnumerable<INode> nodes = client.GetNodes();
+                INode parent = nodes.Single(n => n.Name == "Upload");
+                nodes = client.GetNodes(parent);
+                client.Logout();
 
-            return nodes.Select(x=>x.Name).ToList();
+                return nodes.Select(x => x.Name).ToList();
+            }
+            catch (Exception)
+            {
+                Toast.Make("Došlo k chybě, zkontroluje zda jste připojeni k internetu").Show();
+                return null;
+            }
         }
     }
 }
