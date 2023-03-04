@@ -77,27 +77,27 @@ namespace IMP_reseni.ViewModels
             get { return _searchText; }
         }
 
-        private bool _SubCategoryCheckBoxIsChecked;
-        public bool SubCategoryCheckBoxIsChecked
-        {
-            set { SetProperty(ref _SubCategoryCheckBoxIsChecked, value); }
-            get { return _SubCategoryCheckBoxIsChecked; }
-        }
+        //private bool _SubCategoryCheckBoxIsChecked;
+        //public bool SubCategoryCheckBoxIsChecked
+        //{
+        //    set { SetProperty(ref _SubCategoryCheckBoxIsChecked, value); }
+        //    get { return _SubCategoryCheckBoxIsChecked; }
+        //}
 
 
-        private bool _CategoryCheckBoxIsChecked;
-        public bool CategoryCheckBoxIsChecked
-        {
-            set { SetProperty(ref _CategoryCheckBoxIsChecked, value); }
-            get { return _CategoryCheckBoxIsChecked; }
-        }
+        //private bool _CategoryCheckBoxIsChecked;
+        //public bool CategoryCheckBoxIsChecked
+        //{
+        //    set { SetProperty(ref _CategoryCheckBoxIsChecked, value); }
+        //    get { return _CategoryCheckBoxIsChecked; }
+        //}
 
-        private bool _ItemCheckBoxIsChecked;
-        public bool ItemCheckBoxIsChecked
-        {
-            set { SetProperty(ref _ItemCheckBoxIsChecked, value); }
-            get { return _ItemCheckBoxIsChecked; }
-        }
+        //private bool _ItemCheckBoxIsChecked;
+        //public bool ItemCheckBoxIsChecked
+        //{
+        //    set { SetProperty(ref _ItemCheckBoxIsChecked, value); }
+        //    get { return _ItemCheckBoxIsChecked; }
+        //}
 
 
         public ObservableCollection<object> ItemsList { get;  set; }
@@ -122,6 +122,8 @@ namespace IMP_reseni.ViewModels
         private SaveHolder saveholder;
         private BasketHolder basketholder;
         private ContentPage _page;
+
+        private bool CanSearch=false;
         public MainPageViewModel()
         {
         }
@@ -134,7 +136,8 @@ namespace IMP_reseni.ViewModels
             //h.Load();
 
             //source = saveholder.Inventory;
-            source = saveholder.Inventory.Where(x => x.Disabled == false).ToList();
+            //source = saveholder.Inventory.Where(x => x.Disabled == false).ToList();
+            source = saveholder.Inventory;
 
             this.basketholder = basketholder;
             this.saveholder = saveholder;
@@ -153,7 +156,17 @@ namespace IMP_reseni.ViewModels
             PerformSearch = new Command<string>(
             (string Text) =>
             {
-                filter(Text);
+                if (Text=="" && CanSearch==true)
+                {
+                    CanSearch = false;
+                    TypeOfItems = "Kategorie";
+                    filter(Text);
+                }
+                else if(Text!="" && Text!=null)
+                {
+                    TypeOfItems = "Vše";
+                    GetAllNames(Text);
+                }
             });
 
             NavigateCollectionCommand = new Command<string>(
@@ -177,6 +190,8 @@ namespace IMP_reseni.ViewModels
                             CurrentSelection[0] = SelectedCategory;
                             TypeOfItems = "Podkategorie";
                         }
+                        //backArrowClicked = true;
+                        //SearchText = "";
                         SelectedItem = null;
                         /*
                         switch (_type)
@@ -196,6 +211,7 @@ namespace IMP_reseni.ViewModels
                                 break;
                         }*/
                     }
+                    //backArrowClicked = true;
 
                 }
                 //else if(Direction == "Forward")
@@ -203,7 +219,7 @@ namespace IMP_reseni.ViewModels
 
                 //}
 
-                
+
             });
 
             ItemSelectedCommand = new Command<SelectionChangedEventArgs>(
@@ -215,7 +231,7 @@ namespace IMP_reseni.ViewModels
                }
                //PreviousSelection = (List<object>)e.PreviousSelection;
            });
-
+            /*
             CheckedBoxChangeCommand = new Command<CheckedChangedEventArgs>(
                 (CheckedChangedEventArgs e) =>
                 {
@@ -232,12 +248,14 @@ namespace IMP_reseni.ViewModels
 
                     }
                 });
-
+            */
             ItemSelect =new Command<object>(
             async (object SelectedItem) =>
             {
                 if (SelectedItem != null) 
-                { 
+                {
+                    CanSearch = false;
+                    SearchText = "";
 
                 Type _type = SelectedItem.GetType();
                 if (_type == typeof(Category))
@@ -250,7 +268,8 @@ namespace IMP_reseni.ViewModels
                 else if(_type == typeof(SubCategory))
                 {
                     var _subCategory = (SubCategory)SelectedItem;
-                    addToList(_subCategory.Items);
+                    //addToList(_subCategory.Items);
+                    addItemsToList(_subCategory.Items);
                     TypeOfItems = "Položky";
 
                 }
@@ -283,6 +302,7 @@ namespace IMP_reseni.ViewModels
             //}
             await Permissions.RequestAsync<Permissions.StorageWrite>();
             await Permissions.RequestAsync<Permissions.StorageRead>();
+            /*
             //PermissionStatus status1 = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
             //PermissionStatus status2 = await Permissions.CheckStatusAsync<MyBluetoothPermissionOldVersion>();
 
@@ -321,7 +341,7 @@ namespace IMP_reseni.ViewModels
             //    {
             //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
             //    }
-            //}
+            //}*/
         }
 
         private void filter(string Text)
@@ -344,6 +364,51 @@ namespace IMP_reseni.ViewModels
                     ItemsList.Add(Item);
                 }
             }
+            SelectedItem = null;
+
+        }
+
+
+        private void GetAllNames(string Text)
+        {
+            if (string.IsNullOrEmpty(Text))
+            {
+                var _source = source.ToList();
+                ItemsList.Clear();
+                foreach (var Item in _source)
+                {
+                    ItemsList.Add(Item);
+                }
+            }
+            else
+            {
+                ItemsList.Clear();
+                Text = Text.ToLowerInvariant();
+                List<object> _filteredCategories = new List<object>(source.Where(Item => Item.Name.ToLower().Contains(Text)));
+                //List<SubCategory> _subCategories = (List<SubCategory>)source.SelectMany(Item => Item.SubCategories);
+                //List<object> _filteredSubCategories = new List<object>(source.Select(x => x.SubCategories).ToList()))));
+                List<object> _filteredSubCategories = new List<object>(source.SelectMany(x => x.SubCategories.Where(x => x.Name.ToLower().Contains(Text))));
+
+                List<object> _filteredItems = new List<object>(source.SelectMany(x => x.SubCategories.SelectMany(x => x.Items.Where(x => x.Name.ToLower().Contains(Text)))));
+
+                //List<object> _filteredItems = new List<object>(source.Select(x => x.SubCategories.Select(x => x.Items.Where(x => x.Name.ToLower().Contains(Text)))));
+                foreach (var Item in _filteredCategories)
+                {
+                    ItemsList.Add(Item);
+                }
+
+                foreach (var Item in _filteredSubCategories)
+                {
+                    ItemsList.Add(Item);
+                }
+
+                foreach (var Item in _filteredItems)
+                {
+                    ItemsList.Add(Item);
+                }
+                SelectedItem = null;
+
+            }
         }
         private void addToList<T>(List<T> list)
         {
@@ -353,6 +418,20 @@ namespace IMP_reseni.ViewModels
                 foreach(var Item in list)
                 {
                     ItemsList.Add(Item);
+                }
+            }
+        } 
+        private void addItemsToList(List<Items> list)
+        {
+            if(list!=null)
+            {
+                ItemsList.Clear();
+                foreach(var Item in list)
+                {
+                    if (Item.Disabled!=true)
+                    {
+                        ItemsList.Add(Item);
+                    }
                 }
             }
         }
@@ -367,7 +446,7 @@ namespace IMP_reseni.ViewModels
                 });
             }
             */
-        
+
 
 
     }

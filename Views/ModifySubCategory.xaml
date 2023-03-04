@@ -4,7 +4,7 @@
              x:Class="IMP_reseni.Views.ModifySubCategory"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="ModifySubCategory">
+             Title="Změnit podkategorii">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 

@@ -9,6 +9,8 @@ namespace IMP_reseni.MyPermissions
 {
     public class MyBluetoothPermission : Permissions.BasePlatformPermission
     {
+#if ANDROID
+
         public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>
             new List<(string permission, bool isRuntime)>
             {
@@ -30,5 +32,6 @@ namespace IMP_reseni.MyPermissions
                 //(global::Android.Manifest.Permission.AccessFineLocation, true),
 
             }.ToArray();
+#endif
     }
 }

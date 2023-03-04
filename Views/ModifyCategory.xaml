@@ -4,14 +4,14 @@
              x:Class="IMP_reseni.Views.ModifyCategory"
               xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="ModifyCategory">
+             Title="Změnit kategorii">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool"/>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
             <Setter Property="BorderColor" Value="Black" />
-            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>
@@ -19,7 +19,7 @@
     <StackLayout Margin="75">
         
         <Border StyleClass="PickerBorder"
-                Margin="0,0,0,80"
+                Margin="0,0,0,60"
                 >
             <Picker Title="Zvol Kategorii"
                 x:Name="Picker"
@@ -37,7 +37,7 @@
                LineBreakMode="WordWrap"/>
 
         <Border StyleClass="EntryBorder"
-                Margin="0,60,0,50">
+                Margin="0,30,0,30">
             <Entry 
                FontSize="Large"
                x:Name="Entry"
@@ -49,6 +49,7 @@
                 HorizontalOptions="Center"
                 Command="{Binding ShowPictureCommand}"
                 CommandParameter="{Binding SelectedCategory}"/>
+        
         <Button Text="Změnit obrázek"       
                 HorizontalOptions="Center"
                 Command="{Binding ChangePictureCommand}"

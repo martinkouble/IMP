@@ -4,7 +4,7 @@
              x:Class="IMP_reseni.Views.DeleteItem"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="DeleteItem">
+             Title="Smazat položku">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 
@@ -20,7 +20,7 @@
         </Style>
 
 
-        <Style TargetType="Entry">
+        <Style TargetType="Label">
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="HorizontalOptions" Value="Center"/>
             <Setter Property="FontSize" Value="Medium"/>
@@ -95,14 +95,22 @@
                Text="{Binding SellPrice}"/>
         </Border>
         <HorizontalStackLayout HorizontalOptions="Center">
-            <CheckBox IsChecked="{Binding SorChecked}"/>
+            <CheckBox IsChecked="{Binding SorChecked}" >
+                <CheckBox.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </CheckBox.GestureRecognizers>
+            </CheckBox>
             <Label Text="Komisní prodej" 
                FontSize="Large"
-               LineBreakMode="WordWrap"
+               LineBreakMode="WordWrap"                 
                />
         </HorizontalStackLayout>
         <HorizontalStackLayout HorizontalOptions="Center">
-            <CheckBox IsChecked="{Binding DisableCheck}"/>
+            <CheckBox IsChecked="{Binding DisableCheck}">
+                <CheckBox.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </CheckBox.GestureRecognizers>
+            </CheckBox>
             <Label Text="Skryté" 
                FontSize="Large"
                LineBreakMode="WordWrap"/>

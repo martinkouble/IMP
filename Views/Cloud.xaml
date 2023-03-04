@@ -141,12 +141,8 @@
         <Picker Title="Uložené zálohy"
                 IsEnabled="{Binding IsEnable}"
                 ItemsSource="{Binding UploadedBackups}"
-                SelectedItem="{Binding SelectedBackup}"/>
-
-
-        <!--<Picker Title="Zálohy">
-
-        </Picker>-->
+                SelectedItem="{Binding SelectedBackup}">
+        </Picker>
         <Button Command="{Binding ManualSaveCommand}"
                 IsEnabled="{Binding IsEnable}"
                 Text="Manualní uložení"/>

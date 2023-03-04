@@ -13,6 +13,8 @@ namespace IMP_reseni.Services
         public Order Order { get; set; }
         public List<OrderItem> Items { get { return Order.Items; } }
 
+        public int receiptNumber=0;
+
         public bool Empty
         {
             get

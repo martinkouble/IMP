@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.Basket"
              xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
-             Title="Basket">
+             Title="Košík">
     <Grid Margin="0,10,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

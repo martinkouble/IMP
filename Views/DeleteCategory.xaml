@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IMP_reseni.Views.DeleteCategory"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="DeleteCategory">
+             Title="Smazat kategorii">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool"/>
         <Style TargetType="Button">

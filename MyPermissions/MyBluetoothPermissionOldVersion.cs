@@ -9,12 +9,15 @@ namespace IMP_reseni.MyPermissions
 {
     public class MyBluetoothPermissionOldVersion : Permissions.BasePlatformPermission
     {
+        #if ANDROID
+
         public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>
             new List<(string permission, bool isRuntime)>
             {       
-                // Android 10
+                // Android 10 and older
                 ("android.permission.BLUETOOTH", true),
-                //("android.permission.BLUETOOTH_ADMIN", true),
+                ("android.permission.BLUETOOTH_ADMIN", true),
+                //("android.permission.BLUETOOTH_PRIVILEGED", true),
                 //("android.permission.BLUETOOTH_SCAN", true),
                 //("android.permission.BLUETOOTH_CONNECT", true),
                 //("android.permission.BLUETOOTH_ADVERTISE", true),
@@ -26,5 +29,6 @@ namespace IMP_reseni.MyPermissions
                 //(global::Android.Manifest.Permission.AccessFineLocation, true),
 
             }.ToArray();
+#endif
     }
 }

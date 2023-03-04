@@ -11,7 +11,7 @@
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
             <Setter Property="BorderColor" Value="Black" />
-            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>

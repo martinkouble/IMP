@@ -4,7 +4,7 @@
              x:Class="IMP_reseni.Views.DeleteSupplier"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="DeleteSupplier">
+             Title="Smazat dodavatele">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 
@@ -32,7 +32,7 @@
         <Border StyleClass="PickerBorder"
                 Margin="0,0,0,80"
                 >
-            <Picker Title="Zvol Kategorii"
+            <Picker Title="Zvol Dodavatele"
                 x:Name="Picker"
                 ItemsSource="{Binding ListOfSupplier}"
                 SelectedItem="{Binding SelectedSupplier}"

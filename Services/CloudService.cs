@@ -82,8 +82,21 @@ namespace IMP_reseni.Services
                 return Preferences.Default.Get("CloudServiceIsEnable", false); 
             }          
         }
+
+        private bool _validated;
+        public bool Validated
+        {
+            private set 
+            { 
+                _validated = value;
+                Preferences.Default.Set("CloudCredentialsValidated", value);
+            }
+            get { return _validated; }
+        }
+
         public CloudService(SaveHolder saveHolder) 
         {
+            Validated= Preferences.Default.Get("CloudServiceIsEnable", false);
             this.saveHolder=saveHolder;
             timer=Application.Current.Dispatcher.CreateTimer();
             if (TimerInterval!=0 && timerSet == true && IsEnabled == true)
@@ -125,20 +138,22 @@ namespace IMP_reseni.Services
             CreateBackUp();
             UploadFileAsync();
         }
-        public void SetLogin(string email,string password)
+        public bool SetLogin(string email,string password)
         {
-            Email= email;
-            Password= password;
             MegaApiClient client = new MegaApiClient();
             try 
             {
-                client.Login(Email, Password);
+                client.Login(email, password);
                 client.Logout();
-                Toast.Make("Údaje ověřeny").Show();
+                Email = email;
+                Password = password;
+                Validated = true;
+                return true;
             }
             catch
             {
-                Toast.Make("Špatné přihlašovací údaje nebo nejste připojeni k internetu").Show();
+                Validated = false;
+                return false;
             }
         }
         public async void UploadFileAsync()
@@ -150,19 +165,19 @@ namespace IMP_reseni.Services
                 await client.LoginAsync(Email, Password);
                 IEnumerable<INode> nodes = await client.GetNodesAsync();
                 INode myFolder;
-                if (!nodes.Any(x => x.Name == "Upload"))
+                if (!nodes.Any(x => x.Name == "Zalohy"))
                 {
                     INode root = nodes.Single(x => x.Type == NodeType.Root);
-                    myFolder = await client.CreateFolderAsync("Upload", root);
+                    myFolder = await client.CreateFolderAsync("Zalohy", root);
                 }
                 else
                 {
-                    myFolder = nodes.Single(n => n.Name == "Upload");
+                    myFolder = nodes.Single(n => n.Name == "Zalohy");
                 }
                 using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var modificationDate = File.GetLastWriteTime(filePath);
-                    await client.UploadAsync(fileStream, "IMP" + DateTime.Now.ToString("_dd_MM_yyyy HH-mm-ss") + ".json", myFolder, null, modificationDate);
+                    await client.UploadAsync(fileStream, "Zaloha_" + DateTime.Now.ToString("_dd_MM_yyyy HH-mm-ss") + ".json", myFolder, null, modificationDate);
                 }
                 await client.LogoutAsync();
             }
@@ -172,7 +187,7 @@ namespace IMP_reseni.Services
                 await Toast.Make("Došlo k chybě při uploudnu").Show();
             }  
         }
-        public void UploadFile()
+        public bool UploadFile()
         {
             try
             {
@@ -181,25 +196,26 @@ namespace IMP_reseni.Services
                 client.Login(Email, Password);
                 IEnumerable<INode> nodes = client.GetNodes();
                 INode myFolder;
-                if (!nodes.Any(x => x.Name == "Upload"))
+                if (!nodes.Any(x => x.Name == "Zalohy"))
                 {
                     INode root = nodes.Single(x => x.Type == NodeType.Root);
-                    myFolder = client.CreateFolder("Upload", root);
+                    myFolder = client.CreateFolder("Zalohy", root);
                 }
                 else
                 {
-                    myFolder = nodes.Single(n => n.Name == "Upload");
+                    myFolder = nodes.Single(n => n.Name == "Zalohy");
                 }
                 using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var modificationDate = File.GetLastWriteTime(filePath);
-                    client.Upload(fileStream, "IMP" + DateTime.Now.ToString("-dd-MM-yyyy HH:mm:ss") + ".json", myFolder, modificationDate);
+                    client.Upload(fileStream, "Zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy HH:mm:ss") + ".json", myFolder, modificationDate);
                 }
                 client.Logout();
+                return true;
             }
             catch
             {
-                Toast.Make("Došlo k chybě při uploudnu").Show();
+                return false;
             }
         }
         public void CreateBackUp()
@@ -213,36 +229,42 @@ namespace IMP_reseni.Services
             client.Login(Email, Password);
             IEnumerable<INode> nodes = client.GetNodes();
             INode myFolder;
-            if (!nodes.Any(x=>x.Name== "Upload"))
+            if (!nodes.Any(x=>x.Name== "Zalohy"))
             {
                 INode root = nodes.Single(x => x.Type == NodeType.Root);
-                myFolder = client.CreateFolder("Upload", root);
+                myFolder = client.CreateFolder("Zalohy", root);
             }
             else
             {
-                myFolder = nodes.Single(n => n.Name == "Upload");
+                myFolder = nodes.Single(n => n.Name == "Zalohy");
             }
             client.UploadFile(filePath, myFolder);
             client.Logout();
         }*/
 
-        public async void LoadFile(string fileName)
+        public async Task<bool> LoadFile(string fileName)
         {
-            MegaApiClient client = new MegaApiClient();
-            client.Login(Email, Password);
-            IEnumerable<INode> nodes = client.GetNodes();
-            INode file = nodes.Single(x => x.Name == fileName);
+            try
+            {
+                MegaApiClient client = new MegaApiClient();
+                client.Login(Email, Password);
+                IEnumerable<INode> nodes = client.GetNodes();
+                INode file = nodes.Single(x => x.Name == fileName);
+                string cacheDir = FileSystem.Current.CacheDirectory;
+                string path = cacheDir + "/" + fileName;
+                File.Delete(path);
+                await client.DownloadFileAsync(file, path);
+                saveHolder.Load(path);
+                saveHolder.Save();
+                File.Delete(path);
+                client.Logout();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
-            string cacheDir = FileSystem.Current.CacheDirectory;
-            string path = cacheDir + "/" + fileName;
-            File.Delete(path);
-
-            await client.DownloadFileAsync(file, path);
-            saveHolder.Load(path);
-            saveHolder.Save();
-            File.Delete(path);
-
-            client.Logout();
         }
 
         public List<string> GetFilesNames()
@@ -252,7 +274,16 @@ namespace IMP_reseni.Services
                 MegaApiClient client = new MegaApiClient();
                 client.Login(Email, Password);
                 IEnumerable<INode> nodes = client.GetNodes();
-                INode parent = nodes.Single(n => n.Name == "Upload");
+                INode parent;
+                if (!nodes.Any(x => x.Name == "Zalohy"))
+                {
+                    INode root = nodes.Single(x => x.Type == NodeType.Root);
+                    parent = client.CreateFolder("Zalohy", root);
+                }
+                else
+                {
+                    parent = nodes.Single(n => n.Name == "Zalohy");
+                }
                 nodes = client.GetNodes(parent);
                 client.Logout();
 

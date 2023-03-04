@@ -138,7 +138,6 @@ namespace IMP_reseni.ViewModels
             //client.UploadFile(_appDirectory + "/" + _fileName, myFolder);
             //client.Logout();
             //});
-            
             GetCommand = new Command<bool>(
              canExecute: (bool IsValid) =>
             {
@@ -146,13 +145,22 @@ namespace IMP_reseni.ViewModels
             },
              execute: async (bool IsValid) =>
             {
-                await MopupService.Instance.PushAsync(new SpinnerPopup());
-                cloudService.SetLogin(Email, Password);
+                SpinnerPopup spinnerPopup = new SpinnerPopup();
+                await MopupService.Instance.PushAsync(spinnerPopup);
+                bool loginSucceded=cloudService.SetLogin(Email, Password);
+                if (loginSucceded==true)
+                {
+                   await Toast.Make("Údaje ověřeny").Show();
+                }
+                else
+                {
+                   await Toast.Make("Špatné přihlašovací údaje nebo nejste připojeni k internetu").Show();
+                }
                 if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
                 {
                     UploadedBackups = new List<string>(cloudService.GetFilesNames());
                 }
-                await MopupService.Instance.PopAsync();
+                await MopupService.Instance.RemovePageAsync(spinnerPopup);
                 /*
                 MegaApiClient client = new MegaApiClient();
                 client.Login(Email, Password);
@@ -172,9 +180,20 @@ namespace IMP_reseni.ViewModels
                 {
                     await MopupService.Instance.PushAsync(new SpinnerPopup());
                     //cloudService.SetLogin(Email, Password);
-                    cloudService.UploadFile();
+                    bool UploadSucceded=cloudService.UploadFile();
                     await MopupService.Instance.PopAsync();
-                    await Toast.Make("Uspěšně uloženo").Show();
+                    if (UploadSucceded==true)
+                    {
+                       await Toast.Make("Uspěšný upload").Show();
+                        if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
+                        {
+                            UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                        }
+                    }
+                    else
+                    {
+                       await Toast.Make("Došlo k chybě při uploudnu, zkontroluje zda jste připojeni k internetu").Show();
+                    }
 
                 }
             });
@@ -189,9 +208,16 @@ namespace IMP_reseni.ViewModels
             if (answer==true)
             {
                 await MopupService.Instance.PushAsync(new SpinnerPopup());
-                cloudService.LoadFile(file);
+                bool LoadSucceded=await cloudService.LoadFile(file);
                 await MopupService.Instance.PopAsync();
-                await Toast.Make("Záloha byla načtena").Show();
+                if (LoadSucceded == true)
+                {
+                    await Toast.Make("Záloha byla načtena").Show();
+                }
+                else
+                {
+                    await Toast.Make("Došlo k chybě při stahování, zkontroluje zda jste připojeni k internetu").Show();
+                }
             }
         }
 

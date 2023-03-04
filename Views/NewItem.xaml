@@ -4,7 +4,7 @@
               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
              x:Class="IMP_reseni.Views.NewItem"
-             Title="NewItem">
+             Title="Nová položka">
     <ContentPage.Resources>
         <Converters:IntToBoolConverter x:Key="intToBool" />
         <toolkit:VariableMultiValueConverter 

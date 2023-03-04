@@ -173,6 +173,9 @@ namespace IMP_reseni.ViewModels
               //item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
               saveholder.DeleteItem(category, subCategory, item);
               saveholder.Save();
+
+              //saveholder.RemoveFromOrderHistory()
+
               Toast.Make("Smazáno").Show();
               DefaultedValues();
               SelectedItem = null;

@@ -8,6 +8,7 @@ public partial class Basket : ContentPage
 	{
 		InitializeComponent();
         BindingContext = basketViewModel;
+        basketViewModel.page = this;
     }
 
 }

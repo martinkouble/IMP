@@ -66,7 +66,7 @@ namespace IMP_reseni.ViewModels
             ModifyCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "")
+                if (name == "" || name == null)
                 {
                     return false;
                 }

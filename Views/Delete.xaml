@@ -4,6 +4,7 @@
              x:Class="IMP_reseni.Views.Delete"
              xmlns:controls="clr-namespace:IMP_reseni.Controls"
              xmlns:Views="clr-namespace:IMP_reseni.Views"
+             BackgroundColor="{StaticResource Primary}"
              Title="Smazat">
     <ContentPage.Resources>
         <Style TargetType="Button">

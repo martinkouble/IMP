@@ -17,16 +17,18 @@ namespace IMP_reseni.Models
         public double BuyCostPerPiece { get; set; }
         public double SellCostPerPiece { get; set; }
 
-        public Items Item
-        {
-            get
-            {
-                SaveHolder saveholder = App.saveholder;
-                if (saveholder.Inventory.Count > 0)
-                    return saveholder.FindCategory(CategoryId).FindSubCategory(SubCategoryId).FindItem(ItemId);
-                else
-                    return null;
-            }
-        }
+        
+
+        //public Items Item
+        //{
+        //    get
+        //    {
+        //        SaveHolder saveholder = App.saveholder;
+        //        if (saveholder.Inventory.Count > 0)
+        //            return saveholder.FindCategory(CategoryId).FindSubCategory(SubCategoryId).FindItem(ItemId);
+        //        else
+        //            return null;
+        //    }
+        //}
     }
 }

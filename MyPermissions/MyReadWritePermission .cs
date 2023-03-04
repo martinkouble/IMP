@@ -9,6 +9,7 @@ namespace IMP_reseni.MyPermissions
 {
     public class MyReadWritePermission : Permissions.BasePlatformPermission
     {
+#if ANDROID
         public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>
             new List<(string permission, bool isRuntime)>
             {
@@ -17,5 +18,6 @@ namespace IMP_reseni.MyPermissions
            ("android.permission.READ_EXTERNAL_STORAGE", true),
            ("android.permission.WRITE_EXTERNAL_STORAGE", true)
             }.ToArray();
+#endif
     }
 }

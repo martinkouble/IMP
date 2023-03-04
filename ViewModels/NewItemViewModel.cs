@@ -199,17 +199,19 @@ namespace IMP_reseni.ViewModels
                     if (BuyPrice==null||BuyPrice=="")
                     {
                         newItem.Create(name, DisableCheck, 0, Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
+                    
                     }
                     else
                     {
                         newItem.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);
+                    
                     }
-                    newItem.SellCost = Convert.ToInt32(SellPrice);
-                    newItem.BuyCost = Convert.ToInt32(BuyPrice);
+                    //newItem.SellCost = Convert.ToInt32(SellPrice);
+                    //newItem.BuyCost = Convert.ToInt32(BuyPrice);
                     newItem.ImageUrl = ImageUrl;
-                    newItem.SoR = SorCheck;
+                    //newItem.SoR = SorCheck;
                     newItem.Stock = Convert.ToInt32(Count);
-                    newItem.Disabled = DisableCheck;
+                    //newItem.Disabled = DisableCheck;
                     newItem.SupplierId = saveholder.FindSupplierByName(SelectedSupplier).Id;
 
                     //newItem.CategoryId = categoryId;

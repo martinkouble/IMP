@@ -24,7 +24,7 @@ namespace IMP_reseni.ViewModels
     {
         public ICommand SellCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
-
+        public Page page;
         private string TotalCost 
         {
             get
@@ -32,8 +32,9 @@ namespace IMP_reseni.ViewModels
                 double Cost=0;
                 foreach (OrderItem o in basketHolder.Order.Items)
                 {
-                    Items item = o.Item;
-                    Cost += item.SellCost * o.Amount;
+                    //Items item = o.Item;
+                    //Cost += item.SellCost * o.Amount;
+                    Cost += o.SellCostPerPiece * o.Amount;
                 }
                 return Convert.ToString(Cost); 
             } 
@@ -54,73 +55,49 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        int receiptNumber;
+        //int receiptNumber;
         byte[] buffer;
         NetworkStream outStream;
         private BasketHolder basketHolder;
-        public BasketViewModel(BasketHolder basketHolder) 
+        private SaveHolder saveHolder;
+        public BasketViewModel(BasketHolder basketHolder,SaveHolder saveHolder) 
         {
             this.basketHolder = basketHolder;
+            this.saveHolder = saveHolder;
             BasketItems =new ObservableCollection<OrderItem>();
-            foreach (var item in App.basketHolder.Items)
+            foreach (var item in basketHolder.Items)
             {
                 BasketItems.Add(item);
             }
             SellCommand = new Command(
-           async () =>
-           {
-               if (basketHolder.Items.Count!=0)
+           async() =>
+            {
+               if (basketHolder.Items.Count != 0)
                {
-                   PermissionStatus status = PermissionStatus.Granted;
-                   //PermissionStatus status;
-                   if (DeviceInfo.Version.Major >= 12)
-                   {
-                        status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
-                   }
-                   else
-                   {
-                       status = await Permissions.CheckStatusAsync<MyBluetoothPermissionOldVersion>();
-                   }
-                   //PermissionStatus status= await CheckAndRequestContactsReadPermission();
-                   // PermissionStatus status =await Permissions.CheckStatusAsync<MyBluetoothPermission>();
-                   if (status == PermissionStatus.Granted)
-                   {
-                       try
-                       {
-                           var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
-                           BluetoothClient client = new BluetoothClient();
-                           var address = picker.DeviceAddress;
-                           /*
-                           //ulong sevenItems = 0x020000000000;
-                           //BluetoothAddress address = new BluetoothAddress(sevenItems);
-                           //bool paired = BluetoothSecurity.PairRequest(address, "0000");
-                           //var guid = picker.GetRfcommServicesAsync().Result.;
-                           //var guid =await picker.GetRfcommServicesAsync();
-                           //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();*/
-                           var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
-                           client.Connect(address, guid);
-
-                           outStream = client.GetStream();
-                           Printer.output.Add(0x1B);
-                           Printer.output.Add(0x40);
-                           buffer = Printer.output.ToArray();
-                           ReceiptPrint();
-                           client.Close();
-                       }
-                       catch (Exception)
-                       {
-
-                           await Toast.Make("Došlo k chybě").Show();
-                       }
-
-                   }
+                   bool decision = await page.DisplayAlert("Účtenka", "Přejete si vytisknout účtenku?", "Ano", "Ne");
+                    if (decision==true) 
+                    {
+                        bool success=await BluetoothConnection();
+                        if (success==true)
+                        {
+                            //basketHolder.CompleteOrder();
+                            BasketItems.Clear();
+                            await Toast.Make("Prodáno s účtenkou").Show();
+                        }
+                    }
+                    else
+                    {
+                        basketHolder.CompleteOrder();
+                        BasketItems.Clear();
+                        await Toast.Make("Prodáno").Show();
+                    }
                }
                else
                {
                    await Toast.Make("V košíku není žádná položka").Show();
                }
-          
-           });
+
+            });
 
             DeleteCommand = new Command<OrderItem>(
                 (OrderItem a) => 
@@ -129,6 +106,66 @@ namespace IMP_reseni.ViewModels
                basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
            });
         }
+
+        private async Task<bool> BluetoothConnection()
+        {
+            PermissionStatus status = PermissionStatus.Granted;
+            //PermissionStatus status;
+            if (DeviceInfo.Version.Major >= 12)
+            {
+                status = await Permissions.RequestAsync<MyBluetoothPermission>();
+            }
+            else
+            {
+                status = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
+            }
+            //PermissionStatus status= await CheckAndRequestContactsReadPermission();
+            // PermissionStatus status =await Permissions.CheckStatusAsync<MyBluetoothPermission>();
+
+            //IEnumerable<ConnectionProfile> profiles = Connectivity.Current.ConnectionProfiles;
+
+            if (status == PermissionStatus.Granted)
+            {
+                try
+                {
+                    var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                    BluetoothClient client = new BluetoothClient();
+                    var address = picker.DeviceAddress;
+
+                    //ulong sevenItems = 0x020000000000;
+                    //BluetoothAddress address = new BluetoothAddress(sevenItems);
+                    //bool paired = BluetoothSecurity.PairRequest(address, "0000");
+                    //var guid = picker.GetRfcommServicesAsync().Result.;
+                    //var guid =await picker.GetRfcommServicesAsync();
+                    //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();
+                    var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
+                    client.Connect(address, guid);
+
+                    outStream = client.GetStream();
+                    Printer.output.Add(0x1B);
+                    Printer.output.Add(0x40);
+                    buffer = Printer.output.ToArray();
+                    ReceiptPrint();
+                    client.Close();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    await Toast.Make("Došlo k chybě! Zkontrolujte Bluetooth a tiskárnu").Show();
+                    return false;
+
+                }
+            }
+            else
+            {
+                await Toast.Make("Zapněte Bluetooth").Show();
+                return false;
+            }
+        }
+
+
+
+
         private void ReceiptPrint()
         {
             /*
@@ -147,8 +184,9 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("-------------------------------");
             Printer.PrintLine();
             Printer.PrintLine();*/
-            receiptNumber++;
-            string stringNumber = receiptNumber.ToString().PadLeft(7, '0');
+
+            basketHolder.receiptNumber++;
+            string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
             Printer.output.Clear();
             Printer.Align("center");
             Printer.PrintLine("Zivot bez barier Nova Paka");
@@ -161,7 +199,8 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("--------------------------------");
             foreach (OrderItem o in basketHolder.Order.Items)
             {
-                Items item = o.Item;
+                Items item = saveHolder.FindCategory(o.CategoryId).FindSubCategory(o.SubCategoryId).FindItem(o.ItemId);
+
                 Printer.tab(16, 22);
                 Printer.Print(RemoveDiacritics(item.Name));
                 Printer.tabSkok();
@@ -179,7 +218,7 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("Celkova castka: " + TotalCost + "Kc");
             Printer.PrintLine();
             Printer.PrintLine();
-
+            
             buffer = Printer.output.ToArray();
             SendMessage();
         }
@@ -192,7 +231,7 @@ namespace IMP_reseni.ViewModels
             outStream.Write(buffer, 0, buffer.Length);
         }
 
-
+        /*
         //public async Task<PermissionStatus> CheckAndRequestContactsReadPermission(Type Permission)
         //{
         //    PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
@@ -215,7 +254,7 @@ namespace IMP_reseni.ViewModels
         //    status = await Permissions.RequestAsync<MyBluetoothPermission>();
 
         //    return status;
-        //}
+        //}*/
 
         public static string RemoveDiacritics(String s)
         {

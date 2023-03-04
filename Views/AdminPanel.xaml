@@ -43,14 +43,14 @@
                 AlignItems="Stretch"
                 JustifyContent="SpaceEvenly">
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="add.png"
                            WidthRequest="40"
                            Margin="0,0,10,0"
                            VerticalOptions="Center"/>
                     <Label Text="Naskladnit"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding NavigateCommand}"
@@ -74,14 +74,14 @@
                 </Border.GestureRecognizers>
             </Border>
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="pencil.png"
                            WidthRequest="40"
                            Margin="0,0,30,0"
                            VerticalOptions="Center"/>
                     <Label Text="Upravit"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding NavigateCommand}"
@@ -90,14 +90,14 @@
             </Border>
 
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="delete.png"
                            WidthRequest="40"
                            Margin="0,0,30,0"
                            VerticalOptions="Center"/>
                     <Label Text="Smazat"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding NavigateCommand}"
@@ -105,14 +105,14 @@
                 </Border.GestureRecognizers>
             </Border>
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="book.png"
                            WidthRequest="40"
                            Margin="0,0,20,0"
                            VerticalOptions="Center"/>
                     <Label Text="Učetnictví"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding NavigateCommand}"
@@ -120,14 +120,14 @@
                 </Border.GestureRecognizers>
             </Border>
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="cloud.png"
                            WidthRequest="40"
                            Margin="0,0,40,0"
                            VerticalOptions="Center"/>
                     <Label Text="Cloud"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding NavigateCommand}"
@@ -135,14 +135,14 @@
                 </Border.GestureRecognizers>
             </Border>
             <Border>
-                <HorizontalStackLayout HorizontalOptions="Start">
+                <Grid>
                     <Image Source="password.png"
                            WidthRequest="40"
-                           Margin="0,0,10,0"
                            VerticalOptions="Center"/>
                     <Label Text="Změnit heslo"
+                           Margin="10,0,0,0"
                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                </Grid>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding ChangePasswordCommand}"/>

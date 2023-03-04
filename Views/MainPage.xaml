@@ -104,7 +104,7 @@
                 </SearchBar.Behaviors>
             </SearchBar>
         </Border>
-        <HorizontalStackLayout 
+        <!--<HorizontalStackLayout 
             Grid.Row="2"
             HorizontalOptions="Center">
             <Label StyleClass="Check_labels"
@@ -129,14 +129,14 @@
                         x:TypeArguments="CheckedChangedEventArgs "
                          EventName="CheckedChanged"
                          Command="{Binding CheckedBoxChangeCommand}">
-                        <!--<toolkit:EventToCommandBehavior.CommandParameter>
+                        --><!--<toolkit:EventToCommandBehavior.CommandParameter>
                             <MultiBinding Converter="{StaticResource CheckBoxConverter}">
                                 <MultiBinding.Bindings>
                                     <Binding Path="Color" Source="{x:Reference SubCategoryCheckBox}"/>
                                     <Binding Path="IsChecked" Source="{x:Reference SubCategoryCheckBox}"/>
                                 </MultiBinding.Bindings>
                             </MultiBinding>
-                        </toolkit:EventToCommandBehavior.CommandParameter>-->
+                        </toolkit:EventToCommandBehavior.CommandParameter>--><!--
                     </toolkit:EventToCommandBehavior>
                 </CheckBox.Behaviors>
             </CheckBox>
@@ -154,7 +154,7 @@
                     </CheckBox.Behaviors>
 
                 </CheckBox>
-        </HorizontalStackLayout>
+        </HorizontalStackLayout>-->
        
         <!--<Border
              StrokeShape="RoundRectangle 40,40,0,0"
@@ -236,13 +236,16 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Row="0"
+                                <Image Grid.Row="0"
                                            Source="{Binding ImageUrl, TargetNullValue='question_mark.jpg'}" 
                                            Aspect="AspectFill" 
                                            WidthRequest="100"
-                                           HeightRequest="120"/>
+                                           HeightRequest="120"
+                                           BackgroundColor="White">
+                                </Image>
 
-                                    <Label Grid.Row="1"
+
+                                <Label Grid.Row="1"
                                    Text="{Binding Name}" 
                                    HorizontalTextAlignment="Center"
                                    FontSize="Medium"/>
