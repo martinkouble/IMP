@@ -21,16 +21,21 @@
              Direction="Column"
              AlignItems="Stretch"
              JustifyContent="SpaceEvenly">
+            <Button Text="Export dat"
+                    Command="{Binding ExportCommand}"/>
             <Button Text="Načtení dat ze souboru"
                     Command="{Binding InsertDataCommand}"/>
             <Button Text="Vložení dat z CSV"
                     Command="{Binding InsertExcelDataCommand}"/>
             <Label Text="Počáteční datum"/>
             <DatePicker Date="{Binding StartDate}"
-                        Format="dd/MM/yyyy"/>
+                        Format="dd/MM/yyyy"
+                        TextColor="White"
+                        />
             <Label Text="Konečné datum datum"/>
             <DatePicker Date="{Binding EndDate}"
-                        Format="dd/MM/yyyy"/>
+                        Format="dd/MM/yyyy"
+                        TextColor="White"/>
             <Button Text="Učetní soubor"
                     Command="{Binding GenerateAccountingCommand}"/>
             <Button Text="Pouze sklad"

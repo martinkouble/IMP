@@ -41,7 +41,7 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
-        public DeleteCategoryViewModel(SaveHolder saveholder)
+        public DeleteCategoryViewModel(SaveHolder saveholder, BasketHolder basketHolder)
         {
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
@@ -50,7 +50,7 @@ namespace IMP_reseni.ViewModels
             DeleteCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "")
+                if (name == "" || name==null)
                 {
                     return false;
                 }
@@ -64,18 +64,26 @@ namespace IMP_reseni.ViewModels
             {
                 Category category = new Category();
                 category = saveholder.FindCategoryByName(SelectedCategory);
-                saveholder.DeleteCategory(category);
-                saveholder.Save();
-                Toast.Make("kategorie smazána").Show();
-                Text = "";
-                SelectedCategory = null;
-                List<string> list = new List<string>(saveholder.GetCategoriesNames());
-                list.Sort();
-                ListOfCategory.Clear();
-                foreach (var Item in list)
+                if (!basketHolder.ExistCategoryOfItem(category.Id))
                 {
-                    ListOfCategory.Add(Item);
+                    saveholder.DeleteCategory(category);
+                    saveholder.Save();
+                    Toast.Make("kategorie smazána").Show();
+                    Text = "";
+                    SelectedCategory = null;
+                    List<string> list = new List<string>(saveholder.GetCategoriesNames());
+                    list.Sort();
+                    ListOfCategory.Clear();
+                    foreach (var Item in list)
+                    {
+                        ListOfCategory.Add(Item);
+                    }
                 }
+                else
+                {
+                    Toast.Make("Nelze smazat kategorii položky v košíku").Show();
+                }
+
             });
         }
         public event PropertyChangedEventHandler PropertyChanged;

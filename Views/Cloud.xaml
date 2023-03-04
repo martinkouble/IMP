@@ -91,7 +91,8 @@
             <Switch VerticalOptions="Center"
                     HorizontalOptions="End"
                     Grid.Column="1"
-                    IsToggled="{Binding IsEnable}"/>
+                    IsToggled="{Binding IsEnable}"
+                    IsEnabled="{Binding CanBeSwitchEnabled}"/>
         </Grid>
 
         <!--<Grid ColumnDefinitions="Auto,*,Auto"

@@ -49,7 +49,7 @@ namespace IMP_reseni.ViewModels
             ModifyCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "")
+                if (name == "" || name==null)
                 {
                     return false;
                 }
@@ -64,18 +64,26 @@ namespace IMP_reseni.ViewModels
                 Supplier supplier = new Supplier();
                 supplier = saveholder.FindSupplierByName(SelectedSupplier);
                 supplier.Name = name;
-                saveholder.DeleteSupplier(supplier);
-                saveholder.Save();
-                Toast.Make("Dodavatel smazán").Show();
-                Text = "";
-                SelectedSupplier = null;
-                List<string> list = new List<string>(saveholder.GetSupplierNames());
-                list.Sort();
-                ListOfSupplier.Clear();
-                foreach (var Item in list)
+                if (!saveholder.IsSupplierUsedByItem(supplier.Id))
                 {
-                    ListOfSupplier.Add(Item);
+                    saveholder.DeleteSupplier(supplier);
+                    saveholder.Save();
+                    Toast.Make("Dodavatel smazán").Show();
+                    Text = "";
+                    SelectedSupplier = null;
+                    List<string> list = new List<string>(saveholder.GetSupplierNames());
+                    list.Sort();
+                    ListOfSupplier.Clear();
+                    foreach (var Item in list)
+                    {
+                        ListOfSupplier.Add(Item);
+                    }
                 }
+                else
+                {
+                    Toast.Make("Nelze smazat používaného dodavatele").Show();
+                }
+
             });
         }
 

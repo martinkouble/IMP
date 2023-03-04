@@ -104,8 +104,15 @@ namespace IMP_reseni.ViewModels
                     SellPrice=item.SellCost.ToString();
                     DisableCheck = item.Disabled;
                     SorChecked = item.SoR;
-                    SelectedSupplier = saveholder.FindSupplier(item.SupplierId).Name;
-                    ImageUrl= item.ImageUrl;
+                    if (saveholder.ExistSupplier(item.SupplierId))
+                    {
+                        SelectedSupplier = saveholder.FindSupplier(item.SupplierId).Name;
+                    }
+                    else
+                    {
+                        SelectedSupplier = null;
+                    }
+                    ImageUrl = item.ImageUrl;
                     originalSellCost = item.SellCost;
                     originalBuyCost = item.BuyCost;
                 }
@@ -180,10 +187,12 @@ namespace IMP_reseni.ViewModels
         }
         private string ImageUrl;
         private SaveHolder saveholder;
+        private BasketHolder basketHolder;
         private string previusName=null;
-        public ModifyItemViewModel(SaveHolder Saveholder)
+        public ModifyItemViewModel(SaveHolder Saveholder,BasketHolder basketHolder)
         {
             saveholder = Saveholder;
+            this.basketHolder = basketHolder;
             ListOfSubCategory = new ObservableCollection<string>();
             ListOfItem = new ObservableCollection<string>();
             //BindingBase.EnableCollectionSynchronization(ListOfSubCategory,null, ObservableCollectionCallback);
@@ -215,40 +224,48 @@ namespace IMP_reseni.ViewModels
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
               //item = subCategory.FindItemByName(name);
-              if (!subCategory.ExistItemByName(name)||name==previusName)
+              if (!basketHolder.ExistItem(item))
               {
-                  item.Id = itemId;
-                  item.ImageUrl = ImageUrl;
-                  item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
-
-                  if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
+                  if (!subCategory.ExistItemByName(name) || name == previusName)
                   {
-                      StockUpItem stockUp = new StockUpItem();
-                      stockUp.CategoryId = category.Id;
-                      stockUp.SubCategoryId = subCategory.Id;
-                      stockUp.ItemId = itemId;
-                      stockUp.ChangedSellCost = Convert.ToInt32(SellPrice);
-                      stockUp.ChangedBuyCost = Convert.ToInt32(BuyPrice);
-                      stockUp.CompleteChangeCost(category.Id, subCategory.Id, itemId);
-                  }
+                      item.Id = itemId;
+                      item.ImageUrl = ImageUrl;
+                      item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
 
-                  saveholder.ModifyItem(category, subCategory, item);
-                  saveholder.Save();
-                  Toast.Make("Položka změněna").Show();
-                  DefaultedValues();
-                  SelectedItem = null;
-                  //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
-                  //list.Sort();
-                  //ListOfItem.Clear();
-                  //foreach (var Item in list)
-                  //{
-                  //    ListOfItem.Add(Item);
-                  //}
+                      if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
+                      {
+                          StockUpItem stockUp = new StockUpItem();
+                          stockUp.CategoryId = category.Id;
+                          stockUp.SubCategoryId = subCategory.Id;
+                          stockUp.ItemId = itemId;
+                          stockUp.ChangedSellCost = Convert.ToInt32(SellPrice);
+                          stockUp.ChangedBuyCost = Convert.ToInt32(BuyPrice);
+                          stockUp.CompleteChangeCost(category.Id, subCategory.Id, itemId);
+                      }
+
+                      saveholder.ModifyItem(category, subCategory, item);
+                      saveholder.Save();
+                      Toast.Make("Položka změněna").Show();
+                      DefaultedValues();
+                      SelectedItem = null;
+                      //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
+                      //list.Sort();
+                      //ListOfItem.Clear();
+                      //foreach (var Item in list)
+                      //{
+                      //    ListOfItem.Add(Item);
+                      //}
+                  }
+                  else
+                  {
+                      Toast.Make("Položka s tímto jménem již existuje").Show();
+                  }
               }
               else
               {
-                  Toast.Make("Položka s tímto jménem již existuje").Show();                
+                  Toast.Make("Nelze měnit položku v košíku").Show();
               }
+
 
           });
 

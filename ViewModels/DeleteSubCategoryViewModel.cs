@@ -64,7 +64,7 @@ namespace IMP_reseni.ViewModels
         }
         private SaveHolder saveholder;
 
-        public DeleteSubCategoryViewModel(SaveHolder saveholder)
+        public DeleteSubCategoryViewModel(SaveHolder saveholder, BasketHolder basketHolder)
         {
             this.saveholder = saveholder;
             Text = "";
@@ -80,19 +80,27 @@ namespace IMP_reseni.ViewModels
 
                category = saveholder.FindCategoryByName(SelectedCategory);
                subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-               saveholder.DeleteSubCategory(category, subCategory);
-               saveholder.Save();
-               Toast.Make("Podkategorie smazána").Show();
-               Text = "";
-               //SelectedCategory = null;
-               SelectedSubCategory = null;
-               list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
-               list.Sort();
-               ListOfSubCategory.Clear();
-               foreach (var Item in list)
+               if (!basketHolder.ExistSubCategoryOfItem(subCategory.Id))
                {
-                   ListOfSubCategory.Add(Item);
+                   saveholder.DeleteSubCategory(category, subCategory);
+                   saveholder.Save();
+                   Toast.Make("Podkategorie smazána").Show();
+                   Text = "";
+                   //SelectedCategory = null;
+                   SelectedSubCategory = null;
+                   list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
+                   list.Sort();
+                   ListOfSubCategory.Clear();
+                   foreach (var Item in list)
+                   {
+                       ListOfSubCategory.Add(Item);
+                   }
                }
+               else
+               {
+                   Toast.Make("Nelze smazat podkategorii položky v košíku").Show();
+               }
+
            });
         }
 

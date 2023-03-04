@@ -28,14 +28,28 @@ namespace IMP_reseni.ViewModels
 
         public bool IsEnable
         {
-            set 
+            set
             {
-                cloudService.IsEnabled=value;
+
+                cloudService.IsEnabled = value;
                 OnPropertyChanged();
+
             }
             get 
             {
                 return cloudService.IsEnabled;
+            }
+        }
+
+        public bool CanBeSwitchEnabled
+        {
+            get 
+            {
+                return cloudService.Validated;
+            }
+            set
+            {
+                OnPropertyChanged("CanBeSwitchEnabled");
             }
         }
 
@@ -151,6 +165,7 @@ namespace IMP_reseni.ViewModels
                 if (loginSucceded==true)
                 {
                    await Toast.Make("Údaje ověřeny").Show();
+                    CanBeSwitchEnabled = true;
                 }
                 else
                 {

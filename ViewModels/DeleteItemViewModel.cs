@@ -148,7 +148,7 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _sorChecked, value); }
         }
         private SaveHolder saveholder;
-        public DeleteItemViewModel(SaveHolder Saveholder)
+        public DeleteItemViewModel(SaveHolder Saveholder, BasketHolder basketHolder)
         {
             saveholder = Saveholder;
             ListOfSubCategory = new ObservableCollection<string>();
@@ -170,15 +170,24 @@ namespace IMP_reseni.ViewModels
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
               item.Id = itemId;
+              if (!basketHolder.ExistItem(item))
+              {
+                  saveholder.DeleteItem(category, subCategory, item);
+                  saveholder.Save();
+                  Toast.Make("Smazáno").Show();
+                  DefaultedValues();
+                  SelectedItem = null;
+              }
+              else
+              {
+                  Toast.Make("Nelze smazat položku v košíku").Show();
+              }
               //item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
-              saveholder.DeleteItem(category, subCategory, item);
-              saveholder.Save();
+
 
               //saveholder.RemoveFromOrderHistory()
 
-              Toast.Make("Smazáno").Show();
-              DefaultedValues();
-              SelectedItem = null;
+
           });
         }
         private void DefaultedValues()

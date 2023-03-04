@@ -52,14 +52,20 @@ namespace IMP_reseni.Services
             File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);
         }
 
-        public void Save(string name)
+        //public void Save(string name)
+        //{
+        //    string cacheDir = FileSystem.Current.CacheDirectory;
+        //    string _appDirectory = FileSystem.Current.AppDataDirectory;
+        //    string _fileName = name;
+        //    JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+        //    string jsonString = JsonConvert.SerializeObject(this, settings);
+        //    File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);          
+        //}
+        public void Save(string path)
         {
-            string cacheDir = FileSystem.Current.CacheDirectory;
-            string _appDirectory = FileSystem.Current.AppDataDirectory;
-            string _fileName = name;
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             string jsonString = JsonConvert.SerializeObject(this, settings);
-            File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);          
+            File.WriteAllText(path , jsonString);          
         }
 
 
@@ -238,7 +244,17 @@ namespace IMP_reseni.Services
         public bool ExistSupplierByName(string supplierName)
         {
             return this.Suppliers.Any(f => f.Name == supplierName);
+        } 
+        public bool ExistSupplier(int supplierId)
+        {
+            return this.Suppliers.Any(f => f.Id == supplierId);
         }
+
+        public bool IsSupplierUsedByItem(int SupplierId)
+        {
+            return this.Inventory.Any(x => x.SubCategories.Any(x => x.Items.Any(x => x.SupplierId == SupplierId)));
+        }
+
         public List<string> GetSupplierNames()
         {
             List<string> output = new List<string>();

@@ -62,6 +62,14 @@ namespace IMP_reseni.Services
         public bool ExistItem(Items item)
         {
             return Items.Any(x=>x.CategoryId==item.CategoryId && x.SubCategoryId==item.CategoryId && x.ItemId==item.Id);
+        }   
+        public bool ExistCategoryOfItem(int CategoryId)
+        {
+            return Items.Any(x=>x.CategoryId== CategoryId);
+        } 
+        public bool ExistSubCategoryOfItem(int SubCategoryId)
+        {
+            return Items.Any(x=>x.SubCategoryId== SubCategoryId);
         }
 
         public BasketHolder()

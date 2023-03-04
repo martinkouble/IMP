@@ -22,6 +22,7 @@ namespace IMP_reseni.ViewModels
         public ICommand InsertExcelDataCommand { get; private set; }
         public ICommand GenerateAccountingOnlyStockCommand { get; private set; }
         public ICommand GenerateAccountingCommand { get; private set; }
+        public ICommand ExportCommand { get; private set; }
 
         private DateTime _startDate;
         public DateTime StartDate
@@ -59,6 +60,32 @@ namespace IMP_reseni.ViewModels
                 if (PermissionStatus.Granted == status)
                 {
                     GenerateFile(from, to);
+                }
+            });
+
+            ExportCommand = new Command(
+            async() =>
+            {
+                string path;
+
+#if ANDROID
+                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
+#else
+                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/zaloha_" + today.ToString("dd-mm-yyyy")+ ".json";
+#endif
+                PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (PermissionStatus.Granted == status)
+                {
+                    if (!File.Exists(path))
+                    {
+                        saveholder.Save(path);
+                        await Toast.Make("Soubor vytvořen").Show();
+                    }
+                    else
+                    {
+                        await Toast.Make("Soubor již existuje").Show();
+                    }
                 }
             });
 

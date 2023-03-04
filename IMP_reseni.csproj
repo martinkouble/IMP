@@ -36,12 +36,12 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\newsplash.png" />
 
-		<!-- Images -->
+    <!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\loginicon.svg">
 		  <BaseSize>168,208</BaseSize>
@@ -59,6 +59,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\loginicon.svg" />
+	  <None Remove="Resources\AppIcon\logo.png" />
 	  <None Remove="Resources\Images\add.svg" />
 	  <None Remove="Resources\Images\arrow_back_dark.svg" />
 	  <None Remove="Resources\Images\arrow_back_white.svg" />
@@ -74,6 +75,7 @@
 	  <None Remove="Resources\Images\question_mark.jpg" />
 	  <None Remove="Resources\Images\shopping_basket_dark.svg" />
 	  <None Remove="Resources\Images\shopping_basket_white.svg" />
+	  <None Remove="Resources\Splash\newsplash.png" />
 	</ItemGroup>
 
 	<ItemGroup>
