@@ -32,7 +32,7 @@ namespace IMP_reseni.ViewModels
             SetPasswordCommand = new Command(
             async () =>
             {
-                await SecureStorage.SetAsync("token", name);
+                await SecureStorage.Default.SetAsync("token", name);
                 var _root = _page.Navigation.NavigationStack[0];
                 _page.Navigation.InsertPageBefore(new MainPage(), _root);
                 await _page.Navigation.PopToRootAsync();

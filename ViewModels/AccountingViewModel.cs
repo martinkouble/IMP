@@ -12,7 +12,6 @@ using IMP_reseni.Models;
 using IMP_reseni.Services;
 using IMP_reseni.MyPermissions;
 
-
 namespace IMP_reseni.ViewModels
 {
     public class AccountingViewModel : INotifyPropertyChanged
@@ -67,12 +66,11 @@ namespace IMP_reseni.ViewModels
             async() =>
             {
                 string path;
-
 #if ANDROID
                  //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
                 path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
 #else
-                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/zaloha_" + today.ToString("dd-mm-yyyy")+ ".json";
+                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
 #endif
                 PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
                 if (PermissionStatus.Granted == status)
@@ -137,8 +135,8 @@ namespace IMP_reseni.ViewModels
                 var customFileType = new FilePickerFileType(
                 new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    { DevicePlatform.iOS, new[] { ".json" } }, 
-                    { DevicePlatform.Android, new[] { ".json" } },
+                    //{ DevicePlatform.iOS, new[] { (string)MobileCoreServices.UTType.JSON } }, 
+                    { DevicePlatform.Android, new[] { "application/json" } },
                     { DevicePlatform.WinUI, new[] { ".json" } },
                 });
                 
@@ -162,8 +160,8 @@ namespace IMP_reseni.ViewModels
                 var customFileType = new FilePickerFileType(
                 new Dictionary<DevicePlatform, IEnumerable<string>>
                 {
-                    { DevicePlatform.iOS, new[] { ".csv" } },
-                    { DevicePlatform.Android, new[] { ".csv" } },
+                    //{ DevicePlatform.iOS, new[] { ".csv" } },
+                    { DevicePlatform.Android, new[] { "text/csv" } },
                     { DevicePlatform.WinUI, new[] { ".csv" } },
                 });
 

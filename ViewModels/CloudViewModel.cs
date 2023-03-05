@@ -22,7 +22,7 @@ namespace IMP_reseni.ViewModels
     {
         private CloudService cloudService;
 
-        public List<string> UploadedBackups { get; private set; }
+        public ObservableCollection<string> UploadedBackups { get; private set; }
 
         public Page page {private get; set; }
 
@@ -109,8 +109,9 @@ namespace IMP_reseni.ViewModels
        // public ICommand TestCommand { get; set; }
         public List<string> TimeTable { get;private set; }
         private IDictionary<string, int> Times;
-        public CloudViewModel(CloudService cloudService)
+        public CloudViewModel(CloudService cloudService, SaveHolder saveHolder)
         {
+            UploadedBackups = new ObservableCollection<string>();
             Email = cloudService.Email;
             Password = cloudService.Password;
             Times = new Dictionary<string,int>
@@ -132,7 +133,9 @@ namespace IMP_reseni.ViewModels
 
             if (cloudService.Password!=null && cloudService.Password != "" && cloudService.Email!=null && cloudService.Email!="")
             {
-                UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                //UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                addToList(cloudService.GetFilesNames());
+
             }
 
             //TestCommand = new Command(
@@ -173,7 +176,9 @@ namespace IMP_reseni.ViewModels
                 }
                 if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
                 {
-                    UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                    //UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                    addToList(cloudService.GetFilesNames());
+
                 }
                 await MopupService.Instance.RemovePageAsync(spinnerPopup);
                 /*
@@ -193,23 +198,27 @@ namespace IMP_reseni.ViewModels
                 bool answer = await page.DisplayAlert("Potvrzení", "Opravdu si přejete uložit záloho", "Ano", "Ne");
                 if (answer == true)
                 {
-                    await MopupService.Instance.PushAsync(new SpinnerPopup());
+                    SpinnerPopup spinnerPopup = new SpinnerPopup();
+                    await MopupService.Instance.PushAsync(spinnerPopup);
                     //cloudService.SetLogin(Email, Password);
+                    saveHolder.Save();
                     bool UploadSucceded=cloudService.UploadFile();
-                    await MopupService.Instance.PopAsync();
+                    //await MopupService.Instance.PopAsync();
                     if (UploadSucceded==true)
                     {
-                       await Toast.Make("Uspěšný upload").Show();
                         if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
                         {
-                            UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                            //UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                            addToList(cloudService.GetFilesNames());
                         }
+                        await Toast.Make("Uspěšný upload").Show();
+
                     }
                     else
                     {
                        await Toast.Make("Došlo k chybě při uploudnu, zkontroluje zda jste připojeni k internetu").Show();
                     }
-
+                    await MopupService.Instance.RemovePageAsync(spinnerPopup);
                 }
             });
         }
@@ -235,7 +244,17 @@ namespace IMP_reseni.ViewModels
                 }
             }
         }
-
+        private void addToList(List<string> list)
+        {
+            if (list != null)
+            {
+                UploadedBackups.Clear();
+                foreach (var Item in list)
+                {
+                    UploadedBackups.Add(Item);
+                }
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

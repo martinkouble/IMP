@@ -49,7 +49,6 @@ public partial class App : Application
         string Passwd = await SecureStorage.Default.GetAsync("token");
         if (Passwd != null)
         {
-
             MainPage = new NavigationPage(new MainPage());
         }
         else

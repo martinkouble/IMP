@@ -123,7 +123,7 @@ namespace IMP_reseni.ViewModels
         private BasketHolder basketholder;
         private ContentPage _page;
 
-        private bool CanSearch=false;
+        private bool CanSearch = true;
         public MainPageViewModel()
         {
         }
@@ -158,7 +158,6 @@ namespace IMP_reseni.ViewModels
             {
                 if (Text=="" && CanSearch==true)
                 {
-                    CanSearch = false;
                     TypeOfItems = "Kategorie";
                     filter(Text);
                 }
@@ -167,52 +166,72 @@ namespace IMP_reseni.ViewModels
                     TypeOfItems = "Vše";
                     GetAllNames(Text);
                 }
+                else
+                {
+                    CanSearch = true;
+                }
             });
 
-            NavigateCollectionCommand = new Command<string>(
-            (string Direction) =>
+            NavigateCollectionCommand = new Command(
+            () =>
             {
-                if(Direction == "Back")
+                //if(true)
+                //{
+                if (CurrentSelection != null && CurrentSelection[0] != null)
                 {
-                    if (CurrentSelection!= null && CurrentSelection[0] !=null)
+                    CanSearch=false;
+                    SearchText = "";
+                    var _category = (Category)SelectedCategory;
+                    Type _type = CurrentSelection[0].GetType();
+                    if (_type == typeof(Category))
                     {
-                        var _category = (Category)SelectedCategory;
-                        Type _type = CurrentSelection[0].GetType();
-                        if (_type == typeof(Category))
-                        {
-                            addToList<Category>(source.ToList());
-                            CurrentSelection[0] = null;
-                            TypeOfItems = "Kategorie";
-                        }
-                        else if ((_type == typeof(SubCategory)) || (_type == typeof(Items)))
+                        addToList<Category>(source.ToList());
+                        CurrentSelection[0] = null;
+                        TypeOfItems = "Kategorie";
+                    }
+                    else if ((_type == typeof(SubCategory)) || (_type == typeof(Items)))
+                    {
+                        if (_category == source.First(x => x.SubCategories.Any(x=>x == CurrentSelection[0])))
                         {
                             addToList<SubCategory>(_category.SubCategories);
-                            CurrentSelection[0] = SelectedCategory;
-                            TypeOfItems = "Podkategorie";
                         }
-                        //backArrowClicked = true;
-                        //SearchText = "";
-                        SelectedItem = null;
-                        /*
-                        switch (_type)
+                        else
                         {
-                            case typeof(Category):
-                                addToList<Category>(source.ToList());
-                                CurrentSelection = null;
-                                break;
-
-                            case "SubCategory":
-                                //addToList<SubCategory>(source.ToList());
-                                CurrentSelection = null;
-                                //
-                                break;
-                            case "Items":
-                                //
-                                break;
-                        }*/
+                            Category trueCategory = source.First(x => x.SubCategories.Any(x=>x == CurrentSelection[0]));
+                            addToList<SubCategory>(trueCategory.SubCategories);
+                        }
+                        CurrentSelection[0] = SelectedCategory;
+                        TypeOfItems = "Podkategorie";
                     }
                     //backArrowClicked = true;
+                    //SearchText = "";
+                    SelectedItem = null;
+                    /*
+                    switch (_type)
+                    {
+                        case typeof(Category):
+                            addToList<Category>(source.ToList());
+                            CurrentSelection = null;
+                            break;
 
+                        case "SubCategory":
+                            //addToList<SubCategory>(source.ToList());
+                            CurrentSelection = null;
+                            //
+                            break;
+                        case "Items":
+                            //
+                            break;
+                    }*/
+                    //}
+                    //backArrowClicked = true;
+                }
+                else
+                {
+                    addToList<Category>(source.ToList());
+                    CurrentSelection[0] = null;
+                    TypeOfItems = "Kategorie";
+                    SelectedItem = null;
                 }
                 //else if(Direction == "Forward")
                 //{
@@ -388,10 +407,7 @@ namespace IMP_reseni.ViewModels
                 //List<SubCategory> _subCategories = (List<SubCategory>)source.SelectMany(Item => Item.SubCategories);
                 //List<object> _filteredSubCategories = new List<object>(source.Select(x => x.SubCategories).ToList()))));
                 List<object> _filteredSubCategories = new List<object>(source.SelectMany(x => x.SubCategories.Where(x => x.Name.ToLower().Contains(Text))));
-
                 List<object> _filteredItems = new List<object>(source.SelectMany(x => x.SubCategories.SelectMany(x => x.Items.Where(x => x.Name.ToLower().Contains(Text)))));
-
-                //List<object> _filteredItems = new List<object>(source.Select(x => x.SubCategories.Select(x => x.Items.Where(x => x.Name.ToLower().Contains(Text)))));
                 foreach (var Item in _filteredCategories)
                 {
                     ItemsList.Add(Item);

@@ -37,9 +37,9 @@ namespace IMP_reseni.ViewModels
             async () =>
             {
                 string result = await _page.DisplayPromptAsync("Změna hesla", "Nové heslo");
-                if (result != null) 
+                if (result != null && result!="") 
                 {
-                    await SecureStorage.SetAsync("token", result);
+                    await SecureStorage.Default.SetAsync("token", result);
                     await Toast.Make("Heslo změněno").Show();
                 }
                 else

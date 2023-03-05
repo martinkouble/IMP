@@ -186,8 +186,7 @@
                     Source="{AppThemeBinding Light=arrow_back_white.png, Dark=arrow_back_dark.png}"
                     HeightRequest="50" WidthRequest="50"
                     Margin="25,0,0,0"
-                    Command="{Binding NavigateCollectionCommand}"
-                    CommandParameter="Back"/>
+                    Command="{Binding NavigateCollectionCommand}"/>
 
                 <Label
                     Grid.Row="0"
