@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using IMP_reseni.Services;
 using Mopups.Services;
 using IMP_reseni.Controls;
+using Microsoft.Maui.Controls.Handlers;
 
 namespace IMP_reseni.ViewModels
 {
@@ -31,7 +32,7 @@ namespace IMP_reseni.ViewModels
             set
             {
                 SetProperty(ref _selectedCategory, value);
-                if (value != "")
+                if (value != "" && value != null)
                 {
                     ListOfSubCategory.Clear();
                     foreach (var item in saveholder.FindCategoryByName(value).GetSubCategoriesNames())
@@ -52,7 +53,7 @@ namespace IMP_reseni.ViewModels
             set 
             { 
                 SetProperty(ref _selectedSubCategory, value);
-                if(value!= "") 
+                if(value != "" && value != null) 
                 {
                     Text=value;
                     ImageUrl = saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).ImageUrl;
@@ -90,7 +91,7 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ModifySubCategoryViewModel(SaveHolder saveholder)
+        public ModifySubCategoryViewModel(SaveHolder saveholder, FileHandler fileHandler)
         {
             this.saveholder = saveholder;
             Text = "";
@@ -107,14 +108,23 @@ namespace IMP_reseni.ViewModels
                 category = saveholder.FindCategoryByName(SelectedCategory);
                 subCategory = category.FindSubCategoryByName(SelectedSubCategory);
                 subCategory.Name = name;
-                if (!category.ExistSubCategoryByName(name))
+                if (!category.ExistSubCategoryByName(name)||previusName==name)
                 {
+                    if (File.Exists(subCategory.ImageUrl))
+                    {
+                        File.Delete(subCategory.ImageUrl);
+                    }
+                    if (File.Exists(ImageUrl))
+                    {
+                        subCategory.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                    }
                     saveholder.ModifySubCategory(category, subCategory);
                     saveholder.Save();
                     Toast.Make("Podkategorie změněna").Show();
                     Text = "";
                     //SelectedCategory = null;
                     SelectedSubCategory = null;
+                    previusName = null;
                     list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());
                     list.Sort();
                     ListOfSubCategory.Clear();

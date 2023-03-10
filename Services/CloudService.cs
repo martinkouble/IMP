@@ -177,7 +177,8 @@ namespace IMP_reseni.Services
                 using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var modificationDate = File.GetLastWriteTime(filePath);
-                    await client.UploadAsync(fileStream, "Zaloha_" + DateTime.Now.ToString("_dd_MM_yyyy HH-mm-ss") + ".json", myFolder, null, modificationDate);
+                    await client.UploadAsync(fileStream, "Zaloha_" + DateTime.Now.ToString("_dd_MM_yyyy HH-mm-ss") 
+                    + ".json", myFolder, null, modificationDate);
                 }
                 await client.LogoutAsync();
             }

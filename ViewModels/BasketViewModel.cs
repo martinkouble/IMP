@@ -25,7 +25,7 @@ namespace IMP_reseni.ViewModels
         public ICommand SellCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public Page page;
-        private string TotalCost 
+        private double TotalCost 
         {
             get
             { 
@@ -36,15 +36,16 @@ namespace IMP_reseni.ViewModels
                     //Cost += item.SellCost * o.Amount;
                     Cost += o.SellCostPerPiece * o.Amount;
                 }
-                return Convert.ToString(Cost); 
+                Cost = Math.Round(Cost, 0);
+                return Cost; 
             } 
         }
 
-        private string TotalCostWithNoDPH
+        private double TotalCostWithNoDPH
         {
             get
             {
-                return Math.Round(Convert.ToDouble(TotalCost) / 1.21, 2).ToString();
+                return Math.Round(Convert.ToDouble(TotalCost) / 1.21, 2);
             }
         }
 
@@ -168,23 +169,6 @@ namespace IMP_reseni.ViewModels
 
         private void ReceiptPrint()
         {
-            /*
-            Printer.output.Clear();
-            Printer.Align("center");
-            Printer.PrintLine("Zivot bez barier Nova Paka");
-            Printer.PrintLine("Lomena 533, 509 01 Nova Paka");
-            Printer.PrintLine("IC: 26652561    DIC: CZ26652561");
-            Printer.PrintLine("--------------------------------");
-            Printer.Align("left");
-            Printer.PrintLine("Datum: " + DateTime.Now);
-            Printer.PrintLine("--------------------------------");
-            
-            Printer.PrintLine("-------------------------------");
-            Printer.Align("right");
-            Printer.PrintLine("-------------------------------");
-            Printer.PrintLine();
-            Printer.PrintLine();*/
-
             basketHolder.receiptNumber++;
             string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
             Printer.output.Clear();
@@ -194,7 +178,8 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("IC: 26652561    DIC: CZ26652561");
             Printer.PrintLine("--------------------------------");
             Printer.Align("left");
-            Printer.PrintLine("Datum: " + DateTime.Now);
+            Printer.PrintLine("Datum: " + DateTime.Now.ToString("HH:mm:ss"));
+            Printer.PrintLine("Čas: " + DateTime.Now.ToString("dd.MM.yyyy"));
             Printer.PrintLine("Cislo uctenky: " + stringNumber);
             Printer.PrintLine("--------------------------------");
             foreach (OrderItem o in basketHolder.Order.Items)
@@ -213,16 +198,16 @@ namespace IMP_reseni.ViewModels
             Printer.PrintLine("-------------------------------");
             Printer.Align("right");
             Printer.PrintLine("Mezisoucet bez DPH: " + TotalCostWithNoDPH + "Kc");
-            Printer.PrintLine("DPH: " + (Convert.ToDouble(TotalCost) - Convert.ToDouble(TotalCostWithNoDPH)) + "Kc");
+            Printer.PrintLine("DPH: " + (TotalCost -TotalCostWithNoDPH) + "Kc");
             Printer.PrintLine("-------------------------------");
             Printer.PrintLine("Celkova castka: " + TotalCost + "Kc");
             Printer.PrintLine();
             Printer.PrintLine();
-            
             buffer = Printer.output.ToArray();
             SendMessage();
         }
-        private  void SendMessage()
+        // new string('*', 4)
+        private void SendMessage()
         {
             uint messageLength = (uint)buffer.Length;
             byte[] countBuffer = BitConverter.GetBytes(messageLength);

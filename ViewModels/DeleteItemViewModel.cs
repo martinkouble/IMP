@@ -62,7 +62,7 @@ namespace IMP_reseni.ViewModels
                     {
                         ListOfItem.Clear();
                     }
-                    foreach (var item in saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames())
+                    foreach (var item in saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames(true))
                     {
                         ListOfItem.Add(item);
                     }
@@ -172,6 +172,10 @@ namespace IMP_reseni.ViewModels
               item.Id = itemId;
               if (!basketHolder.ExistItem(item))
               {
+                  if (File.Exists(item.ImageUrl))
+                  {
+                      File.Delete(item.ImageUrl);
+                  }
                   saveholder.DeleteItem(category, subCategory, item);
                   saveholder.Save();
                   Toast.Make("Smazáno").Show();

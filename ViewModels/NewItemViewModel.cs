@@ -11,6 +11,7 @@ using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using IMP_reseni.Services;
+using Microsoft.Maui.Controls.Handlers;
 
 namespace IMP_reseni.ViewModels
 {
@@ -127,7 +128,7 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         private SaveHolder saveholder;
-        public NewItemViewModel(SaveHolder saveholder)
+        public NewItemViewModel(SaveHolder saveholder, FileHandler fileHandler)
         {
             this.saveholder = saveholder;
             ListOfCategory = new List<string>(saveholder.GetCategoriesNames());
@@ -185,17 +186,26 @@ namespace IMP_reseni.ViewModels
                 }
             });
 
-            CreateCommand = new Command<string>(
-            (string name) =>
+            CreateCommand = new Command<bool>(
+            canExecute:(bool CanBeEnabled) =>
+            {
+                return CanBeEnabled;
+            },
+            execute:(bool CanBeEnabled) =>
             {
                 Items newItem = new Items();
                 //newItem.Name = name;
+                string name = Text;
                 Category category = saveholder.FindCategoryByName(SelectedCategory);
                 int categoryId = category.Id;
                 SubCategory subCategory = saveholder.FindCategory(categoryId).FindSubCategoryByName(SelectedSubCategory);
                 int subCategoryId = subCategory.Id;
                 if (!subCategory.ExistItemByName(name))
                 {
+                    if (File.Exists(ImageUrl))
+                    {
+                        newItem.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                    }
                     if (BuyPrice==null||BuyPrice=="")
                     {
                         newItem.Create(name, DisableCheck, 0, Convert.ToDouble(SellPrice), SorCheck, saveholder.FindSupplierByName(SelectedSupplier).Id, categoryId, subCategoryId);

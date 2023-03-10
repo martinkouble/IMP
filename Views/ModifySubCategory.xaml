@@ -15,14 +15,14 @@
             <Setter Property="FontSize" Value="32" />
             <Setter Property="BorderWidth" Value="1" />
             <Setter Property="BorderColor" Value="Black" />
-            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
             <Setter Property="CornerRadius"  Value="0"/>
         </Style>
     </ContentPage.Resources>
     <StackLayout Margin="75">
         
         <Border StyleClass="PickerBorder"
-                Margin="0,0,0,80"
+                Margin="0,0,0,50"
                 >
             <Picker Title="Zvol Kategorii"
                 x:Name="Picker"
@@ -34,9 +34,9 @@
         </Border>
 
         <Border StyleClass="PickerBorder"
-                Margin="0,0,0,80"
+                Margin="0,0,0,50"
                 >
-            <Picker Title="Zvol Kategorii"
+            <Picker Title="Zvol Podkategorii"
                 x:Name="SubCategoryPicker"
                 ItemsSource="{Binding ListOfSubCategory}"
                 SelectedItem="{Binding SelectedSubCategory}"
@@ -59,12 +59,14 @@
                Text="{Binding Text}"
         />
         </Border>
-        <Button Text="Zobrazit obrázek"       
+        <Button Text="Zobrazit obrázek"    
+                FontSize="27"
                 HorizontalOptions="Center"
                 Command="{Binding ShowPictureCommand}"
                 CommandParameter="{Binding SelectedSubCategory}"/>
         <Button Text="Změnit obrázek"       
                 HorizontalOptions="Center"
+                FontSize="29"
                 Command="{Binding ChangePictureCommand}"
                 CommandParameter="{Binding SelectedSubCategory}"/>
 

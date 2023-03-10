@@ -39,7 +39,7 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public NewCategoryViewModel(SaveHolder saveholder) 
+        public NewCategoryViewModel(SaveHolder saveholder, FileHandler fileHandler) 
         {
             Text = "";
             CreateCommand = new Command<string>(
@@ -61,7 +61,10 @@ namespace IMP_reseni.ViewModels
                 newCategory.Name = name;
                 if(!saveholder.ExistCategoryByName(name))
                 {
-                    newCategory.ImageUrl = ImageUrl;
+                    if (File.Exists(ImageUrl))
+                    {
+                        newCategory.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                    }
                     saveholder.AddCategory(newCategory);
                     saveholder.Save();
                     Toast.Make("Nová kategorie vytvořena").Show();

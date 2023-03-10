@@ -36,7 +36,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\newappiconfg.png" Color="#512BD4" />
 
     <!-- Splash Screen -->
     <MauiSplashScreen Include="Resources\Splash\newsplash.png" />
@@ -70,6 +70,7 @@
 	  <None Remove="Resources\Images\cross.svg" />
 	  <None Remove="Resources\Images\delete.svg" />
 	  <None Remove="Resources\Images\loginicon.svg" />
+	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\password.svg" />
 	  <None Remove="Resources\Images\pencil.svg" />
 	  <None Remove="Resources\Images\question_mark.jpg" />

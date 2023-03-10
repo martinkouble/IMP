@@ -66,6 +66,10 @@ namespace IMP_reseni.ViewModels
                 category = saveholder.FindCategoryByName(SelectedCategory);
                 if (!basketHolder.ExistCategoryOfItem(category.Id))
                 {
+                    if (File.Exists(category.ImageUrl))
+                    {
+                        File.Delete(category.ImageUrl);
+                    }
                     saveholder.DeleteCategory(category);
                     saveholder.Save();
                     Toast.Make("kategorie smazána").Show();

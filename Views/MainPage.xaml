@@ -70,11 +70,17 @@
             AlignItems="Center"
             JustifyContent="SpaceBetween"
             >
-            <Label
+            
+            <!--<Label
             Text="LOGO"
             FontSize="Title"
             TextColor="White"
-            />
+            />-->
+
+            <Image Source="logo.png"
+                   MaximumHeightRequest="50"
+                   MaximumWidthRequest="50"/> 
+
             <Label
             Text="Hlavní Stránka"
             FontSize="Title"
@@ -166,7 +172,7 @@
         <Border 
         StrokeShape="RoundRectangle 40,40,0,0"
         BackgroundColor="{AppThemeBinding Light=#D9D9D9, Dark={x:StaticResource Gray900}}"
-        Margin="0,50,0,0"
+        Margin="0,10,0,0"
         Grid.Row="3">
             <Grid>
                 <Grid.RowDefinitions>
@@ -227,22 +233,15 @@
                         Grid.ColumnSpan="3">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                            <Grid Padding="10"
+                                      RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="*">
                                 <Image Grid.Row="0"
                                            Source="{Binding ImageUrl, TargetNullValue='question_mark.jpg'}" 
                                            Aspect="AspectFill" 
                                            WidthRequest="100"
                                            HeightRequest="120"
-                                           BackgroundColor="White">
-                                </Image>
-
+                                           BackgroundColor="White"/>
 
                                 <Label Grid.Row="1"
                                    Text="{Binding Name}" 

@@ -27,7 +27,7 @@ namespace IMP_reseni.ViewModels
             set
             {
                 SetProperty(ref _selectedSupplier, value);
-                if (value != "")
+                if (value != "" && value != null)
                 {
                     Text = value;
                 }
@@ -88,6 +88,7 @@ namespace IMP_reseni.ViewModels
                     Toast.Make("Dodavatel změněn").Show();
                     Text = "";
                     SelectedSupplier = null;
+                    previusName = null;
                     List<string> list = new List<string>(saveholder.GetSupplierNames());
                     list.Sort();
                     ListOfSupplier.Clear();

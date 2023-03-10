@@ -32,7 +32,7 @@ namespace IMP_reseni.ViewModels
             set 
             { 
                 SetProperty(ref _selectedCategory, value);
-                if (value != "")
+                if (value != "" && value !=null)
                 {
                     Text = value;
                     ImageUrl = saveholder.FindCategoryByName(SelectedCategory).ImageUrl;
@@ -71,7 +71,7 @@ namespace IMP_reseni.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public ModifyCategoryViewModel(SaveHolder saveholder)
+        public ModifyCategoryViewModel(SaveHolder saveholder,FileHandler fileHandler)
         {
             this.saveholder = saveholder;
 
@@ -83,7 +83,7 @@ namespace IMP_reseni.ViewModels
             ModifyCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == ""||name==null)
+                if ((name == ""||name==null))
                 {
                     return false;
                 }
@@ -100,12 +100,20 @@ namespace IMP_reseni.ViewModels
                 category.Name = name;
                 if (!saveholder.ExistCategoryByName(name)||previusName==name)
                 {
-                    category.ImageUrl = ImageUrl;
+                    if (File.Exists(category.ImageUrl))
+                    {
+                        File.Delete(category.ImageUrl);
+                    }
+                    if (File.Exists(ImageUrl))
+                    {
+                        category.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                    }
                     saveholder.ModifyCategory(category);
                     saveholder.Save();
                     Toast.Make("kategorie změněna").Show();
                     Text = "";
                     SelectedCategory = null;
+                    previusName = null;
                     List<string> list = new List<string>(saveholder.GetCategoriesNames());
                     list.Sort();
                     ListOfCategory.Clear();

@@ -11,6 +11,7 @@ using IMP_reseni.Models;
 using CommunityToolkit.Maui.Alerts;
 using System.Collections.ObjectModel;
 using IMP_reseni.Services;
+using Microsoft.Maui.Controls.Handlers;
 
 namespace IMP_reseni.ViewModels
 {
@@ -47,7 +48,7 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         private string ImageUrl;
-        public NewSubCategoryViewModel(SaveHolder saveholder)
+        public NewSubCategoryViewModel(SaveHolder saveholder, FileHandler fileHandler)
         {
             ListOfCategory = new List<string>(saveholder.GetCategoriesNames());
 
@@ -67,6 +68,10 @@ namespace IMP_reseni.ViewModels
                 int categoryId= category.Id;
                 if (!category.ExistSubCategoryByName(name))
                 {
+                    if (File.Exists(ImageUrl))
+                    {
+                        newSubCategory.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                    }
                     saveholder.AddSubCategory(categoryId, newSubCategory);
                     saveholder.Save();
                     Toast.Make("Nová PodKategorie vytvořena").Show();

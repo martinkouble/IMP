@@ -53,13 +53,15 @@ namespace IMP_reseni.ViewModels
             }
         }
 
-        private string _setTime;
+        //private string _setTime;
         public string SetTime
         {
             set 
-            { 
-                SetProperty(ref _setTime, value);
+            {
                 SetTimer(value);
+                //SetProperty(ref _setTime, value);
+                OnPropertyChanged("SetTime");
+
             }
             get 
             {
@@ -167,20 +169,21 @@ namespace IMP_reseni.ViewModels
                 bool loginSucceded=cloudService.SetLogin(Email, Password);
                 if (loginSucceded==true)
                 {
-                   await Toast.Make("Údaje ověřeny").Show();
+                    if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
+                    {
+                        //UploadedBackups = new List<string>(cloudService.GetFilesNames());
+                        addToList(cloudService.GetFilesNames());
+                    }
+                    await Toast.Make("Údaje ověřeny").Show();
                     CanBeSwitchEnabled = true;
                 }
                 else
                 {
                    await Toast.Make("Špatné přihlašovací údaje nebo nejste připojeni k internetu").Show();
                 }
-                if (cloudService.Password != null && cloudService.Password != "" && cloudService.Email != null && cloudService.Email != "")
-                {
-                    //UploadedBackups = new List<string>(cloudService.GetFilesNames());
-                    addToList(cloudService.GetFilesNames());
-
-                }
                 await MopupService.Instance.RemovePageAsync(spinnerPopup);
+
+
                 /*
                 MegaApiClient client = new MegaApiClient();
                 client.Login(Email, Password);

@@ -82,6 +82,10 @@ namespace IMP_reseni.ViewModels
                subCategory = category.FindSubCategoryByName(SelectedSubCategory);
                if (!basketHolder.ExistSubCategoryOfItem(subCategory.Id))
                {
+                   if (File.Exists(subCategory.ImageUrl))
+                   {
+                       File.Delete(subCategory.ImageUrl);
+                   }
                    saveholder.DeleteSubCategory(category, subCategory);
                    saveholder.Save();
                    Toast.Make("Podkategorie smazána").Show();

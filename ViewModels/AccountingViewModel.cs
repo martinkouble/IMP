@@ -47,8 +47,10 @@ namespace IMP_reseni.ViewModels
             }
         }
         private SaveHolder saveholder;
-        public AccountingViewModel(SaveHolder saveholder)
+        private FileHandler fileHandler;
+        public AccountingViewModel(SaveHolder saveholder, FileHandler fileHandler)
         {
+            this.fileHandler=fileHandler;
             this.saveholder= saveholder;
             DialySalesCommand = new Command(
             async () =>
@@ -66,12 +68,8 @@ namespace IMP_reseni.ViewModels
             async() =>
             {
                 string path;
-#if ANDROID
-                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
-#else
-                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
-#endif
+                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) 
+                + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
                 PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
                 if (PermissionStatus.Granted == status)
                 {

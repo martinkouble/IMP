@@ -152,20 +152,17 @@
         <Button Text="Vytvořit"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"
-                Command="{Binding CreateCommand}"
-                CommandParameter="{Binding Source={x:Reference Entry},
-                                            Path=Text}">
-            <Button.IsEnabled>
+                Command="{Binding CreateCommand}">
+            <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
                     <!--<Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />-->
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
-
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
                     <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CategoryPicker}" Path="SelectedItem.Length" />
                 </MultiBinding>
-            </Button.IsEnabled>
+            </Button.CommandParameter>
         </Button>
     </StackLayout>
 </ContentPage>

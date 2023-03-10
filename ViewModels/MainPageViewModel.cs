@@ -395,35 +395,31 @@ namespace IMP_reseni.ViewModels
                 var _source = source.ToList();
                 ItemsList.Clear();
                 foreach (var Item in _source)
-                {
-                    ItemsList.Add(Item);
-                }
+                { ItemsList.Add(Item); }
             }
             else
             {
                 ItemsList.Clear();
                 Text = Text.ToLowerInvariant();
-                List<object> _filteredCategories = new List<object>(source.Where(Item => Item.Name.ToLower().Contains(Text)));
-                //List<SubCategory> _subCategories = (List<SubCategory>)source.SelectMany(Item => Item.SubCategories);
-                //List<object> _filteredSubCategories = new List<object>(source.Select(x => x.SubCategories).ToList()))));
-                List<object> _filteredSubCategories = new List<object>(source.SelectMany(x => x.SubCategories.Where(x => x.Name.ToLower().Contains(Text))));
-                List<object> _filteredItems = new List<object>(source.SelectMany(x => x.SubCategories.SelectMany(x => x.Items.Where(x => x.Name.ToLower().Contains(Text)))));
+                List<object> _filteredCategories = new List<object>(source
+                    .Where(Item => Item.Name.ToLower().Contains(Text)));
+                List<object> _filteredSubCategories = new List<object>(source
+                    .SelectMany(x => x.SubCategories
+                    .Where(x => x.Name.ToLower()
+                    .Contains(Text))));
+                List<object> _filteredItems = new List<object>(source
+                    .SelectMany(x => x.SubCategories
+                    .SelectMany(x => x.Items.Where(x => x.Name
+                    .ToLower().Contains(Text)))));
                 foreach (var Item in _filteredCategories)
-                {
-                    ItemsList.Add(Item);
-                }
+                { ItemsList.Add(Item);}
 
                 foreach (var Item in _filteredSubCategories)
-                {
-                    ItemsList.Add(Item);
-                }
+                {ItemsList.Add(Item);}
 
                 foreach (var Item in _filteredItems)
-                {
-                    ItemsList.Add(Item);
-                }
+                {ItemsList.Add(Item);}
                 SelectedItem = null;
-
             }
         }
         private void addToList<T>(List<T> list)

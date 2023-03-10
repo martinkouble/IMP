@@ -70,7 +70,7 @@ namespace IMP_reseni.ViewModels
                     {
                         ListOfItem.Clear();
                     }
-                    foreach (var item in saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames())
+                    foreach (var item in saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).GetItemNames(true))
                     {
                         ListOfItem.Add(item);
                     }
@@ -189,7 +189,7 @@ namespace IMP_reseni.ViewModels
         private SaveHolder saveholder;
         private BasketHolder basketHolder;
         private string previusName=null;
-        public ModifyItemViewModel(SaveHolder Saveholder,BasketHolder basketHolder)
+        public ModifyItemViewModel(SaveHolder Saveholder,BasketHolder basketHolder,FileHandler fileHandler)
         {
             saveholder = Saveholder;
             this.basketHolder = basketHolder;
@@ -215,22 +215,35 @@ namespace IMP_reseni.ViewModels
             list =new List<string>(saveholder.GetSupplierNames());
             list.Sort();
             ListOfSupplier = new List<string>(list);
-            ModifyCommand = new Command<string>(
-          (string name) =>
+            ModifyCommand = new Command<bool>(
+          canExecute:(bool CanBeEnabled) => 
           {
+              return CanBeEnabled;
+          },
+          execute:(bool CanBeEnabled) =>
+          {
+              string name = Text;
               SubCategory subCategory = new SubCategory();
               Category category = new Category();
               Items item=new Items();
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-              //item = subCategory.FindItemByName(name);
+              item = subCategory.FindItemByName(name);
               if (!basketHolder.ExistItem(item))
               {
                   if (!subCategory.ExistItemByName(name) || name == previusName)
                   {
+                      if (File.Exists(item.ImageUrl))
+                      {
+                          File.Delete(item.ImageUrl);
+                      }
                       item.Id = itemId;
-                      item.ImageUrl = ImageUrl;
-                      item.Create(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice), SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
+                      if (File.Exists(ImageUrl))
+                      {
+                          item.ImageUrl = fileHandler.SaveImage(ImageUrl);
+                      }
+
+                      item.CreateWithStock(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),item.Stock, SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
 
                       if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
                       {
@@ -248,6 +261,7 @@ namespace IMP_reseni.ViewModels
                       Toast.Make("Položka změněna").Show();
                       DefaultedValues();
                       SelectedItem = null;
+                      previusName = null;
                       //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
                       //list.Sort();
                       //ListOfItem.Clear();

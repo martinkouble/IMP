@@ -57,6 +57,18 @@ namespace IMP_reseni.Models
             this.CategoryId = categoryId;
             this.SubCategoryId = subcategoryId;
         }
+        public void CreateWithStock(string name, bool disabled, double buyCost, double sellCost,int stock, bool sor, int supplierId, int categoryId, int subcategoryId)
+        {
+            this.Name = name;
+            this.Disabled = disabled;
+            this.BuyCost = buyCost;
+            this.SellCost = sellCost;
+            this.SoR = sor;
+            this.Stock = stock;
+            this.SupplierId = supplierId;
+            this.CategoryId = categoryId;
+            this.SubCategoryId = subcategoryId;
+        }
     }
 
 
