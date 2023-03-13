@@ -43,14 +43,8 @@ namespace IMP_reseni.ViewModels
 
         public bool CanBeSwitchEnabled
         {
-            get 
-            {
-                return cloudService.Validated;
-            }
-            set
-            {
-                OnPropertyChanged("CanBeSwitchEnabled");
-            }
+            get {return cloudService.Validated;}
+            set {OnPropertyChanged("CanBeSwitchEnabled");}
         }
 
         //private string _setTime;
@@ -267,9 +261,7 @@ namespace IMP_reseni.ViewModels
         {
             if (Object.Equals(storage, value))
                 return false;
-
             storage = value;
-
             OnPropertyChanged(propertyName);
             return true;
         }

@@ -5,7 +5,7 @@
               xmlns:ViewModels="clr-namespace:IMP_reseni.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Converters="clr-namespace:IMP_reseni.Converters"
-             Title="Naskladnit/Odskladnit">
+             Title="Naskladnit/Vyskladnit">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
@@ -27,7 +27,7 @@
                     HeightRequest="50" WidthRequest="50"
                     Margin="25,0,0,0"
                     Command="{Binding NavigateCollectionCommand}"
-                    CommandParameter="Back"/>
+                    CommandParameter="{Binding TypeOfItems}"/>
 
             <Label
                     VerticalOptions="Center"

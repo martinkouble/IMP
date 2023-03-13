@@ -26,7 +26,7 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <NavigationPage.TitleView >
+    <!--<NavigationPage.TitleView >
      
         <FlexLayout 
 
@@ -36,26 +36,25 @@
             AlignItems="Center"
             JustifyContent="SpaceBetween"
             >
-            <Label
-            Text="LOGO"
-            FontSize="Title"
-            TextColor="White"
-            />
+            <Image Source="logo_white.svg"
+                   HeightRequest="50"
+                   WidthRequest="50"/>
             <Label
             Text="Hlavní Stránka"
             FontSize="Title"
             TextColor="White"
             />
 
-            <ImageButton Source="loginicon.svg"
-                         MaximumHeightRequest="50" MaximumWidthRequest="50"
+            <ImageButton Source="loginicon_white.svg"
+                         HeightRequest="50" 
+                         WidthRequest="50"
                         Command="{Binding NavigateCommand}"
                        />
-            <!--CommandParameter="{x:Reference MainPageView}"
-            Clicked="GoToLogin"-->
+            --><!--CommandParameter="{x:Reference MainPageView}"
+            Clicked="GoToLogin"--><!--
         </FlexLayout>
   
-    </NavigationPage.TitleView>
+    </NavigationPage.TitleView>-->
 
 
 
@@ -77,9 +76,9 @@
             TextColor="White"
             />-->
 
-            <Image Source="logo.png"
-                   MaximumHeightRequest="50"
-                   MaximumWidthRequest="50"/> 
+            <Image Source="{AppThemeBinding Light=logo_black.svg, Dark=logo_white.svg}"
+                   HeightRequest="50"
+                   WidthRequest="50"/> 
 
             <Label
             Text="Hlavní Stránka"
@@ -87,7 +86,7 @@
             TextColor="White"
             />
 
-            <ImageButton Source="loginicon.png"
+            <ImageButton Source="{AppThemeBinding Light=loginicon_black.svg, Dark=loginicon_white.svg}"
                          MaximumHeightRequest="50" MaximumWidthRequest="50"
                         Command="{Binding NavigateCommand}"
                        />
@@ -98,7 +97,7 @@
                Background="White"
                 StrokeShape="RoundRectangle 40"
                 Grid.Row="1">
-            <SearchBar Placeholder="Search items" 
+            <SearchBar Placeholder="Vyhledávání" 
                        x:Name="searchBar"
                        Text="{Binding SearchText}"
                        FontSize="Title">
@@ -183,7 +182,6 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-
                 </Grid.ColumnDefinitions>
 
                 <ImageButton
@@ -192,7 +190,8 @@
                     Source="{AppThemeBinding Light=arrow_back_white.png, Dark=arrow_back_dark.png}"
                     HeightRequest="50" WidthRequest="50"
                     Margin="25,0,0,0"
-                    Command="{Binding NavigateCollectionCommand}"/>
+                    Command="{Binding NavigateCollectionCommand}"
+                    CommandParameter="{Binding TypeOfItems}"/>
 
                 <Label
                     Grid.Row="0"

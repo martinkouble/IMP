@@ -57,6 +57,7 @@ namespace IMP_reseni.ViewModels
                 {
                     Text=value;
                     ImageUrl = saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(value).ImageUrl;
+                    PreviusImageUrl = ImageUrl;
                 }
             }
         }
@@ -81,7 +82,7 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _pictureButtonText, value); }
             get { return _pictureButtonText; }
         }
-
+        private string PreviusImageUrl;
         private string ImageUrl;
         private SaveHolder saveholder;
         private string previusName = null;
@@ -107,14 +108,14 @@ namespace IMP_reseni.ViewModels
 
                 category = saveholder.FindCategoryByName(SelectedCategory);
                 subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-                subCategory.Name = name;
                 if (!category.ExistSubCategoryByName(name)||previusName==name)
                 {
-                    if (File.Exists(subCategory.ImageUrl))
+                    subCategory.Name = name;
+                    if (PreviusImageUrl != ImageUrl && File.Exists(subCategory.ImageUrl))
                     {
                         File.Delete(subCategory.ImageUrl);
                     }
-                    if (File.Exists(ImageUrl))
+                    if (File.Exists(ImageUrl) && PreviusImageUrl != ImageUrl)
                     {
                         subCategory.ImageUrl = fileHandler.SaveImage(ImageUrl);
                     }

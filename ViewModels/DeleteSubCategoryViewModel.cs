@@ -49,31 +49,42 @@ namespace IMP_reseni.ViewModels
             set
             {
                 SetProperty(ref _selectedSubCategory, value);
-                if (value != "")
-                {
-                    Text = value;
-                }
+                //if (value != "")
+                //{
+                //    Text = value;
+                //}
             }
         }
 
-        private string _text;
-        public string Text
-        {
-            set { SetProperty(ref _text, value); }
-            get { return _text; }
-        }
+        //private string _text;
+        //public string Text
+        //{
+        //    set { SetProperty(ref _text, value); }
+        //    get { return _text; }
+        //}
         private SaveHolder saveholder;
 
         public DeleteSubCategoryViewModel(SaveHolder saveholder, BasketHolder basketHolder)
         {
             this.saveholder = saveholder;
-            Text = "";
+            //Text = "";
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
             list.Sort();
             ListOfCategory = new List<string>(list);
             ListOfSubCategory = new ObservableCollection<string>();
             DeleteCommand = new Command<string>(
-           (string name) =>
+           canExecute: (string name) => 
+           {
+               if (name!=null && name!="")
+               {
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+           },
+           execute:(string name) =>
            {
                SubCategory subCategory = new SubCategory();
                Category category = new Category();
@@ -89,7 +100,7 @@ namespace IMP_reseni.ViewModels
                    saveholder.DeleteSubCategory(category, subCategory);
                    saveholder.Save();
                    Toast.Make("Podkategorie smazána").Show();
-                   Text = "";
+                   //Text = "";
                    //SelectedCategory = null;
                    SelectedSubCategory = null;
                    list = new List<string>(saveholder.FindCategoryByName(SelectedCategory).GetSubCategoriesNames());

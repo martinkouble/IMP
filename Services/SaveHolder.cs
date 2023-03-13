@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Maui.Storage;
 using IMP_reseni.Models;
 using Newtonsoft.Json;
 
@@ -61,14 +63,33 @@ namespace IMP_reseni.Services
         //    string jsonString = JsonConvert.SerializeObject(this, settings);
         //    File.WriteAllText(_appDirectory + "/" + _fileName, jsonString);          
         //}
-        public void Save(string path)
+        //public void Save(string path)
+        //{
+        //    JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, 
+        //        DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+        //    string jsonString = JsonConvert.SerializeObject(this, settings);
+        //    File.WriteAllText(path , jsonString);          
+        //}  
+        public async Task<bool> SaveAsync()
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+            string fileName= "zaloha_" + DateTime.Now.ToString("dd-MM-yyyy_HH:mm: ss") + ".json";
+            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, 
+                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             string jsonString = JsonConvert.SerializeObject(this, settings);
-            File.WriteAllText(path , jsonString);          
+            try
+            {
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                using var stream = new MemoryStream(Encoding.Default.GetBytes(jsonString));
+                var save = await FileSaver.Default.SaveAsync(fileName, stream, cancellationTokenSource.Token);
+                return save.IsSuccessful;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-
+      
 
         public void Load()
         {
@@ -84,7 +105,8 @@ namespace IMP_reseni.Services
         }
         public void Load(string path)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
+            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,
+                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
@@ -168,7 +190,8 @@ namespace IMP_reseni.Services
             int index = Inventory.FindIndex(f => f.Id == category.Id);
             if (index != -1)
             {
-               int subCategoryIndex= Inventory[index].SubCategories.FindIndex(f => f.Id == subCategory.Id);
+               int subCategoryIndex= Inventory[index].SubCategories
+                    .FindIndex(f => f.Id == subCategory.Id);
                Inventory[index].SubCategories[subCategoryIndex] = subCategory;
             }
         }

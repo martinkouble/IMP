@@ -34,7 +34,7 @@
         </Style>
     </ContentPage.Resources>
     <Border            
-        Margin="25,75,25,75"
+        Margin="25,35,25,35"
         Padding="50"
         StrokeShape="RoundRectangle 20"
         BackgroundColor="#7B2CBF" StrokeThickness="0">
@@ -149,6 +149,21 @@
                 </Border.GestureRecognizers>
             </Border>
 
+            <Border>
+                <Grid>
+                    <Image Source="receipt.png"
+                           WidthRequest="40"
+                           Margin="0,0,30,0"
+                           VerticalOptions="Center"/>
+                    <Label Text="Účtenka"
+                           VerticalOptions="Center"/>
+                </Grid>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding NavigateCommand}"
+                            CommandParameter="{x:Type Views:EditReceiptInfo}"/>
+                </Border.GestureRecognizers>
+            </Border>
             <!--<Button                   
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:StockUp}"

@@ -15,7 +15,7 @@ namespace IMP_reseni.ViewModels
 {
     public class NewCategoryViewModel: INotifyPropertyChanged
     {
-
+        public Page Page { get; set; }
         public ICommand CreateCommand { get; set; }
         public ICommand UploadOPictureCommand { get; set; }
 
@@ -32,7 +32,7 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _text, value); }
             get { return _text; }
         }
-        private string ImageUrl;
+        private string ImageUrl="";
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -55,8 +55,18 @@ namespace IMP_reseni.ViewModels
                 }
             },
 
-            execute:(string name) =>
+            execute:async (string name) =>
             {
+
+                if (ImageUrl=="" || ImageUrl==null)
+                {
+                    bool answer =await Page.DisplayAlert("Pozor", "Opravdu si přejete pokračovat bez přidaného obrázku?", "Ano", "Ne");
+                    if (answer==false)
+                    {
+                        return;
+                    }
+                }
+
                 Category newCategory = new Category();
                 newCategory.Name = name;
                 if(!saveholder.ExistCategoryByName(name))
@@ -67,13 +77,13 @@ namespace IMP_reseni.ViewModels
                     }
                     saveholder.AddCategory(newCategory);
                     saveholder.Save();
-                    Toast.Make("Nová kategorie vytvořena").Show();
+                    await Toast.Make("Nová kategorie vytvořena").Show();
                     Text = "";
                     PictureButtonText = "Nahrát obrázek";
                 }
                 else
                 {
-                    Toast.Make("Kategorie s tímto jménem již existuje").Show();
+                    await Toast.Make("Kategorie s tímto jménem již existuje").Show();
                 }
 
             });

@@ -7,5 +7,6 @@ public partial class NewCategory : ContentPage
 	{
 		InitializeComponent();
         BindingContext = newCategoryViewModel;
+        newCategoryViewModel.Page = this;
     }
 }

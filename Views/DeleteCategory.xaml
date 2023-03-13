@@ -15,7 +15,7 @@
         </Style>
     </ContentPage.Resources>
 
-    <StackLayout Margin="75">
+    <StackLayout Margin="75" VerticalOptions="Center">
 
         <Border StyleClass="PickerBorder"
                 Margin="0,0,0,80"
@@ -30,24 +30,10 @@
             </Picker>
         </Border>
 
-        <Label Text="Název Kategorie" 
-               HorizontalOptions="Center"
-               FontSize="Large"
-               LineBreakMode="WordWrap"/>
-
-        <Border StyleClass="EntryBorder"
-                Margin="0,60,0,50">
-            <Label 
-               FontSize="Large"
-               x:Name="Entry"
-               HorizontalTextAlignment="Center"
-               Text="{Binding Text}"/>
-        </Border>
-
-        <Button Text="Potvrdit změny"       
+        <Button Text="Smazat"       
                 HorizontalOptions="Center"
                 Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding Text}">
+                CommandParameter="{Binding SelectedCategory}">
         </Button>
     </StackLayout>
 </ContentPage>

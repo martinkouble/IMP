@@ -26,8 +26,8 @@
             <Button Text="Kategorie"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:NewCategory}"/>
-            
-            <Button Text="PodKatogorie"
+
+            <Button Text="Podkatogorie"
                      Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:NewSubCategory}"/>
             

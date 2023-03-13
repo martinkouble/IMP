@@ -18,7 +18,7 @@ namespace IMP_reseni.ViewModels
     {
         public ObservableCollection<string> ListOfSupplier { get; set; }
 
-        public ICommand ModifyCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         private string _selectedSupplier;
         public string SelectedSupplier
@@ -46,16 +46,16 @@ namespace IMP_reseni.ViewModels
             list.Sort();
             ListOfSupplier = new ObservableCollection<string>(list);
 
-            ModifyCommand = new Command<string>(
+            DeleteCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "" || name==null)
+                if (name != "" && name!=null)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             },
 
@@ -83,7 +83,6 @@ namespace IMP_reseni.ViewModels
                 {
                     Toast.Make("Nelze smazat používaného dodavatele").Show();
                 }
-
             });
         }
 

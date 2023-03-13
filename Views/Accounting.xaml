@@ -24,6 +24,7 @@
             <Button Text="Export dat"
                     Command="{Binding ExportCommand}"/>
             <Button Text="Načtení dat ze souboru"
+                    FontSize="19"
                     Command="{Binding InsertDataCommand}"/>
             <Button Text="Vložení dat z CSV"
                     Command="{Binding InsertExcelDataCommand}"/>

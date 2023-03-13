@@ -32,7 +32,7 @@
                                WidthRequest="60"/>
                         
                         <Label Grid.Column="1"
-                               Text="{Binding Path=Item.Name}"
+                               Text="{Binding ItemName}"
                                Margin="10,0,0,0"
                                FontSize="Large"
                                VerticalTextAlignment="Center"
@@ -62,18 +62,19 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <StackLayout VerticalOptions="End"
+        <VerticalStackLayout VerticalOptions="End"
                      Grid.Row="2">
             <Label FontSize="Large" 
-                   Text="{Binding TotalCostWithNoDPH}"/>
+                   Text="{Binding TotalCostWithNoDPHText}"/>
+
+            <Label FontSize="Large"
+                   Text="{Binding TotalCostText}"/>
             
-            <Label FontSize="Default"
-                   Text="{Binding TotalCost}"/>
-            <Button Text="Prodáno"
+            <Button Text="Prodat"
                     FontSize="Large"
                     Margin="10,10"
                     Command="{Binding SellCommand}"/>
-        </StackLayout>
+        </VerticalStackLayout>
     </Grid>
 
     <!--<VerticalStackLayout>

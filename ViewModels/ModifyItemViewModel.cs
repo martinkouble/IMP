@@ -113,6 +113,7 @@ namespace IMP_reseni.ViewModels
                         SelectedSupplier = null;
                     }
                     ImageUrl = item.ImageUrl;
+                    PreviusImageUrl = ImageUrl;
                     originalSellCost = item.SellCost;
                     originalBuyCost = item.BuyCost;
                 }
@@ -186,6 +187,7 @@ namespace IMP_reseni.ViewModels
             get { return _pictureButtonText; }
         }
         private string ImageUrl;
+        private string PreviusImageUrl;
         private SaveHolder saveholder;
         private BasketHolder basketHolder;
         private string previusName=null;
@@ -228,23 +230,23 @@ namespace IMP_reseni.ViewModels
               Items item=new Items();
               category = saveholder.FindCategoryByName(SelectedCategory);
               subCategory = category.FindSubCategoryByName(SelectedSubCategory);
-              item = subCategory.FindItemByName(name);
+              item = subCategory.FindItemByName(SelectedItem);
               if (!basketHolder.ExistItem(item))
               {
                   if (!subCategory.ExistItemByName(name) || name == previusName)
                   {
-                      if (File.Exists(item.ImageUrl))
+                      if (PreviusImageUrl!=ImageUrl && File.Exists(item.ImageUrl))
                       {
                           File.Delete(item.ImageUrl);
                       }
                       item.Id = itemId;
-                      if (File.Exists(ImageUrl))
+                      if (File.Exists(ImageUrl) && PreviusImageUrl != ImageUrl)
                       {
                           item.ImageUrl = fileHandler.SaveImage(ImageUrl);
                       }
-
-                      item.CreateWithStock(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),item.Stock, SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id, subCategory.Id);
-
+                      item.CreateWithStock(name, DisableCheck, Convert.ToDouble(BuyPrice), Convert.ToDouble(SellPrice),
+                          item.Stock, SorChecked, saveholder.FindSupplierByName(SelectedSupplier).Id, category.Id,
+                          subCategory.Id);
                       if (originalSellCost != Convert.ToDouble(SellPrice) || originalBuyCost != Convert.ToDouble(BuyPrice))
                       {
                           StockUpItem stockUp = new StockUpItem();
@@ -262,25 +264,10 @@ namespace IMP_reseni.ViewModels
                       DefaultedValues();
                       SelectedItem = null;
                       previusName = null;
-                      //list = new List<string>(App.saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).GetItemNames());
-                      //list.Sort();
-                      //ListOfItem.Clear();
-                      //foreach (var Item in list)
-                      //{
-                      //    ListOfItem.Add(Item);
-                      //}
                   }
-                  else
-                  {
-                      Toast.Make("Položka s tímto jménem již existuje").Show();
-                  }
+                  else {Toast.Make("Položka s tímto jménem již existuje").Show();}
               }
-              else
-              {
-                  Toast.Make("Nelze měnit položku v košíku").Show();
-              }
-
-
+              else {Toast.Make("Nelze měnit položku v košíku").Show();}
           });
 
             ShowPictureCommand = new Command<string>(

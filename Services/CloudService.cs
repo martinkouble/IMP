@@ -209,7 +209,8 @@ namespace IMP_reseni.Services
                 using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     var modificationDate = File.GetLastWriteTime(filePath);
-                    client.Upload(fileStream, "Zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy HH:mm:ss") + ".json", myFolder, modificationDate);
+                    client.Upload(fileStream, "Zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy HH:mm:ss") 
+                           + ".json", myFolder, modificationDate);
                 }
                 client.Logout();
                 return true;

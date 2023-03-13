@@ -17,6 +17,8 @@ namespace IMP_reseni.ViewModels
 {
     public class NewItemViewModel: INotifyPropertyChanged
     {
+        public Page Page { get; set; }
+
         public List<string> ListOfCategory { get; set; }
         public List<string> ListOfSupplier { get; set; }
 
@@ -120,7 +122,7 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _pictureButtonText, value); }
             get { return _pictureButtonText; }
         }
-        private string ImageUrl;
+        private string ImageUrl="";
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -191,8 +193,16 @@ namespace IMP_reseni.ViewModels
             {
                 return CanBeEnabled;
             },
-            execute:(bool CanBeEnabled) =>
+            execute:async(bool CanBeEnabled) =>
             {
+                if (ImageUrl == "" || ImageUrl == null)
+                {
+                    bool answer = await Page.DisplayAlert("Pozor", "Opravdu si přejete pokračovat bez přidaného obrázku?", "Ano", "Ne");
+                    if (answer == false)
+                    {
+                        return;
+                    }
+                }
                 Items newItem = new Items();
                 //newItem.Name = name;
                 string name = Text;

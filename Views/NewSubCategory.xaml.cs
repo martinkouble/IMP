@@ -8,7 +8,8 @@ public partial class NewSubCategory : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = newSubCategoryViewModel;
-	}
+		newSubCategoryViewModel.Page = this;
+    }
 
 
 }

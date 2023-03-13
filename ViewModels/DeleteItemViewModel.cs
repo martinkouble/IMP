@@ -83,7 +83,7 @@ namespace IMP_reseni.ViewModels
                 SetProperty(ref _selectedItem, value);
                 if (value != null && value != "")
                 {
-                    Text = value;
+                    //Text = value;
                     Items item = new Items();
                     item = saveholder.FindCategoryByName(SelectedCategory).FindSubCategoryByName(SelectedSubCategory).FindItemByName(value);
                     itemId = item.Id;
@@ -104,13 +104,13 @@ namespace IMP_reseni.ViewModels
             set { SetProperty(ref _selectedSupplier, value); }
         }
 
-        //Entries texts
-        private string _text;
-        public string Text
-        {
-            set { SetProperty(ref _text, value); }
-            get { return _text; }
-        }
+        ////Entries texts
+        //private string _text;
+        //public string Text
+        //{
+        //    set { SetProperty(ref _text, value); }
+        //    get { return _text; }
+        //}
 
         private string _count;
         public string Count
@@ -162,7 +162,18 @@ namespace IMP_reseni.ViewModels
             list.Sort();
             ListOfSupplier = new List<string>(list);
             DeleteCommand = new Command<string>(
-          (string name) =>
+          canExecute:(string name) =>
+          {
+              if (name!=null && name!="")
+              {
+                  return true;
+              }
+              else
+              {
+                  return false;
+              }
+          },
+          execute:(string name) =>
           {
               SubCategory subCategory = new SubCategory();
               Category category = new Category();
@@ -201,7 +212,7 @@ namespace IMP_reseni.ViewModels
             SelectedItem = "";
             SelectedSupplier = "";
 
-            Text = "";
+            //Text = "";
             Count = "";
             BuyPrice = "";
             SellPrice = "";

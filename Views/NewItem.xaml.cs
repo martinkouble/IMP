@@ -7,5 +7,7 @@ public partial class NewItem : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = newItemViewModel;
-	}
+		newItemViewModel.Page = this;
+
+    }
 }

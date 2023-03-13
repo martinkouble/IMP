@@ -127,7 +127,7 @@ namespace IMP_reseni.ViewModels
         public MainPageViewModel()
         {
         }
-        public MainPageViewModel(ContentPage _page,SaveHolder saveholder,BasketHolder basketholder)
+        public MainPageViewModel(ContentPage _page, SaveHolder saveholder, BasketHolder basketholder)
         {
             this._page = _page;
             //SaveHolder h = App.saveholder;
@@ -156,12 +156,12 @@ namespace IMP_reseni.ViewModels
             PerformSearch = new Command<string>(
             (string Text) =>
             {
-                if (Text=="" && CanSearch==true)
+                if (Text == "" && CanSearch == true)
                 {
                     TypeOfItems = "Kategorie";
                     filter(Text);
                 }
-                else if(Text!="" && Text!=null)
+                else if (Text != "" && Text != null)
                 {
                     TypeOfItems = "Vše";
                     GetAllNames(Text);
@@ -172,8 +172,23 @@ namespace IMP_reseni.ViewModels
                 }
             });
 
-            NavigateCollectionCommand = new Command(
-            () =>
+            NavigateCollectionCommand = new Command<string>(
+            canExecute: (string TypeOfItems) =>
+            {
+                if (TypeOfItems=="Kategorie")
+                {
+                    return false;
+                }
+                else if(TypeOfItems!=null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            },
+            execute:(string TypeText) =>
             {
                 //if(true)
                 //{

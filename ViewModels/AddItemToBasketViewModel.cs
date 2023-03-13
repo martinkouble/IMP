@@ -86,7 +86,7 @@ namespace IMP_reseni.ViewModels
             ImageUrl= item.ImageUrl;
             Name= item.Name;
             ItemsPriceWithDPH = item.SellCost;
-            ItemsPriceWithoutDPH= item.SellCost*0.85;
+            ItemsPriceWithoutDPH= item.SellCost/1.21;
             MaxCount = item.Stock;
             AddCommand = new Command<string>(
                 canExecute: (string Count) =>
@@ -154,7 +154,8 @@ namespace IMP_reseni.ViewModels
             order.Amount = Convert.ToInt32(Count);
             order.BuyCostPerPiece=item.BuyCost;
             order.SellCostPerPiece = item.SellCost;
-
+            order.ItemName = item.Name;
+            order.ImageUrl=item.ImageUrl;
             order.CategoryId=item.CategoryId;
             order.SubCategoryId = item.SubCategoryId;
 

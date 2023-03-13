@@ -11,6 +11,7 @@ using CommunityToolkit.Maui.Alerts;
 using IMP_reseni.Models;
 using IMP_reseni.Services;
 using IMP_reseni.MyPermissions;
+using CommunityToolkit.Maui.Storage;
 
 namespace IMP_reseni.ViewModels
 {
@@ -67,20 +68,22 @@ namespace IMP_reseni.ViewModels
             ExportCommand = new Command(
             async() =>
             {
-                string path;
-                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) 
-                + "/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";
-                PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
-                if (PermissionStatus.Granted == status)
+                //string path;
+                ////path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath
+                //path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+                ////path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads)
+                //+"/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";            
+                //PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (true)
                 {
-                    if (!File.Exists(path))
+                    bool saveIsSuccessful=await saveholder.SaveAsync();
+                    if (saveIsSuccessful==true)
                     {
-                        saveholder.Save(path);
                         await Toast.Make("Soubor vytvořen").Show();
                     }
                     else
                     {
-                        await Toast.Make("Soubor již existuje").Show();
+                        await Toast.Make("Soubor nevytvořen").Show();
                     }
                 }
             });
@@ -197,13 +200,13 @@ namespace IMP_reseni.ViewModels
             if (from != default(DateTime) && to != default(DateTime))
             {
                 AccountingHandler accounting = new AccountingHandler();
-                string path;
-#if ANDROID
-                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/účetnictví_" + from.ToString("dd-mm-yyyy") + "---" + to.ToString("dd-mm-yyyy") + ".csv";
-#else
-                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-#endif
+//                string path;
+//#if ANDROID
+//                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+//                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/účetnictví_" + from.ToString("dd-mm-yyyy") + "---" + to.ToString("dd-mm-yyyy") + ".csv";
+//#else
+//                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+//#endif
                 string accFileText = accounting.CreateAccountingFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
                 if (!File.Exists(path)) 
                 {
@@ -216,28 +219,40 @@ namespace IMP_reseni.ViewModels
                 }
             }
         }
-        private void GenerateFileStock(DateTime from, DateTime to)
+        private async void GenerateFileStock(DateTime from, DateTime to)
         {
             if (from != default(DateTime) && to != default(DateTime))
             {
                 AccountingHandler accounting = new AccountingHandler();
-                string path;
-#if ANDROID
-                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-#else
-                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-#endif
+                //                string path;
+                //#if ANDROID
+                //                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+                //#else
+                //                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
+                //#endif
                 //string path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToShortDateString() + "-" + to.ToShortDateString() + ".csv";
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 string accFileText = accounting.CreateAccountingStockFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
-
-                if (!File.Exists(path))
+                using var stream = new MemoryStream(Encoding.Default.GetBytes(accFileText));
+                string fileName= "sklad " + from.ToString("dd - mm - yyyy") + " -- " + to.ToString("dd - mm - yyyy") + ".csv";
+                bool saveIsSuccessful;
+                try
                 {
-                    File.WriteAllText(path, accFileText, Encoding.UTF8);
-                    Toast.Make("Soubor vytvořen").Show();
+                    var save = await FileSaver.Default.SaveAsync(fileName, stream, cancellationTokenSource.Token);
+                    saveIsSuccessful = save.IsSuccessful;
+                }
+                catch (Exception) 
+                {
+                    saveIsSuccessful = false;
+                }
+                if (saveIsSuccessful)
+                {
+                    //File.WriteAllText(path, accFileText, Encoding.UTF8);
+                    await Toast.Make("Soubor vytvořen").Show();
                 }
                 else
                 {
-                    Toast.Make("Soubor nevytvořen").Show();
+                   await Toast.Make("Soubor nevytvořen").Show();
                 }
             }
         }

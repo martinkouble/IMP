@@ -64,25 +64,26 @@ namespace IMP_reseni.ViewModels
             ListOfSupplier = new ObservableCollection<string>(list);
 
             ModifyCommand = new Command<string>(
-            canExecute: (string name) =>
+            canExecute: (string selectedSupplier) =>
             {
-                if (name == "" || name == null)
-                {
-                    return false;
-                }
-                else
+                if (selectedSupplier != "" && selectedSupplier != null)
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             },
 
-            execute: (string name) =>
+            execute: (string selectedSupplier) =>
             {
+                string name = Text;
                 Supplier supplier = new Supplier();
                 supplier = saveholder.FindSupplierByName(SelectedSupplier);
-                supplier.Name = name;
                 if (!saveholder.ExistSupplierByName(name)||name==previusName)
                 {
+                    supplier.Name = name;
                     saveholder.ModifySupplier(supplier);
                     saveholder.Save();
                     Toast.Make("Dodavatel změněn").Show();

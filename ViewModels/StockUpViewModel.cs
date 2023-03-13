@@ -49,10 +49,19 @@ namespace IMP_reseni.ViewModels
             ItemsList = new ObservableCollection<object>(saveholder.Inventory);
 
             NavigateCollectionCommand = new Command<string>(
-            (string Direction) =>
+            canExecute: (string itemName) =>
             {
-                if (Direction == "Back")
-                {
+                    if (itemName == "Kategorie")
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+            },
+            execute: (string itemName) =>
+            {  
                     if (CurrentSelection != null && CurrentSelection[0] != null)
                     {
                         var _category = (Category)SelectedCategory;
@@ -71,7 +80,6 @@ namespace IMP_reseni.ViewModels
                         }
                         SelectedItem = null;                   
                     }
-                }
             });
 
             ItemSelectedCommand = new Command<SelectionChangedEventArgs>(

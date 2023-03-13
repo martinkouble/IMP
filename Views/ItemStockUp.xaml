@@ -56,7 +56,7 @@
             <Switch IsToggled="{Binding StockUpOrDown}"
                     VerticalOptions="Center"/>
 
-            <Label Text="Odskladnit"
+            <Label Text="Vyskladnit"
                    VerticalOptions="Center"/>
 
         </HorizontalStackLayout>

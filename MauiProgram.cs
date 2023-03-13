@@ -26,6 +26,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<BasketHolder>();
 
         builder.Services.AddSingleton<CloudService>();
+        builder.Services.AddSingleton<MyBluetoothService>();
 
         //View,ViewModels
         builder.Services.AddTransient<Cloud,CloudViewModel>();
@@ -34,6 +35,10 @@ public static class MauiProgram
 
         builder.Services.AddTransient<StockUp>();
         builder.Services.AddTransient<MainPage>();
+
+
+        builder.Services.AddTransient<EditReceiptInfo>();
+        builder.Services.AddTransient<EditReceiptInfoViewModel>();
 
         builder.Services.AddTransient<Create>();
         builder.Services.AddTransient<NewCategory, NewCategoryViewModel>();

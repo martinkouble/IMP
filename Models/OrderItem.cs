@@ -13,6 +13,9 @@ namespace IMP_reseni.Models
         public int SubCategoryId { get; set; }
         public int ItemId { get; set; }
 
+        public string ItemName { get; set; }
+        public string ImageUrl { get; set; }
+
         public int Amount { get; set; }
         public double BuyCostPerPiece { get; set; }
         public double SellCostPerPiece { get; set; }

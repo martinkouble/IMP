@@ -59,7 +59,7 @@
         <Button Text="Potvrdit změny"       
                 HorizontalOptions="Center"
                 Command="{Binding ModifyCommand}"
-                CommandParameter="{Binding Text}">
+                CommandParameter="{Binding SelectedSupplier}">
         </Button>
     </StackLayout>
 </ContentPage>

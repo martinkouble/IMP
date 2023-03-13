@@ -26,21 +26,21 @@ namespace IMP_reseni.ViewModels
             set
             {
                 SetProperty(ref _selectedCategory, value);
-                if (value != "")
-                {
-                    Text = value;
-                }
+                //if (value != "")
+                //{
+                //    Text = value;
+                //}
             }
 
             get { return _selectedCategory; }
         }
 
-        private string _text;
-        public string Text
-        {
-            set { SetProperty(ref _text, value); }
-            get { return _text; }
-        }
+        //private string _text;
+        //public string Text
+        //{
+        //    set { SetProperty(ref _text, value); }
+        //    get { return _text; }
+        //}
         public DeleteCategoryViewModel(SaveHolder saveholder, BasketHolder basketHolder)
         {
             List<string> list = new List<string>(saveholder.GetCategoriesNames());
@@ -50,13 +50,13 @@ namespace IMP_reseni.ViewModels
             DeleteCommand = new Command<string>(
             canExecute: (string name) =>
             {
-                if (name == "" || name==null)
+                if (name != "" && name!=null)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             },
 
@@ -73,7 +73,7 @@ namespace IMP_reseni.ViewModels
                     saveholder.DeleteCategory(category);
                     saveholder.Save();
                     Toast.Make("kategorie smazána").Show();
-                    Text = "";
+                    //Text = "";
                     SelectedCategory = null;
                     List<string> list = new List<string>(saveholder.GetCategoriesNames());
                     list.Sort();

@@ -12,6 +12,11 @@ namespace IMP_reseni.ViewModels
 {
     public class CreateViewModel: INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public ICommand NavigateCommand { get; private set; }
         public CreateViewModel()
         {
@@ -31,10 +36,6 @@ namespace IMP_reseni.ViewModels
            }
            );
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
     }
 }

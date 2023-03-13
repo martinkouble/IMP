@@ -27,7 +27,7 @@
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:DeleteCategory}"/>
 
-            <Button Text="PodKatogorie"
+            <Button Text="Podkatogorie"
                      Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Type Views:DeleteSubCategory}"/>
 

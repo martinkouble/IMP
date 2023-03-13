@@ -65,16 +65,20 @@
                 SelectedItem="{Binding SelectedSupplier}"
                 HorizontalTextAlignment="Center"
                 FontSize="Large"
-                />
+                >
+                <Picker.GestureRecognizers>
+                    <TapGestureRecognizer/>
+                </Picker.GestureRecognizers>
+            </Picker>
         </Border>
 
-        <Border StyleClass="EntryBorder"
+        <!--<Border StyleClass="EntryBorder"
                 StrokeShape="RoundRectangle 40,40,40,40"
                 >
             <Label 
                x:Name="Entry"
                Text="{Binding Text}"/>
-        </Border>
+        </Border>-->
         <Border StyleClass="EntryBorder" 
                 WidthRequest="60" Margin="30,0"       
                 >
@@ -115,24 +119,11 @@
                FontSize="Large"
                LineBreakMode="WordWrap"/>
         </HorizontalStackLayout>
-        <Button Text="Potvrdit"
+        <Button Text="Smazat"
                 HorizontalOptions="Center"
                 Margin="0,20,0,0"
                 Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding Source={x:Reference Entry},
-                                            Path=Text}">
-            <Button.IsEnabled>
-                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SupplierPicker}" Path="SelectedItem.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntryCount}" Path="Text.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference EntrySellPrice}" Path="Text.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference Entry}" Path="Text.Length" />
-
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference ItemPicker}" Path="SelectedItem.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference SubCategoryPicker}" Path="SelectedItem.Length" />
-                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CategoryPicker}" Path="SelectedItem.Length" />
-                </MultiBinding>
-            </Button.IsEnabled>
+                CommandParameter="{Binding SelectedItem}">
         </Button>
     </StackLayout>
 </ContentPage>

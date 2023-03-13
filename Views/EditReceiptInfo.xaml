@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMP_reseni.Views.EditReceiptInfo"
+             xmlns:Converters="clr-namespace:IMP_reseni.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Změnit údaje na účtence">
+    <ContentPage.Resources>
+        <Converters:IntToBoolConverter x:Key="intToBool" />
+        <toolkit:VariableMultiValueConverter 
+                x:Key="VariableMultiValueConverter"
+                ConditionType="Exact"
+                Count="4" />
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="CornerRadius"  Value="0"/>
+        </Style>
+    </ContentPage.Resources>
+    <StackLayout Margin="75" VerticalOptions="Center">
+        
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,30">
+            <Entry Placeholder="Zadejte název firmy"
+               x:Name="CompanyNameEntry"
+               HorizontalOptions="Center"
+               FontSize="Large"
+                MaxLength="32"
+               Text="{Binding CompanyName}"/>
+        </Border>
+        
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,30">
+            <Entry Placeholder="Zadejte adresu firmy"
+               MaxLength="32"
+               x:Name="CompanyAddressEntry"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Text="{Binding CompanyAddress}"/>
+        </Border>
+
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,30">
+            <Entry Placeholder="Zadejte IČO firmy"
+               x:Name="ICEntry"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Keyboard="Numeric"
+               MaxLength="8"
+               Text="{Binding IC}"/>
+        </Border>
+        <Border StyleClass="EntryBorder"
+                Margin="0,0,0,30">
+            <Entry Placeholder="Zadejte DIČ firmy"
+               x:Name="DICEntry"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               MaxLength="10"
+               Text="{Binding DIC}"/>
+        </Border>
+        <Button Text="Potvrdit"
+                HorizontalOptions="Center"
+                Command="{Binding ChangeCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CompanyNameEntry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference CompanyAddressEntry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference ICEntry}" Path="Text.Length" />
+                    <Binding Converter="{StaticResource intToBool}" Source="{x:Reference DICEntry}" Path="Text.Length" />
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+
+    </StackLayout>
+</ContentPage>

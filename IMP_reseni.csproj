@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-    <TargetFrameworks>net7.0-ios;net7.0-maccatalyst;net7.0-android33.0</TargetFrameworks>
+    <TargetFrameworks>net7.0-maccatalyst;net7.0-android33.0</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
@@ -15,7 +15,7 @@
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 
     <!-- Display name -->
-		<ApplicationTitle>IMP_reseni</ApplicationTitle>
+		<ApplicationTitle>Apothecarius</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.imp_reseni</ApplicationId>
@@ -36,14 +36,17 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\newappiconfg.png" Color="#512BD4" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\newappiconfg.svg" ForegroundScale="0.65" Color="#512BD4" />
 
     <!-- Splash Screen -->
-    <MauiSplashScreen Include="Resources\Splash\newsplash.png" />
+    <MauiSplashScreen Include="Resources\Splash\newsplash.svg" BaseSize="144,144" />
 
     <!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\loginicon.svg">
+		<MauiImage Update="Resources\Images\loginicon_black.svg">
+		  <BaseSize>168,208</BaseSize>
+		</MauiImage>
+		<MauiImage Update="Resources\Images\loginicon_white.svg">
 		  <BaseSize>168,208</BaseSize>
 		</MauiImage>
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
@@ -69,14 +72,17 @@
 	  <None Remove="Resources\Images\create.svg" />
 	  <None Remove="Resources\Images\cross.svg" />
 	  <None Remove="Resources\Images\delete.svg" />
-	  <None Remove="Resources\Images\loginicon.svg" />
-	  <None Remove="Resources\Images\logo.png" />
+	  <None Remove="Resources\Images\loginicon_black.svg" />
+	  <None Remove="Resources\Images\loginicon_white.svg" />
+	  <None Remove="Resources\Images\logo_black.svg" />
+	  <None Remove="Resources\Images\logo_white.svg" />
 	  <None Remove="Resources\Images\password.svg" />
 	  <None Remove="Resources\Images\pencil.svg" />
 	  <None Remove="Resources\Images\question_mark.jpg" />
 	  <None Remove="Resources\Images\shopping_basket_dark.svg" />
 	  <None Remove="Resources\Images\shopping_basket_white.svg" />
-	  <None Remove="Resources\Splash\newsplash.png" />
+	  <None Remove="Resources\Images\splash_kopie.svg" />
+	  <None Remove="Resources\Splash\newsplash.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -140,6 +146,9 @@
 	  <MauiXaml Update="Views\DeleteSupplier.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditReceiptInfo.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Login.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -184,4 +193,11 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+  <PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>myapp.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>key</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>Aa123456</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>Aa123456</AndroidSigningStorePass>
+  </PropertyGroup>
 </Project>

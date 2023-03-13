@@ -25,7 +25,34 @@ namespace IMP_reseni.ViewModels
         public ICommand SellCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public Page page;
-        private double TotalCost 
+
+
+        private string _totalCostText="";
+        public string TotalCostText
+        {
+            get
+            {
+                return _totalCostText;
+            }
+            set
+            {
+                SetProperty(ref _totalCostText, value);
+            }
+        }
+        private string _totalCostWithNoDPHText = "";
+        public string TotalCostWithNoDPHText
+        {
+            get
+            {
+                return _totalCostWithNoDPHText;
+            }
+            set
+            {
+                SetProperty(ref _totalCostWithNoDPHText, value);
+            }
+        }
+
+        public double TotalCost
         {
             get
             { 
@@ -40,8 +67,7 @@ namespace IMP_reseni.ViewModels
                 return Cost; 
             } 
         }
-
-        private double TotalCostWithNoDPH
+        public double TotalCostWithNoDPH
         {
             get
             {
@@ -61,7 +87,7 @@ namespace IMP_reseni.ViewModels
         NetworkStream outStream;
         private BasketHolder basketHolder;
         private SaveHolder saveHolder;
-        public BasketViewModel(BasketHolder basketHolder,SaveHolder saveHolder) 
+        public BasketViewModel(BasketHolder basketHolder,SaveHolder saveHolder, MyBluetoothService bluetoothService) 
         {
             this.basketHolder = basketHolder;
             this.saveHolder = saveHolder;
@@ -70,6 +96,8 @@ namespace IMP_reseni.ViewModels
             {
                 BasketItems.Add(item);
             }
+            TotalCostWithNoDPHText = "Cena bez DPH: "+TotalCostWithNoDPH;
+            TotalCostText = $"Cena s DPH: "+TotalCost.ToString();
             SellCommand = new Command(
            async() =>
             {
@@ -78,7 +106,7 @@ namespace IMP_reseni.ViewModels
                    bool decision = await page.DisplayAlert("Účtenka", "Přejete si vytisknout účtenku?", "Ano", "Ne");
                     if (decision==true) 
                     {
-                        bool success=await BluetoothConnection();
+                        bool success=await bluetoothService.BluetoothConnection( TotalCostWithNoDPH,  TotalCost);
                         if (success==true)
                         {
                             //basketHolder.CompleteOrder();
@@ -107,7 +135,7 @@ namespace IMP_reseni.ViewModels
                basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
            });
         }
-
+        /*
         private async Task<bool> BluetoothConnection()
         {
             PermissionStatus status = PermissionStatus.Granted;
@@ -216,7 +244,7 @@ namespace IMP_reseni.ViewModels
             outStream.Write(buffer, 0, buffer.Length);
         }
 
-        /*
+        
         //public async Task<PermissionStatus> CheckAndRequestContactsReadPermission(Type Permission)
         //{
         //    PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
@@ -239,7 +267,7 @@ namespace IMP_reseni.ViewModels
         //    status = await Permissions.RequestAsync<MyBluetoothPermission>();
 
         //    return status;
-        //}*/
+        //}
 
         public static string RemoveDiacritics(String s)
         {
@@ -254,6 +282,17 @@ namespace IMP_reseni.ViewModels
                 }
             }
             return sb.ToString();
+        }
+        */
+        bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Object.Equals(storage, value))
+                return false;
+
+            storage = value;
+
+            OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }
