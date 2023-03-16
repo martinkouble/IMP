@@ -29,7 +29,7 @@
     </ContentPage.Resources>
     <StackLayout Margin="25">
         <Border StyleClass="PickerBorder">
-            <Picker Title="Zadejte Kategorii"
+            <Picker Title="Zvol Kategorii"
                 x:Name="CategoryPicker"
                 ItemsSource="{Binding ListOfCategory}"
                 SelectedItem="{Binding SelectedCategory}"

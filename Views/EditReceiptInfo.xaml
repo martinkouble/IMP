@@ -72,6 +72,15 @@
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>
-
+        <Border StyleClass="EntryBorder"
+                Margin="0,30,0,30">
+            <Label Text="{Binding BLDevice}"
+               HorizontalOptions="Center"
+               FontSize="32"/>
+        </Border>
+        <Button Text="Nastavit tiskárnu"
+                FontSize="27"
+                Margin="0,0,0,0"
+                Command="{Binding SetPrinterCommand}"/>
     </StackLayout>
 </ContentPage>

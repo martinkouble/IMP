@@ -83,8 +83,8 @@ namespace IMP_reseni.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         //int receiptNumber;
-        byte[] buffer;
-        NetworkStream outStream;
+        //byte[] buffer;
+        //NetworkStream outStream;
         private BasketHolder basketHolder;
         private SaveHolder saveHolder;
         public BasketViewModel(BasketHolder basketHolder,SaveHolder saveHolder, MyBluetoothService bluetoothService) 
@@ -106,17 +106,25 @@ namespace IMP_reseni.ViewModels
                    bool decision = await page.DisplayAlert("Účtenka", "Přejete si vytisknout účtenku?", "Ano", "Ne");
                     if (decision==true) 
                     {
-                        bool success=await bluetoothService.BluetoothConnection( TotalCostWithNoDPH,  TotalCost);
+                        bool success=await bluetoothService.BluetoothConnection(TotalCostWithNoDPH,TotalCost);
                         if (success==true)
                         {
-                            //basketHolder.CompleteOrder();
+                            basketHolder.CompleteOrder();
+                            TotalCostWithNoDPHText = "Cena bez DPH: 0";
+                            TotalCostText = $"Cena s DPH: 0";
                             BasketItems.Clear();
                             await Toast.Make("Prodáno s účtenkou").Show();
+                        }
+                        else
+                        {
+                            await Toast.Make("Došlo k chybě! Zkontrolujte Bluetooth a tiskárnu").Show();
                         }
                     }
                     else
                     {
                         basketHolder.CompleteOrder();
+                        TotalCostWithNoDPHText = "Cena bez DPH: 0";
+                        TotalCostText = $"Cena s DPH: 0";
                         BasketItems.Clear();
                         await Toast.Make("Prodáno").Show();
                     }

@@ -244,9 +244,10 @@ namespace IMP_reseni.ViewModels
                 else
                 {
                     addToList<Category>(source.ToList());
-                    CurrentSelection[0] = null;
+                    CurrentSelection = null;
                     TypeOfItems = "Kategorie";
                     SelectedItem = null;
+                    SearchText = "";
                 }
                 //else if(Direction == "Forward")
                 //{

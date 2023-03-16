@@ -69,7 +69,7 @@
                    FontFamily="OpenSansSemibold"
                    Text="{Binding Password}"/>
         </Border>
-        <Button Text="Potvrdit"
+        <Button Text="Přihlásit"
                 Command="{Binding GetCommand}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource VariableMultiValueConverter}">
@@ -79,6 +79,9 @@
             </Button.CommandParameter>
         </Button>
 
+        <Button Text="Odhlásit"
+                Command="{Binding LogOutCommand}">
+        </Button>
 
         <Grid ColumnDefinitions="Auto,*,Auto"
               RowDefinitions="*">

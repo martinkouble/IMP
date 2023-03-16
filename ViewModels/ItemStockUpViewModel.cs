@@ -59,6 +59,10 @@ namespace IMP_reseni.ViewModels
             Item = item;
             //Count = item.Stock.ToString();
             Count = "0";
+            if (item.ImageUrl=="")
+            {
+                item.ImageUrl = null;
+            }
             AddCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
@@ -118,16 +122,16 @@ namespace IMP_reseni.ViewModels
                     }
 
                 });
-            UnFocusCommand = new Command<Entry>(
-            (Entry entry) =>
-            {
-#if ANDROID
-                if(Platform.CurrentActivity.CurrentFocus!=null)
-                    Platform.CurrentActivity.HideKeyboard(Platform.CurrentActivity.CurrentFocus);
-#else
-                entry.Unfocus();
-#endif
-            });
+//            UnFocusCommand = new Command<Entry>(
+//            (Entry entry) =>
+//            {
+//#if ANDROID
+//                if(Platform.CurrentActivity.CurrentFocus!=null)
+//                    Platform.CurrentActivity.HideKeyboard(Platform.CurrentActivity.CurrentFocus);
+//#else
+//                entry.Unfocus();
+//#endif
+//            });
         }
         public void AddItemToStockUp(Items item, string Count)
         {

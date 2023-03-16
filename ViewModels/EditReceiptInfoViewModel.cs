@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using IMP_reseni.Services;
+using InTheHand.Net.Bluetooth;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +50,18 @@ namespace IMP_reseni.ViewModels
                 SetProperty(ref _dIC, value);
             }
         }
+
+        private string _bLDevice;
+        public string BLDevice
+        {
+            get { return _bLDevice; }
+            set
+            {
+                SetProperty(ref _bLDevice, value);
+            }
+        }
         public ICommand ChangeCommand { get; private set; }
+        public ICommand SetPrinterCommand { get; private set; }
 
         public EditReceiptInfoViewModel(MyBluetoothService myBluetoothService)
         {
@@ -57,7 +69,7 @@ namespace IMP_reseni.ViewModels
             CompanyAddress=myBluetoothService.CompanyAddress;
             IC=myBluetoothService.IC;
             DIC=myBluetoothService.DIC;
-
+            BLDevice = Preferences.Get("BL_DeviceName","");
 
             ChangeCommand = new Command<bool>(
             canExecute:(bool CanChange) =>
@@ -69,6 +81,24 @@ namespace IMP_reseni.ViewModels
                 myBluetoothService.SetComapnyInfo(CompanyName, CompanyAddress,IC,DIC);
                 Toast.Make("Údaje nastaveny").Show();
             });
+
+            SetPrinterCommand = new Command(
+           async() =>
+           {
+               try
+               {
+                   var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                   Preferences.Set("BL_Address", picker.DeviceAddress.ToString());
+                   Preferences.Set("BL_DeviceName", picker.DeviceName);
+                   BLDevice = picker.DeviceName;
+                   await Toast.Make("Úspěšně uloženo").Show();
+               }
+               catch (Exception)
+               {
+                   BLDevice = "";
+                   await Toast.Make("Došlo k chybě").Show();
+               }
+           });
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

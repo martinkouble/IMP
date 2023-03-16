@@ -31,7 +31,7 @@
     </ContentPage.Resources>
     <VerticalStackLayout VerticalOptions="Center"
                          Spacing="10">
-        <Image Source="{Binding Item.ImageUrl, TargetNullValue='https://upload.wikimedia.org/wikipedia/commons/2/20/Point_d_interrogation.jpg'}"
+        <Image Source="{Binding Item.ImageUrl, TargetNullValue='question_mark.jpg'}"
                Grid.Column="0"
                Aspect="AspectFill"
                HeightRequest="100"
@@ -52,11 +52,13 @@
         <HorizontalStackLayout HorizontalOptions="Center"
                                Spacing="10">
             <Label Text="Naskladnit"
+                   FontSize="Large"
                    VerticalOptions="Center"/>
             <Switch IsToggled="{Binding StockUpOrDown}"
                     VerticalOptions="Center"/>
 
             <Label Text="Vyskladnit"
+                    FontSize="Large"
                    VerticalOptions="Center"/>
 
         </HorizontalStackLayout>

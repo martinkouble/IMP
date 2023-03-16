@@ -31,11 +31,13 @@
             <Label Text="Počáteční datum"/>
             <DatePicker Date="{Binding StartDate}"
                         Format="dd/MM/yyyy"
+                        FontSize="Large"
                         TextColor="White"
                         />
             <Label Text="Konečné datum datum"/>
             <DatePicker Date="{Binding EndDate}"
                         Format="dd/MM/yyyy"
+                        FontSize="Large"
                         TextColor="White"/>
             <Button Text="Učetní soubor"
                     Command="{Binding GenerateAccountingCommand}"/>

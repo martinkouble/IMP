@@ -37,10 +37,10 @@ namespace IMP_reseni.Services
         {
             this.saveHolder= saveHolder;
             this.basketHolder= basketHolder;
-            CompanyName= Preferences.Default.Get("CompanyName", "");
-            CompanyAddress= Preferences.Default.Get("CompanyAddress", "");
-            IC= Preferences.Default.Get("IC", "");
-            DIC= Preferences.Default.Get("DIC", "");
+            CompanyName= Preferences.Default.Get("CompanyName", "Nazev firmy");
+            CompanyAddress= Preferences.Default.Get("CompanyAddress", "Adresa firmy");
+            IC= Preferences.Default.Get("IC", "12345678");
+            DIC= Preferences.Default.Get("DIC", "CZ1234567890");
         }
         public void SetComapnyInfo(string CompanyName, string CompanyAddress, string IC, string DIC)
         {
@@ -58,7 +58,6 @@ namespace IMP_reseni.Services
         {
             uint messageLength = (uint)buffer.Length;
             byte[] countBuffer = BitConverter.GetBytes(messageLength);
-
             outStream.Write(countBuffer, 0, countBuffer.Length);
             outStream.Write(buffer, 0, buffer.Length);
         }
@@ -76,7 +75,7 @@ namespace IMP_reseni.Services
             }
             return sb.ToString();
         }
-        private void ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
+        private bool ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
         {
             basketHolder.receiptNumber++;
             string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
@@ -84,11 +83,11 @@ namespace IMP_reseni.Services
             Printer.Align("center");
             Printer.PrintLine(CompanyName);
             Printer.PrintLine(CompanyAddress);
-            Printer.PrintLine("IC:"+ IC+" DIC: "+DIC);
-            Printer.PrintLine(new string('-',32));
+            Printer.PrintLine("IC:" + IC + " DIC: " + DIC);
+            Printer.PrintLine(new string('-', 32));
             Printer.Align("left");
-            Printer.PrintLine("Datum: " + DateTime.Now.ToString("HH:mm:ss"));
-            Printer.PrintLine("Čas: " + DateTime.Now.ToString("dd.MM.yyyy"));
+            Printer.PrintLine("Cas: " + DateTime.Now.ToString("HH:mm:ss"));
+            Printer.PrintLine("Datum: " + DateTime.Now.ToString("dd.MM.yyyy"));
             Printer.PrintLine("Cislo uctenky: " + stringNumber);
             Printer.PrintLine(new string('-', 32));
             foreach (OrderItem o in basketHolder.Order.Items)
@@ -98,17 +97,20 @@ namespace IMP_reseni.Services
                 Printer.tab(16, 22);
                 Printer.Print(item.SellCost.ToString() + " Kc/ks");
                 Printer.tabSkok();
-                Printer.Print("x"+o.Amount.ToString());
+                Printer.Print("x" + o.Amount.ToString());
                 Printer.tabSkok();
-                Printer.Print("="+(item.SellCost * o.Amount).ToString() + " Kc");
-                Printer.PrintLine(new string('*', 32));
+                Printer.Print("=" + (item.SellCost * o.Amount).ToString() + " Kc");
+                Printer.PrintLine();
+                Printer.PrintLine(new string('-', 32));
             }
             Printer.Align("center");
-            Printer.PrintLine("Mezisoučet bez DPH: " + TotalCostWithNoDPH + "Kc");
-            Printer.PrintLine("DPH: " + (TotalCost-TotalCostWithNoDPH) + "Kc");
-            Printer.PrintLine("Celkova castka: " + TotalCost + "Kc");
+            Printer.PrintLine("Mezisoucet bez DPH: " + TotalCostWithNoDPH.ToString() + "Kc");
+            double dph = TotalCost - TotalCostWithNoDPH;
+            Printer.PrintLine("DPH: " + dph.ToString() + "Kc");
+            Printer.PrintLine("Celkova castka: " + TotalCost.ToString() + "Kc");
             buffer = Printer.output.ToArray();
             SendMessage();
+            return true;
         }
         public async Task<bool> BluetoothConnection(double TotalCostWithNoDPH, double TotalCost)
         {
@@ -131,32 +133,36 @@ namespace IMP_reseni.Services
             {
                 try
                 {
-                    var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                    string SavedAddres = Preferences.Get("BL_Address", "");
+                    BluetoothAddress address;
+                    if (SavedAddres == "")
+                    { var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
+                        address = picker.DeviceAddress; }
+                    else
+                    {address =  BluetoothAddress.Parse(SavedAddres);}
                     BluetoothClient client = new BluetoothClient();
-                    var address = picker.DeviceAddress;
-                    /*
-                    //ulong sevenItems = 0x020000000000;
-                    //BluetoothAddress address = new BluetoothAddress(sevenItems);
-                    //bool paired = BluetoothSecurity.PairRequest(address, "0000");
-                    //var guid = picker.GetRfcommServicesAsync().Result.;
-                    //var guid =await picker.GetRfcommServicesAsync();
-                    //var guid = picker.GetRfcommServicesAsync().Result.FirstOrDefault();*/
                     var guid = InTheHand.Net.Bluetooth.BluetoothService.SerialPort;
                     client.Connect(address, guid);
-
-                    outStream = client.GetStream();
-                    Printer.output.Add(0x1B);
-                    Printer.output.Add(0x40);
-                    buffer = Printer.output.ToArray();
-                    ReceiptPrint( TotalCostWithNoDPH,  TotalCost);
-                    client.Close();
-                    return true;
+                    if (client.Connected)
+                    {
+                        outStream = client.GetStream();
+                        Printer.output.Add(0x1B);
+                        Printer.output.Add(0x40);
+                        buffer = Printer.output.ToArray();
+                        bool IsCompleted = ReceiptPrint(TotalCostWithNoDPH, TotalCost);
+                        if (IsCompleted == true)
+                        { client.Close(); }
+                        else { return false; }
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 catch (Exception)
                 {
-                    await Toast.Make("Došlo k chybě! Zkontrolujte Bluetooth a tiskárnu").Show();
                     return false;
-
                 }
             }
             else

@@ -72,7 +72,7 @@ namespace IMP_reseni.Services
         //}  
         public async Task<bool> SaveAsync()
         {
-            string fileName= "zaloha_" + DateTime.Now.ToString("dd-MM-yyyy_HH:mm: ss") + ".json";
+            string fileName= "zaloha_" + DateTime.Now.ToString("dd-MM-yyyy_HH:mm:ss") + ".json";
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, 
                 DateFormatHandling = DateFormatHandling.MicrosoftDateFormat };
             string jsonString = JsonConvert.SerializeObject(this, settings);
@@ -295,9 +295,10 @@ namespace IMP_reseni.Services
 
         public void DeleteSupplier(Supplier supplier)
         {
-            int index = Inventory.FindIndex(f => f.Id == supplier.Id);
-            if (index != -1)
-                Suppliers.RemoveAt(index);
+            //int index = Inventory.FindIndex(f => f.Id == supplier.Id);
+            //if (index != -1)
+            //    Suppliers.RemoveAt(index);
+            Suppliers.Remove(supplier);
         }
 
         //StockUpItem

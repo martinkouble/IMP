@@ -224,6 +224,15 @@ namespace IMP_reseni.Services
         {
             File.Copy(FileSystem.Current.AppDataDirectory + "/" + "IMP.json", FileSystem.Current.AppDataDirectory + "/" + "~IMP.json",true);
         }
+
+        public void SignOut()
+        {
+            timerSet = false;
+            IsEnabled = false;
+            Validated = false;
+            Email = "";
+            Password = "";
+        }
         /*
         public void UploadFile(string filePath)
         {

@@ -100,6 +100,7 @@ namespace IMP_reseni.ViewModels
             get { return _isValid; }
         }
         public ICommand GetCommand { get; set; }
+        public ICommand LogOutCommand { get; set; }
         public ICommand ManualSaveCommand { get; set; }
 
        // public ICommand TestCommand { get; set; }
@@ -176,8 +177,7 @@ namespace IMP_reseni.ViewModels
                    await Toast.Make("Špatné přihlašovací údaje nebo nejste připojeni k internetu").Show();
                 }
                 await MopupService.Instance.RemovePageAsync(spinnerPopup);
-
-
+                (LogOutCommand as Command).ChangeCanExecute();
                 /*
                 MegaApiClient client = new MegaApiClient();
                 client.Login(Email, Password);
@@ -217,6 +217,34 @@ namespace IMP_reseni.ViewModels
                     }
                     await MopupService.Instance.RemovePageAsync(spinnerPopup);
                 }
+            });
+
+            LogOutCommand = new Command(
+            canExecute: () =>
+            {
+                if (cloudService.Validated)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            },
+            execute:async() => 
+            {
+                bool answer=await page.DisplayAlert("Upozornění", "Opravdu se přejete odhlásti?", "Ano", "Ne");
+                if (answer==true)
+                {
+                    cloudService.SignOut();
+                    OnPropertyChanged("IsEnable");
+                    OnPropertyChanged("IsValid");
+                    Email = "";
+                    Password = "";
+                    OnPropertyChanged("CanBeSwitchEnabled");
+                    await Toast.Make("Odhlášeno").Show();
+                }
+                (LogOutCommand as Command).ChangeCanExecute();
             });
         }
         private void SetTimer(string minutes)

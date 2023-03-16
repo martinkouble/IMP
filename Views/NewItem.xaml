@@ -32,7 +32,7 @@
 
     <StackLayout Margin="25">
         <Border StyleClass="PickerBorder">
-            <Picker Title="Zadejte Kategorii"
+            <Picker Title="Zvol Kategorii"
                 x:Name="CategoryPicker"
                 ItemsSource="{Binding ListOfCategory}"
                 SelectedItem="{Binding SelectedCategory}"
@@ -41,7 +41,7 @@
                 />
         </Border>
         <Border StyleClass="PickerBorder">
-            <Picker Title="Zvol Pokategorii"
+            <Picker Title="Zvol Podkategorii"
                 x:Name="SubCategoryPicker"
                 ItemsSource="{Binding ListOfSubCategory}"
                 SelectedItem="{Binding SelectedSubCategory}"

@@ -67,14 +67,9 @@ namespace IMP_reseni.ViewModels
 
             ExportCommand = new Command(
             async() =>
-            {
-                //string path;
-                ////path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath
-                //path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-                ////path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads)
-                //+"/zaloha_" + DateTime.Now.ToString("-dd-MM-yyyy_HH:mm:ss") + ".json";            
-                //PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
-                if (true)
+            {        
+                PermissionStatus status = await Permissions.RequestAsync<MyReadWritePermission>();
+                if (status==PermissionStatus.Granted)
                 {
                     bool saveIsSuccessful=await saveholder.SaveAsync();
                     if (saveIsSuccessful==true)
@@ -156,20 +151,21 @@ namespace IMP_reseni.ViewModels
                 }
             });
             InsertExcelDataCommand = new Command(
-            async() =>
+            async () =>
             {
-                var customFileType = new FilePickerFileType(
-                new Dictionary<DevicePlatform, IEnumerable<string>>
-                {
-                    //{ DevicePlatform.iOS, new[] { ".csv" } },
-                    { DevicePlatform.Android, new[] { "text/csv" } },
-                    { DevicePlatform.WinUI, new[] { ".csv" } },
-                });
+                //var customFileType = new FilePickerFileType(
+                //new Dictionary<DevicePlatform, IEnumerable<string>>
+                //{
+                ////{ DevicePlatform.iOS, new[] { ".csv" } },
+                //{ DevicePlatform.Android, new[] { "text/csv" } },
+                //{ DevicePlatform.WinUI, new[] { ".csv" } },
+                //});
 
-                var result = await FilePicker.Default.PickAsync(new PickOptions
-                {
-                    FileTypes = customFileType
-                });
+                //var result = await FilePicker.Default.PickAsync(new PickOptions
+                //{
+                //    FileTypes = customFileType
+                //});
+                var result = await FilePicker.Default.PickAsync();
                 if (result != null)
                 {
                     StreamReader sr = new StreamReader(result.FullPath);
@@ -177,7 +173,7 @@ namespace IMP_reseni.ViewModels
                     string[] excelReading = sr.ReadToEnd().Replace('\r', '\0').Split('\n');
                     string[] itemData;
 
-                    for (int i = 1; i < excelReading.Length - 1; i++)
+                    for (int i = 0; i < excelReading.Length-1; i++)
                     {
                         itemData = excelReading[i].Split(';');
                         NewFileItem(itemData);
@@ -195,27 +191,32 @@ namespace IMP_reseni.ViewModels
         }
 
 
-        private  void GenerateFile(DateTime from, DateTime to)
+        private async void GenerateFile(DateTime from, DateTime to)
         {
             if (from != default(DateTime) && to != default(DateTime))
             {
                 AccountingHandler accounting = new AccountingHandler();
-//                string path;
-//#if ANDROID
-//                 //path = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/UI " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-//                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.Path, Android.OS.Environment.DirectoryDownloads) + "/účetnictví_" + from.ToString("dd-mm-yyyy") + "---" + to.ToString("dd-mm-yyyy") + ".csv";
-//#else
-//                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/účetnictví " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-//#endif
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 string accFileText = accounting.CreateAccountingFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
-                if (!File.Exists(path)) 
+                using var stream = new MemoryStream(Encoding.Default.GetBytes(accFileText));
+                string fileName = "účetnictví_" + from.ToString("dd-mm-yyyy") + "--" + to.ToString("dd-mm-yyyy") + ".csv";
+                bool saveIsSuccessful;
+                try
                 {
-                    File.WriteAllText(path, accFileText, Encoding.UTF8);
-                     Toast.Make("Soubor vytvořen").Show();
+                    var save = await FileSaver.Default.SaveAsync(fileName, stream, cancellationTokenSource.Token);
+                    saveIsSuccessful = save.IsSuccessful;
+                }
+                catch (Exception)
+                {
+                    saveIsSuccessful = false;
+                }
+                if (saveIsSuccessful)
+                {
+                    await Toast.Make("Soubor vytvořen").Show();
                 }
                 else
                 {
-                     Toast.Make("Soubor již existuje").Show();
+                    await Toast.Make("Soubor nevytvořen").Show();
                 }
             }
         }
@@ -223,18 +224,11 @@ namespace IMP_reseni.ViewModels
         {
             if (from != default(DateTime) && to != default(DateTime))
             {
-                AccountingHandler accounting = new AccountingHandler();
-                //                string path;
-                //#if ANDROID
-                //                path = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-                //#else
-                //                path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToString("dd-mm-yyyy") + "-" + to.ToString("dd-mm-yyyy") + ".csv";
-                //#endif
-                //string path = System.Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/sklad " + from.ToShortDateString() + "-" + to.ToShortDateString() + ".csv";
+                AccountingHandler accounting = new AccountingHandler();         
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                 string accFileText = accounting.CreateAccountingStockFileContent(from, to, saveholder.Inventory, saveholder.OrderHistory, saveholder.StockUpHistory, saveholder.Suppliers);
                 using var stream = new MemoryStream(Encoding.Default.GetBytes(accFileText));
-                string fileName= "sklad " + from.ToString("dd - mm - yyyy") + " -- " + to.ToString("dd - mm - yyyy") + ".csv";
+                string fileName= "sklad " + from.ToString("dd-mm-yyyy") + " -- " + to.ToString("dd-mm-yyyy") + ".csv";
                 bool saveIsSuccessful;
                 try
                 {
@@ -247,7 +241,6 @@ namespace IMP_reseni.ViewModels
                 }
                 if (saveIsSuccessful)
                 {
-                    //File.WriteAllText(path, accFileText, Encoding.UTF8);
                     await Toast.Make("Soubor vytvořen").Show();
                 }
                 else
