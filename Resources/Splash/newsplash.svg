@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg viewBox="233.21 258.702 22.218 24.495" width="22.218" height="24.495" xmlns="http://www.w3.org/2000/svg">
   <path d="M8 21H4q-.825 0-1.412-.587Q2 19.825 2 19V8.35q0-.625.338-1.125q.337-.5.912-.725l8-3.2q.35-.15.75-.15t.75.15l8 3.2q.575.225.913.725q.337.5.337 1.125V19q0 .825-.587 1.413Q20.825 21 20 21h-4v-8H8Zm1 0v-2h2v2Zm2-3v-2h2v2Zm2 3v-2h2v2Z" transform="matrix(1, 0, 0, 1, 232.289978, 255.551636)" style="fill: rgb(255, 255, 255); --darkreader-inline-fill:#ffffff;" data-darkreader-inline-fill=""/>
-  <text style="fill: rgb(255, 255, 255); font-family: &quot;Bodoni MT&quot;; font-size: 4px; text-anchor: middle; white-space: pre;" x="244.319" y="282.073">Apothecarius</text>
+  <text style="fill: rgb(255, 255, 255); font-family: &quot;Bodoni MT&quot;; font-size: 4px; text-anchor: middle; white-space: pre;" x="244.319" y="282.073">KasaSklad</text>
   <rect x="233.21" y="278.001" width="22.218" height="0.513" style="fill: rgb(255, 255, 255); stroke: rgb(255, 0, 0); paint-order: stroke; stroke-width: 0;"/>
 </svg>

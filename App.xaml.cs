@@ -1,5 +1,4 @@
-﻿
-using IMP_reseni.Views;
+﻿using IMP_reseni.Views;
 using Microsoft.Extensions.DependencyInjection;
 using IMP_reseni.Services;
 using IMP_reseni.MyPermissions;
@@ -26,7 +25,7 @@ public partial class App : Application
         sp.Load();
         Task get = new Task(GetPassword);
         get.Start();
-        InitializeComponent();
+       InitializeComponent();
 
         get.Wait();
 

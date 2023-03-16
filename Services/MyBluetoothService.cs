@@ -58,7 +58,7 @@ namespace IMP_reseni.Services
         {
             uint messageLength = (uint)buffer.Length;
             byte[] countBuffer = BitConverter.GetBytes(messageLength);
-            outStream.Write(countBuffer, 0, countBuffer.Length);
+            //outStream.Write(countBuffer, 0, countBuffer.Length);
             outStream.Write(buffer, 0, buffer.Length);
         }
         private string RemoveDiacritics(String s)
@@ -75,20 +75,25 @@ namespace IMP_reseni.Services
             }
             return sb.ToString();
         }
-        private bool ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
+        private void ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
         {
+            Printer.output.Clear();
+            Printer.output.Add(0x1B);
+            Printer.output.Add(0x40);
+            //buffer = Printer.output.ToArray();
+            //SendMessage();
             basketHolder.receiptNumber++;
             string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
-            Printer.output.Clear();
+            //Printer.output.Clear();
             Printer.Align("center");
             Printer.PrintLine(CompanyName);
             Printer.PrintLine(CompanyAddress);
             Printer.PrintLine("IC:" + IC + " DIC: " + DIC);
             Printer.PrintLine(new string('-', 32));
             Printer.Align("left");
-            Printer.PrintLine("Cas: " + DateTime.Now.ToString("HH:mm:ss"));
             Printer.PrintLine("Datum: " + DateTime.Now.ToString("dd.MM.yyyy"));
-            Printer.PrintLine("Cislo uctenky: " + stringNumber);
+            Printer.PrintLine("Cas: " + DateTime.Now.ToString("HH:mm:ss"));
+            Printer.PrintLine("Cislo uctenky: " + stringNumber.ToString());
             Printer.PrintLine(new string('-', 32));
             foreach (OrderItem o in basketHolder.Order.Items)
             {
@@ -99,18 +104,23 @@ namespace IMP_reseni.Services
                 Printer.tabSkok();
                 Printer.Print("x" + o.Amount.ToString());
                 Printer.tabSkok();
-                Printer.Print("=" + (item.SellCost * o.Amount).ToString() + " Kc");
+                Printer.Print((item.SellCost * o.Amount).ToString() + " Kc");
                 Printer.PrintLine();
                 Printer.PrintLine(new string('-', 32));
             }
             Printer.Align("center");
-            Printer.PrintLine("Mezisoucet bez DPH: " + TotalCostWithNoDPH.ToString() + "Kc");
-            double dph = TotalCost - TotalCostWithNoDPH;
+            Printer.PrintLine("Mezisoucet bez DPH: " + Math.Round(TotalCostWithNoDPH,2).ToString() + "Kc");
+            double dph = Math.Round(TotalCost - TotalCostWithNoDPH,2);
             Printer.PrintLine("DPH: " + dph.ToString() + "Kc");
             Printer.PrintLine("Celkova castka: " + TotalCost.ToString() + "Kc");
+            Printer.PrintLine();
+            Printer.PrintLine();
+            Printer.PrintLine();
+            Printer.PrintLine();
+
             buffer = Printer.output.ToArray();
             SendMessage();
-            return true;
+
         }
         public async Task<bool> BluetoothConnection(double TotalCostWithNoDPH, double TotalCost)
         {
@@ -146,13 +156,8 @@ namespace IMP_reseni.Services
                     if (client.Connected)
                     {
                         outStream = client.GetStream();
-                        Printer.output.Add(0x1B);
-                        Printer.output.Add(0x40);
-                        buffer = Printer.output.ToArray();
-                        bool IsCompleted = ReceiptPrint(TotalCostWithNoDPH, TotalCost);
-                        if (IsCompleted == true)
-                        { client.Close(); }
-                        else { return false; }
+                        ReceiptPrint(TotalCostWithNoDPH, TotalCost);
+                        client.Close(); 
                         return true;
                     }
                     else

@@ -63,7 +63,7 @@
         </Button>
 
 
-        <Button Text="Vytvořit Kategorii"
+        <Button Text="Vytvořit Pokategorii"
                 HorizontalOptions="Center"
                 Command="{Binding CreateCommand}"
                >

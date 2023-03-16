@@ -230,7 +230,7 @@ namespace IMP_reseni.ViewModels
                     //newItem.BuyCost = Convert.ToInt32(BuyPrice);
                     newItem.ImageUrl = ImageUrl;
                     //newItem.SoR = SorCheck;
-                    newItem.Stock = Convert.ToInt32(Count);
+                    //newItem.Stock = Convert.ToInt32(Count);
                     //newItem.Disabled = DisableCheck;
                     newItem.SupplierId = saveholder.FindSupplierByName(SelectedSupplier).Id;
 
