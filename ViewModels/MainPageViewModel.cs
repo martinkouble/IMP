@@ -266,24 +266,7 @@ namespace IMP_reseni.ViewModels
                }
                //PreviousSelection = (List<object>)e.PreviousSelection;
            });
-            /*
-            CheckedBoxChangeCommand = new Command<CheckedChangedEventArgs>(
-                (CheckedChangedEventArgs e) =>
-                {
-                    if (CategoryCheckBoxIsChecked)
-                    {
-
-                    }
-                    if (SubCategoryCheckBoxIsChecked)
-                    {
-
-                    }   
-                    if (ItemCheckBoxIsChecked)
-                    {
-
-                    }
-                });
-            */
+           
             ItemSelect =new Command<object>(
             async (object SelectedItem) =>
             {
@@ -337,46 +320,7 @@ namespace IMP_reseni.ViewModels
             //}
             await Permissions.RequestAsync<Permissions.StorageWrite>();
             await Permissions.RequestAsync<Permissions.StorageRead>();
-            /*
-            //PermissionStatus status1 = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
-            //PermissionStatus status2 = await Permissions.CheckStatusAsync<MyBluetoothPermissionOldVersion>();
-
-            //if (DeviceInfo.Platform ==DevicePlatform.Android)
-            //{
-            //    PermissionStatus status = await Permissions.CheckStatusAsync<MyReadWritePermission>();
-
-            //    if (status == PermissionStatus.Granted)
-            //        return;
-
-            //    if (Permissions.ShouldShowRationale<MyReadWritePermission>())
-            //    {
-            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
-            //    }
-            //}
-            //if (DeviceInfo.Version.Major>=12)
-            //{
-            //    PermissionStatus status = await Permissions.CheckStatusAsync<MyBluetoothPermission>();
-
-            //    if (status == PermissionStatus.Granted)
-            //        return;
-
-            //    if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
-            //    {
-            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
-            //    }
-            //}
-            //if (DeviceInfo.Platform == DevicePlatform.Android)
-            //{
-            //    PermissionStatus status = await Permissions.RequestAsync<MyBluetoothPermissionOldVersion>();
-
-            //    if (status == PermissionStatus.Granted)
-            //        return;
-
-            //    if (Permissions.ShouldShowRationale<MyBluetoothPermission>())
-            //    {
-            //        await _page.DisplayAlert("Needs permissions", "BECAUSE!!!", "OK");
-            //    }
-            //}*/
+           
         }
 
         private void filter(string Text)
