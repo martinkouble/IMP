@@ -23,6 +23,12 @@ public partial class App : Application
         //SecureStorage.Default.RemoveAll();
 
         sp.Load();
+        if (!sp.ExistSupplierByName("Vlastní výroba"))
+        {
+            Supplier supp = new Supplier();
+            supp.Name = "Vlastní výroba";
+            sp.AddSupplier(supp);
+        }
         Task get = new Task(GetPassword);
         get.Start();
        InitializeComponent();

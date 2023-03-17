@@ -23,7 +23,7 @@ namespace IMP_reseni.Services
     
     public class MyBluetoothService
     {
-        byte[] buffer;
+        //byte[] buffer;
         NetworkStream outStream;
         private SaveHolder saveHolder;
         private BasketHolder basketHolder;
@@ -54,13 +54,14 @@ namespace IMP_reseni.Services
             Preferences.Default.Set("DIC", DIC);
         }
 
-        private void SendMessage()
+        private void SendMessage(byte[] buffer)
         {
-            uint messageLength = (uint)buffer.Length;
-            byte[] countBuffer = BitConverter.GetBytes(messageLength);
+            //uint messageLength = (uint)buffer.Length;
+            //byte[] countBuffer = BitConverter.GetBytes(messageLength);
             //outStream.Write(countBuffer, 0, countBuffer.Length);
             outStream.Write(buffer, 0, buffer.Length);
         }
+
         private string RemoveDiacritics(String s)
         {
             s = s.Normalize(System.Text.NormalizationForm.FormD);
@@ -77,6 +78,7 @@ namespace IMP_reseni.Services
         }
         private void ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
         {
+            byte[] buffer;
             Printer.output.Clear();
             Printer.output.Add(0x1B);
             Printer.output.Add(0x40);
@@ -86,9 +88,9 @@ namespace IMP_reseni.Services
             string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
             //Printer.output.Clear();
             Printer.Align("center");
-            Printer.PrintLine(CompanyName);
-            Printer.PrintLine(CompanyAddress);
-            Printer.PrintLine("IC:" + IC + " DIC: " + DIC);
+            Printer.PrintLine(RemoveDiacritics(CompanyName));
+            Printer.PrintLine(RemoveDiacritics(CompanyAddress));
+            Printer.PrintLine("IC:" + RemoveDiacritics(IC) + " DIC: " + RemoveDiacritics(DIC));
             Printer.PrintLine(new string('-', 32));
             Printer.Align("left");
             Printer.PrintLine("Datum: " + DateTime.Now.ToString("dd.MM.yyyy"));
@@ -119,7 +121,17 @@ namespace IMP_reseni.Services
             Printer.PrintLine();
 
             buffer = Printer.output.ToArray();
-            SendMessage();
+            SendMessage(buffer);
+
+            Printer.output.Clear();
+            Printer.output.Add(0x1D);
+            Printer.output.Add(0x99);
+            buffer = Printer.output.ToArray();
+            SendMessage(buffer);
+            byte byte1=Convert.ToByte(outStream.ReadByte());
+            byte byte2=Convert.ToByte(outStream.ReadByte());
+            byte byte3=Convert.ToByte(outStream.ReadByte());
+            byte byte4=Convert.ToByte(outStream.ReadByte());
 
         }
         public async Task<bool> BluetoothConnection(double TotalCostWithNoDPH, double TotalCost)
@@ -157,7 +169,7 @@ namespace IMP_reseni.Services
                     {
                         outStream = client.GetStream();
                         ReceiptPrint(TotalCostWithNoDPH, TotalCost);
-                        client.Close(); 
+                        //client.Close(); 
                         return true;
                     }
                     else

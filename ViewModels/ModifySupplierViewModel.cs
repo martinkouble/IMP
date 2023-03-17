@@ -26,10 +26,17 @@ namespace IMP_reseni.ViewModels
         {
             set
             {
-                SetProperty(ref _selectedSupplier, value);
-                if (value != "" && value != null)
+                if (value == "Vlastní výroba")
                 {
-                    Text = value;
+                    Toast.Make("Tento dodavatel nelze upravovat").Show();
+                }
+                else
+                {
+                    SetProperty(ref _selectedSupplier, value);
+                    if (value != "" && value != null)
+                    {
+                        Text = value;
+                    }
                 }
             }
 

@@ -43,6 +43,12 @@ namespace IMP_reseni.Services
             this.OrderHistory = save.OrderHistory;
             this.StockUpHistory = save.StockUpHistory;
             this.Suppliers = save.Suppliers;
+            if (!ExistSupplierByName("Vlastní výroba"))
+            {
+                Supplier supp = new Supplier();
+                supp.Name = "Vlastní výroba";
+                AddSupplier(supp);
+            }
         }
 
         public void Save()

@@ -153,19 +153,19 @@ namespace IMP_reseni.ViewModels
             InsertExcelDataCommand = new Command(
             async () =>
             {
-                //var customFileType = new FilePickerFileType(
-                //new Dictionary<DevicePlatform, IEnumerable<string>>
-                //{
-                ////{ DevicePlatform.iOS, new[] { ".csv" } },
-                //{ DevicePlatform.Android, new[] { "text/csv" } },
-                //{ DevicePlatform.WinUI, new[] { ".csv" } },
-                //});
+                var customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                //{ DevicePlatform.iOS, new[] { ".csv" } },
+                { DevicePlatform.Android, new[] { "text/comma-separated-values" } },
+                { DevicePlatform.WinUI, new[] { ".csv" } },
+                });
 
-                //var result = await FilePicker.Default.PickAsync(new PickOptions
-                //{
-                //    FileTypes = customFileType
-                //});
-                var result = await FilePicker.Default.PickAsync();
+                var result = await FilePicker.Default.PickAsync(new PickOptions
+                {
+                    FileTypes = customFileType
+                });
+                //var result = await FilePicker.Default.PickAsync();
                 if (result != null)
                 {
                     StreamReader sr = new StreamReader(result.FullPath);
@@ -173,7 +173,7 @@ namespace IMP_reseni.ViewModels
                     string[] excelReading = sr.ReadToEnd().Replace('\r', '\0').Split('\n');
                     string[] itemData;
 
-                    for (int i = 0; i < excelReading.Length-1; i++)
+                    for (int i = 0; i < excelReading.Length; i++)
                     {
                         itemData = excelReading[i].Split(';');
                         NewFileItem(itemData);
@@ -322,10 +322,13 @@ namespace IMP_reseni.ViewModels
                     if (supp == "")
                     {
                         supp = "Vlastní výroba";
-                        supplier = new Supplier();
-                        supplier.Name = "Vlastní výroba";
-                        saveholder.AddSupplier(supplier);
-                        saveholder.Save();
+                        if (!saveholder.ExistSupplierByName("Vlastní výroba"))
+                        {
+                            supplier = new Supplier();
+                            supplier.Name = "Vlastní výroba";
+                            saveholder.AddSupplier(supplier);
+                            saveholder.Save();
+                        }
                         supplier =saveholder.FindSupplierByName("Vlastní výroba");
                     }
                     else

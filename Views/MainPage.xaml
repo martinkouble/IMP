@@ -86,7 +86,7 @@
             TextColor="White"
             />
 
-            <ImageButton Source="{AppThemeBinding Light=loginicon_black.svg, Dark=loginicon_white.svg}"
+            <ImageButton Source="{AppThemeBinding Light=loginicon_black.svg, Dark=loginicon_white.png}"
                          MaximumHeightRequest="50" MaximumWidthRequest="50"
                         Command="{Binding NavigateCommand}"
                        />
