@@ -65,7 +65,6 @@ namespace IMP_reseni.ViewModels
             get { return _priceWithoutDPH; }
         }
 
-
         public AddItemToBasketViewModel(Items item,Page _page)
         {
             /*
@@ -79,7 +78,7 @@ namespace IMP_reseni.ViewModels
                 }
             }
             */
-
+            
             Count = "0";
             PriceWithoutDPH = "Cena bez DPH 0 KČ";
             PriceWithDPH = "0 KČ";
@@ -88,10 +87,15 @@ namespace IMP_reseni.ViewModels
             ItemsPriceWithDPH = item.SellCost;
             ItemsPriceWithoutDPH= item.SellCost/1.21;
             MaxCount = item.Stock;
+            if (App.basketHolder.ExistItem(item))
+            {
+                OrderItem orderItem = App.basketHolder.FindOrderItem(item);
+                Count = orderItem.Amount.ToString();
+            }
             AddCommand = new Command<string>(
                 canExecute: (string Count) =>
                 {
-                    if (Convert.ToInt32(Count) >= MaxCount)
+                    if (Convert.ToInt32(Count) >= MaxCount )
                     {
                         return false;
                     }
@@ -143,7 +147,9 @@ namespace IMP_reseni.ViewModels
                     }
                     else
                     {
-                        Toast.Make("Položka je již v košíku").Show();
+                        int amount = Convert.ToInt32(Count);
+                        App.basketHolder.ChangeAmountInOrderItem(item, amount);
+                        _page.Navigation.PopAsync();
                     }
                 });
         }

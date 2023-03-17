@@ -96,8 +96,8 @@ namespace IMP_reseni.ViewModels
             {
                 BasketItems.Add(item);
             }
-            TotalCostWithNoDPHText = "Cena bez DPH: "+TotalCostWithNoDPH;
-            TotalCostText = $"Cena s DPH: "+TotalCost.ToString();
+            TotalCostWithNoDPHText = "Cena bez DPH: "+TotalCostWithNoDPH+" Kč";
+            TotalCostText = $"Cena s DPH: "+TotalCost.ToString()+" Kč";
             SellCommand = new Command(
            async() =>
             {
@@ -110,8 +110,8 @@ namespace IMP_reseni.ViewModels
                         if (success==true)
                         {
                             basketHolder.CompleteOrder();
-                            TotalCostWithNoDPHText = "Cena bez DPH: 0";
-                            TotalCostText = $"Cena s DPH: 0";
+                            TotalCostWithNoDPHText = "Cena bez DPH: 0 Kč";
+                            TotalCostText = $"Cena s DPH: 0 Kč";
                             BasketItems.Clear();
                             await Toast.Make("Prodáno s účtenkou").Show();
                         }
@@ -123,8 +123,8 @@ namespace IMP_reseni.ViewModels
                     else
                     {
                         basketHolder.CompleteOrder();
-                        TotalCostWithNoDPHText = "Cena bez DPH: 0";
-                        TotalCostText = $"Cena s DPH: 0";
+                        TotalCostWithNoDPHText = "Cena bez DPH: 0 Kč";
+                        TotalCostText = $"Cena s DPH: 0 Kč";
                         BasketItems.Clear();
                         await Toast.Make("Prodáno").Show();
                     }
@@ -139,8 +139,14 @@ namespace IMP_reseni.ViewModels
             DeleteCommand = new Command<OrderItem>(
                 (OrderItem a) => 
            {
-               BasketItems.Remove(a);
+               BasketItems.Clear();
                basketHolder.RemoveItemFromBasket(a.CategoryId, a.SubCategoryId, a.ItemId);
+               foreach (var item in basketHolder.Items)
+               {
+                   BasketItems.Add(item);
+               }
+               TotalCostWithNoDPHText = "Cena bez DPH: " + TotalCostWithNoDPH + " Kč";
+               TotalCostText = $"Cena s DPH: " + TotalCost.ToString() + " Kč";
            });
         }
         /*

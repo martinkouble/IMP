@@ -23,7 +23,7 @@ namespace IMP_reseni.Services
     
     public class MyBluetoothService
     {
-        //byte[] buffer;
+        byte[] buffer;
         NetworkStream outStream;
         private SaveHolder saveHolder;
         private BasketHolder basketHolder;
@@ -54,14 +54,13 @@ namespace IMP_reseni.Services
             Preferences.Default.Set("DIC", DIC);
         }
 
-        private void SendMessage(byte[] buffer)
+        private void SendMessage()
         {
             //uint messageLength = (uint)buffer.Length;
             //byte[] countBuffer = BitConverter.GetBytes(messageLength);
             //outStream.Write(countBuffer, 0, countBuffer.Length);
             outStream.Write(buffer, 0, buffer.Length);
         }
-
         private string RemoveDiacritics(String s)
         {
             s = s.Normalize(System.Text.NormalizationForm.FormD);
@@ -78,14 +77,13 @@ namespace IMP_reseni.Services
         }
         private void ReceiptPrint(double TotalCostWithNoDPH, double TotalCost)
         {
-            byte[] buffer;
             Printer.output.Clear();
             Printer.output.Add(0x1B);
             Printer.output.Add(0x40);
             //buffer = Printer.output.ToArray();
             //SendMessage();
-            basketHolder.receiptNumber++;
-            string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
+            //basketHolder.receiptNumber++;
+            //string stringNumber = basketHolder.receiptNumber.ToString().PadLeft(7, '0');
             //Printer.output.Clear();
             Printer.Align("center");
             Printer.PrintLine(RemoveDiacritics(CompanyName));
@@ -95,44 +93,39 @@ namespace IMP_reseni.Services
             Printer.Align("left");
             Printer.PrintLine("Datum: " + DateTime.Now.ToString("dd.MM.yyyy"));
             Printer.PrintLine("Cas: " + DateTime.Now.ToString("HH:mm:ss"));
-            Printer.PrintLine("Cislo uctenky: " + stringNumber.ToString());
+            //Printer.PrintLine("Cislo uctenky: " + stringNumber.ToString());
             Printer.PrintLine(new string('-', 32));
             foreach (OrderItem o in basketHolder.Order.Items)
             {
                 Items item = saveHolder.FindCategory(o.CategoryId).FindSubCategory(o.SubCategoryId).FindItem(o.ItemId);
+
+                Printer.Bold();
                 Printer.PrintLine(RemoveDiacritics(item.Name));
+                Printer.NormalText();
                 Printer.tab(16, 22);
+                Printer.Print(new string(' ', 3));
                 Printer.Print(item.SellCost.ToString() + " Kc/ks");
                 Printer.tabSkok();
                 Printer.Print("x" + o.Amount.ToString());
                 Printer.tabSkok();
                 Printer.Print((item.SellCost * o.Amount).ToString() + " Kc");
                 Printer.PrintLine();
-                Printer.PrintLine(new string('-', 32));
             }
+            Printer.PrintLine(new string('-', 32));
             Printer.Align("center");
-            Printer.PrintLine("Mezisoucet bez DPH: " + Math.Round(TotalCostWithNoDPH,2).ToString() + "Kc");
+            Printer.PrintLine("Mezisoucet bez DPH: " + Math.Round(TotalCostWithNoDPH,2).ToString() + " Kc");
             double dph = Math.Round(TotalCost - TotalCostWithNoDPH,2);
-            Printer.PrintLine("DPH: " + dph.ToString() + "Kc");
-            Printer.PrintLine("Celkova castka: " + TotalCost.ToString() + "Kc");
+            Printer.PrintLine("DPH: " + dph.ToString() + " Kc");
+            Printer.Bold();
+            Printer.PrintLine("Celkova castka: " + TotalCost.ToString() + " Kc");
+            Printer.NormalText();
             Printer.PrintLine();
             Printer.PrintLine();
             Printer.PrintLine();
             Printer.PrintLine();
 
             buffer = Printer.output.ToArray();
-            SendMessage(buffer);
-
-            Printer.output.Clear();
-            Printer.output.Add(0x1D);
-            Printer.output.Add(0x99);
-            buffer = Printer.output.ToArray();
-            SendMessage(buffer);
-            byte byte1=Convert.ToByte(outStream.ReadByte());
-            byte byte2=Convert.ToByte(outStream.ReadByte());
-            byte byte3=Convert.ToByte(outStream.ReadByte());
-            byte byte4=Convert.ToByte(outStream.ReadByte());
-
+            SendMessage();
         }
         public async Task<bool> BluetoothConnection(double TotalCostWithNoDPH, double TotalCost)
         {

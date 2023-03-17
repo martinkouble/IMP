@@ -64,5 +64,19 @@ namespace IMP_reseni.Services
         {
             output.Add(9);
         }
+
+        public static void Bold()
+        {
+            output.Add(0x1B);
+            output.Add(0X45);
+            output.Add(0x01);
+        }
+
+        public static void NormalText()
+        {
+            output.Add(0x1B);
+            output.Add(0X45);
+            output.Add(0x00);
+        }
     }
 }

@@ -73,9 +73,10 @@
             </Button.CommandParameter>
         </Button>
         <Border StyleClass="EntryBorder"
-                Margin="0,30,0,30">
+                Margin="0,20,0,20">
             <Label Text="{Binding BLDevice}"
                HorizontalOptions="Center"
+               LineBreakMode ="NoWrap"
                FontSize="32"/>
         </Border>
         <Button Text="Nastavit tiskárnu"

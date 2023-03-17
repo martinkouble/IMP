@@ -88,10 +88,13 @@ namespace IMP_reseni.ViewModels
                try
                {
                    var picker = await new BluetoothDevicePicker().PickSingleDeviceAsync();
-                   Preferences.Set("BL_Address", picker.DeviceAddress.ToString());
-                   Preferences.Set("BL_DeviceName", picker.DeviceName);
-                   BLDevice = picker.DeviceName;
-                   await Toast.Make("Úspěšně uloženo").Show();
+                   if (picker!=null)
+                   {
+                       Preferences.Set("BL_Address", picker.DeviceAddress.ToString());
+                       Preferences.Set("BL_DeviceName", picker.DeviceName.ToString());
+                       BLDevice = picker.DeviceName;
+                       await Toast.Make("Úspěšně uloženo").Show();
+                   }
                }
                catch (Exception)
                {

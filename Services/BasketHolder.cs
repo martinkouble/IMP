@@ -13,7 +13,7 @@ namespace IMP_reseni.Services
         public Order Order { get; set; }
         public List<OrderItem> Items { get { return Order.Items; } }
 
-        public int receiptNumber=0;
+        //public int receiptNumber=0;
 
         public bool Empty
         {
@@ -71,6 +71,17 @@ namespace IMP_reseni.Services
         public bool ExistSubCategoryOfItem(int SubCategoryId)
         {
             return Items.Any(x=>x.SubCategoryId== SubCategoryId);
+        }
+        public OrderItem FindOrderItem(Items item)
+        {
+            return Items.Find(x => x.CategoryId == item.CategoryId
+            && x.SubCategoryId == item.CategoryId && x.ItemId == item.Id);
+        }
+        public void ChangeAmountInOrderItem(Items item,int Amount)
+        {
+            int index = Items.FindIndex(x => x.CategoryId == item.CategoryId
+            && x.SubCategoryId == item.CategoryId && x.ItemId == item.Id);
+            Items[index].Amount= Amount;
         }
 
         public BasketHolder()
